@@ -8,18 +8,65 @@
       </div>
     </div>
 
-    <div class="myOrders">
+    <div class="func">
       <div class="clearfix top">
         <div class="fl">我的订单</div>
         <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="bottom">
-        <div>
+        <div class="funcBox">
           <a>
-            <svg t="1586172525900" class="icon" viewBox="0 0 1266 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2105" width="200" height="200"><path d="M701.88595906 992h-508.24903125C104.51477375 992 32 913.02908938 32 815.98099812V208.03273813C32 110.97091062 104.51477375 32.01373625 193.63692781 32.01373625h785.23101657c89.12215406 0 161.63692781 78.97091062 161.63692781 176.01900188v237.0638325a24.03880594 24.03880594 0 0 1-48.07761094 0V208.03273813c0-70.55046-50.94853125-127.94139094-113.55931687-127.94139094H193.63692781C131.02614219 80.09134719 80.07761094 137.48227812 80.07761094 208.03273813v607.94826c0 70.55046 50.94853125 127.94139094 113.55931687 127.94139093h508.24903125a24.03880594 24.03880594 0 0 1 0 48.07761094z" p-id="2106"></path><path d="M1116.46606625 329.31194656H71.49232343a24.03880594 24.03880594 0 0 1 2e-8-48.07761093h1044.9737428a24.03880594 24.03880594 0 0 1 0 48.07761093zM966.80733219 982.85151781c-139.09539657 0-252.25635657-113.16096-252.2563575-252.2563575s113.16096-252.25635657 252.2563575-252.25635656 252.25635657 113.16096 252.25635656 252.25635656-113.16096 252.25635657-252.25635656 252.2563575z m0-456.44883937c-112.63897406 0-204.17874563 91.5947175-204.17874563 204.17874562S854.22330313 934.76016969 966.80733219 934.76016969s204.17874563-91.58098031 204.17874562-204.17874563-91.5947175-204.17874563-204.17874562-204.17874562z" p-id="2107"></path><path d="M241.98926844 678.190565a24.03880594 24.03880594 0 0 1-24.03880594-24.03880594V315.75405969a24.03880594 24.03880594 0 0 1 48.07761094 0v280.36115531l58.94315156-58.98436125a24.03880594 24.03880594 0 1 1 33.99773906 33.99774l-99.98769468 99.98769375a24.03880594 24.03880594 0 0 1-16.99200094 7.0742775z" p-id="2108"></path><path d="M441.96465689 678.190565a24.03880594 24.03880594 0 0 1-17.0057372-7.04680406l-99.98769469-99.98769469a24.04979437 24.04979437 0 1 1 33.99773906-34.0252125l58.94315156 58.94315156V315.75405969a24.03880594 24.03880594 0 0 1 48.07761094 0v338.39769937a24.03880594 24.03880594 0 0 1-24.03880594 24.03880594zM1102.72960625 766.36490375h-147.66694781a24.03880594 24.03880594 0 0 1-24.03880594-24.03880594V601.37627844a24.03880594 24.03880594 0 1 1 48.07761095 0v116.92475062h123.6281428a24.03880594 24.03880594 0 0 1 0 48.07761094z" p-id="2109"></path></svg>
+            <i class="iconfont icondaifukuan"></i>
+            <p>待付款</p>
+          </a>
+        </div>
+        <div class="funcBox">
+          <a>
+            <i class="iconfont icondaifahuo"></i>
             <p>待发货</p>
           </a>
         </div>
+        <div class="funcBox">
+          <a>
+            <i class="iconfont icongedongzuo-"></i>
+            <p>派送中</p>
+          </a>
+        </div>
+        <div class="funcBox">
+          <a>
+            <i class="iconfont iconshiliangzhinengduixiang"></i>
+            <p>已完成</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="func">
+      <div class="clearfix top">
+        <div class="fl">地址管理</div>
+        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+      </div>
+      <div class="addressBottom">
+        <p class="namePhoneBox"><span class="name">钢弹</span> <span>13569337869</span></p>
+        <p>李沧区 金水路 春和景明一期 2号楼2单元 1602户</p>
+      </div>
+    </div>
+    <div class="func">
+      <div class="clearfix top">
+        <div class="fl">我的优惠券</div>
+        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+      </div>
+      <div class="quanBottom">
+        <ul>
+          <li>
+            <p class="quanName">10元优惠券</p>
+            <p class="detail">满100元使用</p>
+          </li>
+          <li>
+            <p class="quanName">5元优惠券</p>
+            <p class="detail">满50元使用</p>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -49,6 +96,8 @@ export default {
 </script>
 
 <style>
+@import url('./font.css');
+
 .counter-warp {
   text-align: center;
   background-color: rgba(249,249,249);
@@ -88,7 +137,7 @@ export default {
 .infoBox{
   float: left;
   text-align: left;
-  margin-top: 30px;
+  margin-top: 25px;
   margin-left: 40rpx;
   font-size: 16px;
 }
@@ -101,24 +150,59 @@ page{
   background-color: rgba(249,249,249);
 }
 
-.myOrders{
+.func{
   margin: 40rpx;
   box-sizing: border-box;
   background-color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.more{
+  color: rgb(74, 233, 159);
 }
 
 .more img{
   width: 20rpx;
 }
 
-.myOrders .top{
+.func .top{
   padding: 20rpx;
   border-bottom: #dcdcdc;
 }
 
-.myOrders .bottom{
+.func .bottom{
   display: flex;
   flex-direction: row;
-  justify-content:center;
+  justify-content:space-between;
+}
+
+.bottom i{
+  font-size: 30px;
+  color: #666;
+}
+
+.bottom .funcBox{
+  padding: 20rpx 20rpx;
+}
+
+.bottom a p{
+  font-size: 14px;
+}
+
+.addressBottom{
+  padding:0 20rpx 20rpx 20rpx;
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+}
+
+.namePhoneBox{
+  margin-bottom: 10rpx;
+}
+
+.quanBottom{
+  padding: 20rpx;
 }
 </style>
