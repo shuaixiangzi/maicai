@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/logs/main",
+    "pages/counter/main",
+    "pages/classification/main",
+    "pages/car/main",
+    "pages/my/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4adc9f",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#686868",
+    "backgroundColor": "#fafafa",
+    "selectedColor": "#4adf9f",
+    "borderStyle": "white",
+
+    "list": [{
+      "text": "首页",
+      "pagePath": "pages/index/main",
+      "iconPath": "static/tabs/home.png",
+      "selectedIconPath": "static/tabs/home-active.png"
+    },{
+      "text": "分类",
+      "pagePath": "pages/classification/main",
+      "iconPath": "static/tabs/fenlei.png",
+      "selectedIconPath": "static/tabs/fenlei-active.png"
+    },{
+      "text": "购物车",
+      "pagePath": "pages/car/main",
+      "iconPath": "static/tabs/car.png",
+      "selectedIconPath": "static/tabs/car-active.png"
+    },{
+      "text": "我的",
+      "pagePath": "pages/my/main",
+      "iconPath": "static/tabs/wode.png",
+      "selectedIconPath": "static/tabs/wode-active.png"
+    }],
+    "position": "bottom"
+  }
+}
