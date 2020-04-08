@@ -57,14 +57,10 @@
         <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="quanBottom">
-        <ul>
-          <li>
-            <p class="quanName">10元优惠券</p>
-            <p class="detail">满100元使用</p>
-          </li>
-          <li>
-            <p class="quanName">5元优惠券</p>
-            <p class="detail">满50元使用</p>
+        <ul class="quanList">
+          <li v-for="(item, i) in quan" :key="i" :style="{background: item.color}">
+            <p class="quanName">{{item.value}}</p>
+            <p class="detail">{{item.conditions}}</p>
           </li>
         </ul>
       </div>
@@ -78,6 +74,24 @@ import store from './store'
 import indexStore from '../index/store'
 
 export default {
+  data(){
+    return {
+      quan:[
+        {
+          id: '1',
+          value: '10元优惠券',
+          conditions: '满100元使用',
+          color: 'rgb(255,220,81)'
+        },
+        {
+          id: '2',
+          value: '5元优惠券',
+          conditions: '满100元使用',
+          color: 'rgb(255,121,81)'
+        }
+      ]
+    }
+  },
   computed: {
     count () {
       return store.state.count
@@ -96,8 +110,6 @@ export default {
 </script>
 
 <style>
-@import url('./font.css');
-
 .counter-warp {
   text-align: center;
   background-color: rgba(249,249,249);
@@ -111,7 +123,7 @@ export default {
 }
 
 .myInfo{
-  background-color: #4adf9f;
+  background-color: #4adc9f;
   width: 100%;
   height: 120px;
   box-sizing: border-box;
@@ -184,7 +196,11 @@ page{
 }
 
 .bottom .funcBox{
-  padding: 20rpx 20rpx;
+  padding: 20rpx 40rpx;
+}
+
+.funcBox p{
+  color: #999;
 }
 
 .bottom a p{
@@ -194,7 +210,7 @@ page{
 .addressBottom{
   padding:0 20rpx 20rpx 20rpx;
   text-align: left;
-  color: #666;
+  color: #999;
   font-size: 14px;
 }
 
@@ -204,5 +220,29 @@ page{
 
 .quanBottom{
   padding: 20rpx;
+}
+
+.quanList{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.quanList li{
+  flex: 1;
+  width: 48%;
+  min-width: 48%;
+  max-width: 48%;
+  box-sizing: border-box;
+  padding: 20rpx 0;
+}
+
+.quanList li p:first-child{
+  margin-bottom: 5rpx;
+  color: rgb(176,41,0);
+}
+
+.quanList .detail{
+  color: #fff;
 }
 </style>

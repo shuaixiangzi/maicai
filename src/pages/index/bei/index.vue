@@ -29,14 +29,18 @@
         <div class="right">
         </div>
     </div>
+    {{res}}
     <button @click="bindgetusertoken">获取token</button>
     <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo">用户授权{{nickname}}</button>
     <button @click="payNow">微信支付</button>
+    <button @click="payNowPay">立即支付</button>
+    <button @click="getAddress">获取地址</button>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
+import store from '../store'
 
 export default {
   data () {
@@ -47,7 +51,9 @@ export default {
         avatarUrl: ''
       },
       code: '',
-      nickname: ''
+      nickname: '',
+      payParam: {},
+      res: {}
     }
   },
 
@@ -70,7 +76,8 @@ export default {
     },
     bindgetuserinfo(e) {
       console.log(e)
-      this.nickname = e.mp.detail.userInfo.nickName
+      store.commit('saveUserInfo', e.mp.detail.userInfo)
+
     },
     bindgetusertoken(){
       console.log('走我了')
@@ -83,20 +90,109 @@ export default {
           }
       }).then(res =>{
         console.log('成功了',res)
+        _this.res = JSON.stringify(res)
+        mpvue.setStorage({
+          key:"token",
+          data:res.data
+        })
       });
     },
     payNow(){
       console.log('走我了')
       let _this = this;
-      _this.$httpWX.post({
+      /* _this.$httpWX.post({
           url:"pay/pre_order",
           data:{
               "id":539
           }
       }).then(res =>{
         console.log('成功了',res)
-      });
+      }); */
+
+      wx.request({
+        url: 'http://129.204.70.218:8080/api/v1/pay/pre_order', //仅为示例，并非真实的接口地址
+        data: {
+          "id":539
+        },
+        method: 'POST',
+        header: {
+          'content-type': 'application/json', // 默认值
+          'token': wx.getStorageSync('token')
+        },
+        success (res) {
+          _this.res = JSON.stringify(res)
+          console.log(res.data)
+          // _this.payParam = res.data.data;
+          console.log(res.data.data.timeStamp)
+          console.log(res.data.data.nonceStr)
+          console.log(res.data.data.package)
+          console.log(res.data.data.paySign)
+          wx.requestPayment({
+            timeStamp: res.data.data.timeStamp,
+            nonceStr: res.data.data.nonceStr,
+            package: res.data.data.package,
+            signType: res.data.data.signType,
+            paySign: res.data.data.paySign,
+            success (res2) {
+              _this.res = JSON.stringify(res2)
+              console.log('成功', res2)
+            },
+            fail (res2) {
+              // alert(JSON.stringify(res2));
+              console.log('失败', res2)
+            }
+          })
+        }
+      })
     },
+
+    getAddress(){
+      console.log('走我了')
+      let _this = this;
+      /* _this.$httpWX.get({
+          url:"address",
+          data:{}
+      }).then(res =>{
+        console.log('成功了',res)
+      }); */
+
+      wx.request({
+        url: 'http://129.204.70.218:8080/api/v1/address', //仅为示例，并非真实的接口地址
+        data: {},
+        method: 'GET',
+        header: {
+          'content-type': 'application/json', // 默认值
+          'token': wx.getStorageSync('token')
+        },
+        success (res) {
+          console.log(res.data)
+        }
+      })
+    },
+
+    payNowPay(){
+      let _this = this;
+      console.log(_this.payParam);
+
+      /* wx.requestPayment(
+        {
+        'timeStamp': _this.payParam.timeStamp,
+        'nonceStr': _this.payParam.nonceStr,
+        'package': _this.payParam.package,
+        'signType': 'MD5',
+        'paySign': _this.payParam.paySign,
+        'success':function(res){
+          _this.res = JSON.stringify(res)
+          console.log('成功', res)
+        },
+        'fail':function(res){
+          console.log('失败', res)
+        },
+        'complete':function(res){
+          console.log('完成', res)
+        }
+        }) */
+    }
   },
 
   created () {

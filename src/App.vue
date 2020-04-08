@@ -1,3 +1,11 @@
+<!--
+ * @Author: 翟海祥
+ * @Date: 2020-04-07 09:02:47
+ * @LastEditTime: 2020-04-08 15:10:24
+ * @LastEditors: 翟海祥
+ * @Description:
+ * @FilePath: \maicai\src\App.vue
+ -->
 <script>
 export default {
   created () {
@@ -31,6 +39,8 @@ export default {
 </script>
 
 <style>
+@import url('../static/icon/font.css');
+
 .container {
   height: 100%;
   display: flex;
@@ -39,6 +49,7 @@ export default {
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
+  font-size: 16px;
 }
 /* this rule will be remove */
 * {
@@ -49,9 +60,9 @@ export default {
 }
 
 .clearfix:after {
-   content:""; 
-   display: block; 
-   clear:both; 
+   content:"";
+   display: block;
+   clear:both;
 }
 
 .fl{
