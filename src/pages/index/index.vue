@@ -3,7 +3,7 @@
     <div class="topBox">
       <div class="searchBox">
         <div class="left">
-          <i class="iconfont iconfontMap"></i>
+          <i class="iconfont icondizhi"></i>
           <picker mode="selector" @change="bindPickerChange" :value="index" :range="objectarray" :range-key="'name'">
             <view>{{objectarray[index].name}}</view>
           </picker>
@@ -27,27 +27,43 @@
     <!--分类-->
     <ul class="classification">
       <li>
-        <div class="classiImg"></div>
+        <div class="classiImg">
+          <img src="../../../static/images/shucai.png" mode='widthFix'/>
+        </div>
         <p>蔬菜</p>
       </li>
       <li>
-        <div class="classiImg"></div>
+        <div class="classiImg">
+          <img src="../../../static/images/rou.png" mode='widthFix'/>
+        </div>
         <p>肉类</p>
       </li>
       <li>
-        <div class="classiImg"></div>
+        <div class="classiImg">
+          <img src="../../../static/images/danlei.png" mode='widthFix'/>
+        </div>
+        <!-- <div class="classiImg" style="background:url('../../../static/images/danlei.png')"></div> -->
         <p>蛋类</p>
       </li>
       <li>
-        <div class="classiImg"></div>
+        <!-- <div class="classiImg" style="background:url('../../../static/images/shuiguo.png')"></div> -->
+        <div class="classiImg">
+          <img src="../../../static/images/shuiguo.png" mode='widthFix'/>
+        </div>
         <p>水果</p>
       </li>
       <li>
-        <div class="classiImg"></div>
+        <div class="classiImg">
+          <img src="../../../static/images/haixian.png" mode='widthFix'/>
+        </div>
+        <!-- <div class="classiImg" style="background:url('../../../static/images/haixian.png')"></div> -->
         <p>海鲜</p>
       </li>
       <li>
-        <div class="classiImg"></div>
+        <div class="classiImg">
+          <img src="../../../static/images/lianyou.png" mode='widthFix'/>
+        </div>
+        <!-- <div class="classiImg" style="background:url('../../../static/images/lianyou.png')"></div> -->
         <p>粮油调味品</p>
       </li>
     </ul>
@@ -66,7 +82,135 @@
           </swiper-item>
       </swiper>
 
+      <ul class="indexQuanList">
+        <li>
+          <div class="quanImg"><img src="../../../static/images/quan.png" mode="widthFix"/></div>
+          <p>10元优惠券</p>
+        </li>
+        <li>
+          <div class="quanImg"><img src="../../../static/images/quan.png" mode="widthFix"/></div>
+          <p>20元优惠券</p>
+        </li>
+      </ul>
+    </div>
 
+    <!--商品推荐-->
+    <div class="productCategory">
+      <div class="top">
+        <p class="title">人气热卖</p>
+        <div class="more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+      </div>
+
+      <ul class="productList three">
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="productCategory">
+      <div class="top">
+        <p class="title">店长优惠</p>
+        <div class="more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+      </div>
+
+      <ul class="productList two">
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="productCategory">
+      <div class="top">
+        <p class="title">农户直供</p>
+        <div class="more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+      </div>
+
+      <ul class="productList two">
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+        <li>
+          <div class="proImg">
+            <!-- <img src=""/> -->
+          </div>
+          <p class="name">黄金小南瓜</p>
+          <p class="weight">约1KG</p>
+          <p class="price">0.5元/颗</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -278,6 +422,13 @@ export default {
 .searchBox .left{
   color: #fff;
   line-height: 100%;
+  display: flex;
+  margin-top: 10px;
+}
+
+.searchBox .left i{
+  margin-right: 10rpx;
+  font-size: 24px;
 }
 
 .searchBox .right{
@@ -312,16 +463,20 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   margin-top: 100px;
-  width: 80%;
-  margin-left: 10%;
+  width: 86%;
+  margin-left: 7%;
   text-align: center;
 }
 
 .classification .classiImg{
   width: 80rpx;
   height: 40px;
-  background-color: #4adc9f;
+  /* background-color: #4adc9f; */
   margin: 0 auto
+}
+
+.classification .classiImg img{
+  width: 100%;
 }
 
 .classification li{
@@ -345,5 +500,107 @@ export default {
 .middle p{
   padding: 0 40rpx;
   margin-bottom: 10px;
+}
+
+.classiImg{
+  background-size: cover !important;
+}
+
+.indexQuanList{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin:40rpx;
+}
+
+.indexQuanList li{
+  flex: 1;
+  width: 48%;
+  min-width: 48%;
+  max-width: 48%;
+  box-sizing: border-box;
+  padding: 20rpx 0;
+  display: flex;
+  background-color: rgba(74, 223, 159);
+  color: #fff;
+  font-size: 16px;
+  border-radius: 10rpx;
+}
+
+.indexQuanList li .quanImg{
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #fff;
+  border-radius: 100%;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.indexQuanList li .quanImg img{
+  width: 35rpx;
+  margin: 10rpx 15rpx;
+}
+
+.indexQuanList li p{
+  margin: 0;
+  padding: 0;
+  margin-top: 8rpx;
+}
+
+.productCategory{
+  padding:20rpx 40rpx;
+}
+
+.productCategory .title{
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.productList{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.productList li{
+  padding: 10rpx;
+  box-sizing: border-box;
+  font-size: 14px;
+  border: 1px solid #ececec;
+}
+
+.three li{
+  width: 30%;
+}
+
+.two li{
+  width: 48%;
+}
+
+.productList .proImg{
+  width: 100%;
+  height: 200rpx;
+  background-color: #4adc9f;
+  margin-bottom: 10rpx;
+}
+
+.productList .weight{
+  margin: 10rpx 0;
+  color: #999;
+}
+
+.top{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.top .more img{
+  width: 20rpx;
+}
+
+.top .more{
+  font-size: 14px;
 }
 </style>

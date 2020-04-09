@@ -1,7 +1,7 @@
 <!--
  * @Author: 翟海祥
  * @Date: 2020-04-07 09:02:47
- * @LastEditTime: 2020-04-08 15:10:24
+ * @LastEditTime: 2020-04-09 14:47:41
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\App.vue
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style>
-@import url('../static/icon/font.css');
+@import url('../static/icon/stylesheet.css');
 
 .container {
   height: 100%;
