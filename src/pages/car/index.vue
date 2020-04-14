@@ -1,172 +1,213 @@
 <template>
-  <div @click="clickHandle">
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+  <div class="orderBox">
+    <div class="top clearfix">
+      <checkbox-group bindchange="checkboxChange" class="fl">
+        <label class="checkbox" v-for="(index, item) in items" :key="index">
+          <checkbox :value="item.name" :checked="item.checked"/>{{item.value}}
+        </label>
+      </checkbox-group>
+      <p class="fl" style="margin-right:20rpx">全选</p>
+      
+      <p class="fr">删除</p>
     </div>
+    <div class="cardBox">
+      <div class="proBox">
+        <checkbox-group bindchange="checkboxChange" class="sel">
+          <label class="checkbox" v-for="(index, item) in items" :key="index">
+            <checkbox :value="item.name" :checked="item.checked"/>{{item.value}}
+          </label>
+        </checkbox-group>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
         <div class="right">
-        </div>
+          <div class="imgBox">
+            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
+          </div>
+
+          <div class="infoBox">
+            <p class="name">当日新鲜先切猪肉</p>
+            <p class="weight">约1kg</p>
+            <p class="unit">45元/份</p>
+
+            <div class="num">×1</div>
+          </div>
+        </div>    
+      </div>
     </div>
-    <button @click="bindgetusertoken">获取token</button>
-    <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo">用户授权{{nickname}}</button>
-    <button @click="payNow">微信支付</button>
+
+    <div class="buyNow">
+      <p class="price">合计：<i>￥45</i></p>
+
+      <div class="buyBtn">
+        <div class="buyn" @click="buyNow()">立即下单</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+// Use Vuex
+import store from './store'
+import indexStore from '../index/store'
 
 export default {
-  data () {
+  data(){
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: ''
-      },
-      code: '',
-      nickname: ''
+      num: 1,
+      items: [
+        { name: 'usa', value: '全选' },
+      ],
+    }
+  },
+  computed: {
+   
+  },
+  methods: {
+    buyNow(){
+      mpvue.navigateTo({url: '../order/main'})
+    },
+    checkboxChange: function (e) {
+      console.log('checkbox发生change事件，携带value值为：', e.detail.value)
     }
   },
 
-  components: {
-    card
-  },
-
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    },
-    bindgetuserinfo(e) {
-      console.log(e)
-      this.nickname = e.mp.detail.userInfo.nickName
-    },
-    bindgetusertoken(){
-      console.log('走我了')
-      let _this = this;
-      _this.$httpWX.post({
-          url:"token/user",
-          data:{
-              "code":_this.code,
-              "nickname":_this.nickname,
-          }
-      }).then(res =>{
-        console.log('成功了',res)
-      });
-    },
-    payNow(){
-      console.log('走我了')
-      let _this = this;
-      _this.$httpWX.post({
-          url:"pay/pre_order",
-          data:{
-              "id":539
-          }
-      }).then(res =>{
-        console.log('成功了',res)
-      });
-    },
-  },
-
-  created () {
-    let _this = this;
-    // let app = getApp()
-  },
-  mounted (){
-    let _this = this;
-    wx.login({
-        success (res) {
-            if (res.code){
-                // 这里可以把code传给后台，后台用此获取openid及session_key
-                console.log(res.code)
-                _this.code = res.code;
-            }
-        },
-    })
+  mounted(){
+    
   }
 }
 </script>
 
 <style scoped>
-.userinfo {
+@import url('./order.css');
+.orderBox{
+  /* padding: 40rpx; */
+}
+
+.cardBox{
+  padding: 30rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  position: relative;
+
+}
+
+.cardBox .title{
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.proBox{
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.proBox .imgBox{
+  width: 200rpx;
+  margin-right: 20rpx;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.proBox .imgBox img{
+  width: 100%;
 }
 
-.usermotto {
-  margin-top: 150px;
+.proBox .infoBox{
+  flex: 2;
+  position: relative;
 }
 
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
+.proBox .infoBox .weight{
+  color: #999;
+  margin: 15rpx 0;
+  font-size: 14px;
 }
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
+
+.proBox .infoBox .num{
+  position: absolute;
+  right: 0;
+  bottom: 20rpx;
+  color: #999;
+  font-size: 14px;
 }
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
+
+.proBox .infoBox .name,.proBox .infoBox .unit{
+  color: #666;
+  font-size: 14px;
 }
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
+
+.buyNow{
+  display: flex;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(244,244,244);
+  padding: 20rpx;
+  box-sizing: border-box;
+  box-shadow: 10px 10px 10px 10px rgba(0,0,0,.30);
+}
+
+.buyNow ._navigator img{
+  width: 35rpx;
+}
+
+.buyNow ._navigator{
+  font-size: 12px;
+  text-align: center;
+  padding: 0 20rpx;
+}
+
+.buyNow .buyBtn{
+  flex: 1;
+  padding: 0 40rpx;
+}
+
+.buyn{
+  border-radius: 40px;
+  background-color: #4adc9f;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  color: #fff;
+  line-height: 60rpx;
+  height: 60rpx;
+  margin-top: 5rpx;
+}
+
+.buyNow .price{
+  display: flex;
+  line-height: 60rpx;
+}
+
+.buyNow .price i{
+  color: red;
+}
+
+.cardBox .pricer{
+  position: absolute;
+  right: 20rpx;
+  bottom: 25rpx;
+  color: #666;
+}
+
+.top{
+  padding: 10rpx 40rpx;
+}
+
+._checkbox-group{
+  display: inline-block;
 }
 
 .right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
+  display: flex;
+  flex: 2;
+  background-color: rgb(247,247,247);
+  padding: 20rpx;
+  margin-left: 20rpx;
+}
+
+.proBox{
+
+}
+
+.sel{
+  margin-top: 70rpx;
 }
 </style>

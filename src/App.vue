@@ -40,6 +40,14 @@ export default {
 
 <style>
 @import url('../static/icon/stylesheet.css');
+view,input,p,div,span{
+  font-size: 14px;
+  color:inherit;
+}
+
+page{
+   color: #333;
+}
 
 .container {
   height: 100%;
@@ -49,7 +57,7 @@ export default {
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 14px;
 }
 /* this rule will be remove */
 * {
@@ -72,4 +80,5 @@ export default {
 .fr{
   float: right;
 }
+
 </style>

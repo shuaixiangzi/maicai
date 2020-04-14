@@ -1,0 +1,274 @@
+<template>
+  <div>
+    <div class="title">
+      <i class="iconfont icongouwulan"></i>
+      <span>钢蛋的肉店  我们只卖放心肉、健康肉</span>
+    </div>
+
+    <!--banner-->
+    <swiper :indicator-dots="indicatorDots" class="swiperBox"
+      :autoplay="autoplay" :interval="interval" :duration="duration">
+        <swiper-item class="item1">
+          <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+        </swiper-item>
+        <swiper-item  class="item1">
+          <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+        </swiper-item>
+    </swiper>
+
+    <div class="infoTop">
+      <div class="price"><span>￥45</span> <i>/份</i></div>
+      <div class="weight">约500g/份</div>
+      <div class="num">销量：168件</div>
+      <i class="iconfont iconfenxiang"></i>
+    </div>
+
+    <p class="proTitle">当日新鲜先切猪肉纯瘦肉，纯抢购价，抓紧下手，卖完没了</p>
+
+    <div class="specifications">
+      <div class="name">选择规格</div>
+      <div class="count">
+        <div @click="decrement">-</div>
+        <div>{{num}}</div>
+        <div @click="increment">+</div>
+      </div>
+
+      <div class="unit">份</div>
+    </div>
+
+    <div class="detail">
+      <p class="detailTitle">详情</p>
+
+      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+    </div>
+
+    <div class="alert" v-show="bool.showSuccess">加入购物车成功</div>
+    <div class="buyNow">
+      <navigator url="/page/navigate/navigate?title=navigate" hover-class="navigator-hover">
+        <img src="/static/tabs/home.png" mode="widthFix"/>
+        <p>回到首页</p>
+      </navigator>
+      <div @click="addCar()" class="_navigator">
+        <img src="/static/tabs/car.png" mode="widthFix"/>
+        <p>加入购物车</p>
+      </div>
+
+      <div class="buyBtn">
+        <div class="buyn" @click="buyNow()">立即购买</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// Use Vuex
+import store from './store'
+import indexStore from '../index/store'
+
+export default {
+  data(){
+    return {
+      indicatorDots: true,
+      autoplay: true,
+      interval: 5000,
+      duration: 500,
+      num: 1,
+      bool:{
+        showSuccess: false
+      }
+    }
+  },
+  computed: {
+   
+  },
+  methods: {
+    decrement(){
+      if(this.num>1){
+        this.num --
+      }
+    },
+
+    increment(){
+      this.num ++
+    },
+    buyNow(){
+      mpvue.navigateTo({url: '../order/main'})
+    },
+    addCar(){
+      this.bool.showSuccess = true;
+      setTimeout(()=>{
+        this.bool.showSuccess = false;
+      }, 2000)
+    }
+  },
+
+  mounted(){
+    
+  }
+}
+</script>
+
+<style scoped>
+.title{
+  margin: 20rpx 40rpx;
+  background-color: rgb(255,251,239);
+  color: rgb(255, 200, 37);
+  display: flex;
+  padding: 20rpx 30rpx;
+  border-radius: 20rpx;
+}
+
+.title i{
+  font-size: 20px;
+  margin-right: 10rpx;
+}
+
+.swiperBox{
+  /* padding: 40rpx; */
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10rpx 40rpx 0 40rpx;
+  height: 400rpx;
+}
+
+.item1{
+  background-color: rgb(229,229,229);
+  /* text-align: center; */
+}
+
+.item1 img{
+  width: 100%;
+}
+
+.infoTop{
+  display: flex;
+  padding: 20rpx 40rpx;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.infoTop .price{
+  display: flex;
+}
+
+.infoTop .price span{
+  font-size: 20px;
+  color: #4adc9f;
+  display: flex;
+  position: relative;
+  top: -5px;
+}
+
+.infoTop .price i{
+  font-size: 14px;
+  color: #f5f5f5;
+}
+
+.proTitle{
+  font-weight: bold;
+  width: 100%;
+  padding: 10rpx 40rpx 20rpx 40rpx;
+  box-sizing: border-box;
+  line-height: 25px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.specifications{
+  padding: 40rpx;
+  border-bottom: 1px solid #f5f5f5;
+  display: flex;
+}
+
+.specifications .name,.specifications .unit{
+  line-height: 40px;
+  margin-right: 20rpx;
+}
+
+.count{
+  display: flex;
+  margin-right: 20rpx;
+}
+
+.count div{
+  border: 1px solid #f5f5f5;
+  padding: 0 20rpx;
+  margin-left: -1px;
+  line-height: 60rpx;
+  height: 60rpx;
+}
+
+.count div:first-child{
+  margin: 0;
+}
+
+.detail{
+  width: 100%;
+  padding: 20rpx 40rpx;
+  box-sizing: border-box;
+  margin-bottom: 150rpx;
+}
+
+.detailTitle{
+  font-weight: bold;
+  margin-bottom: 40rpx;
+}
+
+.buyNow{
+  display: flex;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(244,244,244);
+  padding: 20rpx;
+  box-sizing: border-box;
+  box-shadow: 10px 10px 10px 10px rgba(0,0,0,.30);
+}
+
+.buyNow ._navigator img{
+  width: 35rpx;
+}
+
+.buyNow ._navigator{
+  font-size: 12px;
+  text-align: center;
+  padding: 0 20rpx;
+}
+
+.buyNow .buyBtn{
+  flex: 2;
+}
+
+.buyn{
+  border-radius: 40px;
+  background-color: #4adc9f;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  color: #fff;
+  line-height: 60rpx;
+  height: 60rpx;
+  margin-top: 5rpx;
+}
+
+.detail img{
+  width: 100%;
+  display: flex;
+}
+
+.alert{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background-color: rgba(0,0,0,.5);
+  padding: 20rpx 40rpx;
+  color: #fff;
+  border-radius: 10rpx;
+}
+</style>

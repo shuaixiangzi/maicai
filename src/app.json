@@ -5,7 +5,13 @@
     "pages/counter/main",
     "pages/classification/main",
     "pages/car/main",
-    "pages/my/main"
+    "pages/my/main",
+    "pages/product/main",
+    "pages/order/main",
+    "pages/address/main",
+    "pages/address/add/main",
+    "pages/quan/main",
+    "pages/orderList/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

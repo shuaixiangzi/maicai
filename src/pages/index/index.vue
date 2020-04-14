@@ -101,7 +101,7 @@
         <div class="more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
 
-      <ul class="productList three">
+      <ul class="productList three" @click="toDetail()">
         <li>
           <div class="proImg">
             <!-- <img src=""/> -->
@@ -382,8 +382,24 @@ export default {
       store.commit('saveMarket', e.mp.detail.value)
     },
 
-    init(){
+    toDetail(){
+      mpvue.navigateTo({url: '../product/main'})
+    },
 
+    init(){
+      /* wx.getSetting({
+        success(res) {
+          if (!res.authSetting['scope.record']) {
+            wx.authorize({
+              scope: 'scope.userInfo',
+              success () {
+                // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+                wx.userInfo()
+              }
+            })
+          }
+        }
+      }) */
     }
   },
 
@@ -455,7 +471,9 @@ export default {
   box-sizing: border-box;
   border-radius: 10px;
   overflow: hidden;
-  margin: 10rpx 40rpx 0 40rpx;
+  margin: 10rpx 0;
+  padding: 0 40rpx;
+  box-sizing: border-box;
 }
 
 .classification{
@@ -527,6 +545,10 @@ export default {
   border-radius: 10rpx;
 }
 
+.indexQuanList li p{
+  color: #fff;
+}
+
 .indexQuanList li .quanImg{
   width: 60rpx;
   height: 60rpx;
@@ -567,6 +589,7 @@ export default {
   box-sizing: border-box;
   font-size: 14px;
   border: 1px solid #ececec;
+  margin-bottom: 40rpx;
 }
 
 .three li{

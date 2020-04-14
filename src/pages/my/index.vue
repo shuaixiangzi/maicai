@@ -3,7 +3,7 @@
     <div class="myInfo">
       <div class="header"><img :src="userInfo.avatarUrl"/></div>
       <div class="infoBox">
-        <p>{{userInfo.nickName}}</p>
+        <p>{{userInfo.nickName ? userInfo.nickName: '翟子'}}</p>
         <p class="phoneBox">13295327761</p>
       </div>
     </div>
@@ -44,7 +44,7 @@
     <div class="func">
       <div class="clearfix top">
         <div class="fl">地址管理</div>
-        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+        <div class="fr more"  @click="toAddress()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="addressBottom">
         <p class="namePhoneBox"><span class="name">钢弹</span> <span>13569337869</span></p>
@@ -54,7 +54,7 @@
     <div class="func">
       <div class="clearfix top">
         <div class="fl">我的优惠券</div>
-        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+        <div class="fr more" @click="toQuan()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="quanBottom">
         <ul class="quanList">
@@ -101,6 +101,12 @@ export default {
     }
   },
   methods: {
+    toAddress(){
+      mpvue.navigateTo({url: '../address/main'})
+    },
+    toQuan(){
+      mpvue.navigateTo({url: '../quan/main'})
+    }
   },
 
   mounted(){
@@ -139,6 +145,7 @@ export default {
   overflow: hidden;
   margin-top: 20px;
   float: left;
+  background-color: #f5f5f5;
 }
 
 .header img{
@@ -181,7 +188,7 @@ page{
 
 .func .top{
   padding: 20rpx;
-  border-bottom: #dcdcdc;
+  border-bottom: #f5f5f5;
 }
 
 .func .bottom{
