@@ -1,20 +1,16 @@
 const host = 'http://129.204.70.218:8080/api/v1/'
 
-function request (url, method, data, header = {}) {
+function request (url, method, data, header) {
   wx.showLoading({
     title: '加载中' // 数据请求前loading
   })
   return new Promise((resolve, reject) => {
-    let token = wx.getStorageSync('token')
-    console.log('token', token)
+    console.log(header)
     wx.request({
-      url: host + url, // 仅为示例，并非真实的接口地址
+      url: host + url,
       method: method,
       data: data,
-      headers: {
-        'content-type': 'application/json', // 默认值
-        'token': token
-      },
+      headers: header,
       success: function (res) {
         wx.hideLoading()
         resolve(res.data)
@@ -31,11 +27,11 @@ function request (url, method, data, header = {}) {
 }
 
 function get (obj) {
-  return request(obj.url, 'GET', obj.data)
+  return request(obj.url, 'GET', obj.data, obj.header)
 }
 
 function post (obj) {
-  return request(obj.url, 'POST', obj.data)
+  return request(obj.url, 'POST', obj.data, obj.header)
 }
 
 export default {

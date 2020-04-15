@@ -75,6 +75,7 @@ export default {
       // throw {message: 'custom test'}
     },
     bindgetuserinfo(e) {
+      console.log(11111)
       console.log(e)
       store.commit('saveUserInfo', e.mp.detail.userInfo)
 
