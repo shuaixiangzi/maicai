@@ -268,7 +268,7 @@
     </div> -->
 
      <div class="login" v-show="bool.phone">
-      <p class="title">运行团菜获取您的手机号</p>
+      <p class="title">手机号授权</p>
       <button
         open-type="getPhoneNumber"
         @getphonenumber="getPhoneNumber"
@@ -334,26 +334,27 @@ export default {
       console.log(e.mp.detail.encryptedData);
       console.log('token',  _this.saveToken)
 
-      _this.$httpWX
-        .post({
-          url: "token/phone",
-          data: {
+      this.$fly.request({
+          method:"post", //post/get 请求方式
+          url:"token/phone",
+          body:{
             sessionkey: _this.sessionKey,
             encrypteddata: e.mp.detail.encryptedData,
             iv: e.mp.detail.iv
-          },
-          header: {
-            'content-type': 'application/json', // 默认值
-            'token': wx.getStorageSync('token')
-          },
-        })
-        .then((res) => {
-          console.log("成功了", res);
-          if (res.status === 200) {
+          }
+        }).then(res =>{
+          console.log(res)
+          if (res.status === 100) {
             _this.res = JSON.stringify(res);
 
             _this.bool.mask = false;
-            _thos.bool.phone = false;
+            _this.bool.phone = false;
+
+            wx.showToast({
+              title: '登录成功',
+              icon: 'success',
+              duration: 2000
+            })
           }
           else{
             wx.showToast({
@@ -362,7 +363,7 @@ export default {
               duration: 3000
             })
           }
-        });
+      })
     },
     // 绑定用户信息
     bindgetuserinfo(e) {
@@ -377,16 +378,17 @@ export default {
     bindgetusertoken() {
       console.log("走我了111", this.userInfo);
       let _this = this;
-      _this.$httpWX
-        .post({
-          url: "token/user",
-          data: {
+      this.$fly.request({
+          method:"post", //post/get 请求方式
+          url:"token/user",
+          body:{
             code: _this.code,
             nickname: _this.userInfo.nickName,
-          },
-        })
-        .then((res) => {
-          console.log("成功了1111", res,res.data.sessionkey, res.data.token);
+          }
+        }).then(res =>{
+          console.log(res)
+          if (res.status === 100) {
+            console.log("成功了1111", res,res.data.sessionkey, res.data.token);
             _this.sessionKey = res.data.sessionkey
             _this.saveToken = res.data.token
             console.log(1111, _this.sessionKey, _this.saveToken)
@@ -394,79 +396,23 @@ export default {
               key: "token",
               data: res.data.token,
             });
-        });
+          }
+          else{
+            wx.showToast({
+              title: JSON.stringify(res.msg),
+              icon: 'none',
+              duration: 3000
+            })
+          }
+      })
     },
     payNow() {
-      console.log("走我了");
-      let _this = this;
-      /* _this.$httpWX.post({
-          url:"pay/pre_order",
-          data:{
-              "id":539
-          }
-      }).then(res =>{
-        console.log('成功了',res)
-      }); */
 
-      wx.request({
-        url: "http://129.204.70.218:8080/api/v1/pay/pre_order", //仅为示例，并非真实的接口地址
-        data: {
-          id: 539,
-        },
-        method: "POST",
-        header: {
-          "content-type": "application/json", // 默认值
-          token: wx.getStorageSync("token"),
-        },
-        success(res) {
-          _this.res = JSON.stringify(res);
-          console.log(res.data);
-          // _this.payParam = res.data.data;
-          console.log(res.data.data.timeStamp);
-          console.log(res.data.data.nonceStr);
-          console.log(res.data.data.package);
-          console.log(res.data.data.paySign);
-          wx.requestPayment({
-            timeStamp: res.data.data.timeStamp,
-            nonceStr: res.data.data.nonceStr,
-            package: res.data.data.package,
-            signType: res.data.data.signType,
-            paySign: res.data.data.paySign,
-            success(res2) {
-              _this.res = JSON.stringify(res2);
-              console.log("成功", res2);
-            },
-            fail(res2) {
-              // alert(JSON.stringify(res2));
-              console.log("失败", res2);
-            },
-          });
-        },
-      });
     },
 
     getAddress() {
       console.log("走我了");
       let _this = this;
-      /* _this.$httpWX.get({
-          url:"address",
-          data:{}
-      }).then(res =>{
-        console.log('成功了',res)
-      }); */
-
-      wx.request({
-        url: "http://129.204.70.218:8080/api/v1/address", //仅为示例，并非真实的接口地址
-        data: {},
-        method: "GET",
-        header: {
-          "content-type": "application/json", // 默认值
-          token: wx.getStorageSync("token"),
-        },
-        success(res) {
-          console.log(res.data);
-        },
-      });
     },
 
     payNowPay() {
@@ -812,12 +758,13 @@ export default {
   color: #fff;
   line-height: inherit;
   font-size: 14px;
-  padding: 20rpx 0;
+  padding: 20rpx 40rpx;
 }
 
 .login .title {
   padding: 40rpx 0;
   border-bottom: 1px solid #ececec;
   margin-bottom: 40rpx;
+  text-align: center;
 }
 </style>

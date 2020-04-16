@@ -1,7 +1,7 @@
 /*
  * @Author: 翟海祥
  * @Date: 2020-04-07 09:02:47
- * @LastEditTime: 2020-04-08 11:50:33
+ * @LastEditTime: 2020-04-16 20:42:31
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\pages\index\store.js
@@ -17,7 +17,8 @@ const store = new Vuex.Store({
   state: {
     count: 0,
     userInfo: {},
-    market: ''
+    market: '',
+    phone: ''
   },
   mutations: {
     increment: (state) => {
@@ -35,6 +36,10 @@ const store = new Vuex.Store({
     saveMarket: (state, data) =>{
       const obj = state
       obj.market = data
+    },
+    savePhone: (state, data) =>{
+      const obj = state
+      obj.phone = data
     }
   }
 })
