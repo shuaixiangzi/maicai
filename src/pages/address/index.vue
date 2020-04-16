@@ -1,26 +1,15 @@
 <template>
   <div class="addressBox">
     <ul>
-      <li>
+      <li v-for="(item, index) in addressList" :key="index">
         <p>
-          <span class="name">钢弹</span>
-          <span class="phone">13295327761</span>
+          <span class="name">{{item.name}}</span>
+          <span class="phone">{{item.mobile}}</span>
 
-          <span class="fr" @click="edit()">编辑</span>
+          <span class="fr" @click="edit(item)">编辑</span>
         </p>
 
-        <p class="address">李沧区 金水路 春和景明一期 2号楼2单元1602户</p>
-      </li>
-
-      <li>
-        <p>
-          <span class="name">翟子</span>
-          <span class="phone">13295327761</span>
-
-          <span class="fr" @click="edit()">编辑</span>
-        </p>
-
-        <p class="address">李沧区 金水路 春和景明一期 2号楼2单元1602户</p>
+        <p class="address">{{item.address}}</p>
       </li>
     </ul>
 
@@ -36,7 +25,8 @@ import indexStore from '../index/store'
 export default {
   data(){
     return {
-      num: 1
+      num: 1,
+      addressList: []
     }
   },
   computed: {
@@ -47,17 +37,36 @@ export default {
       mpvue.navigateTo({url: '../order/main'})
     },
 
-    edit(){
+    edit(data){
+      console.log('saveAddress', data);
+      store.commit('saveAddress', data)
       mpvue.redirectTo({url: './add/main'})
     },
 
     add(){
+      store.commit('saveAddress', {
+        name: '',
+        address: '',
+        mobile: ''
+      })
       mpvue.redirectTo({url: './add/main'})
+    },
+    
+    getAllAddress(){
+      let _this = this;
+      this.$fly.request({
+          method:"get", //post/get 请求方式
+          url:"address",
+          body:{}
+        }).then(res =>{
+          console.log('地址',res)
+          _this.addressList = res.data;
+      })
     }
   },
 
   mounted(){
-    
+    this.getAllAddress();
   }
 }
 </script>

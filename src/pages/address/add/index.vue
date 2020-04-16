@@ -2,13 +2,13 @@
   <div class="addAdressBox">
     <ul class="setAddress">
       <li>
-        <input class="weui-input" auto-focus placeholder="收货人"/>
+        <input class="weui-input" auto-focus placeholder="收货人" v-model="thisAddress.name"/>
       </li>
       <li>
-        <input class="weui-input" auto-focus placeholder="手机号"/>
+        <input class="weui-input" auto-focus placeholder="手机号" v-model="thisAddress.mobile"/>
       </li>
       <li>
-        <input class="weui-input" auto-focus placeholder="详细地址：如道路、小区、楼栋、单元、户等"/>
+        <input class="weui-input" auto-focus placeholder="详细地址：如道路、小区、楼栋、单元、户等" v-model="thisAddress.address"/>
       </li>
     </ul>
 
@@ -20,24 +20,60 @@
 // Use Vuex
 import store from './store'
 import indexStore from '../../index/store'
+import addressStore from '../store'
 
 export default {
   data(){
     return {
-      num: 1
+      thisAddress:{
+        name:'',
+        mobile: '',
+        address: ''
+      }
     }
   },
   computed: {
-   
+    address (){
+      return addressStore.state.address
+    }
   },
   methods: {
     save(){
-      mpvue.navigateTo({url: '../main'})
+      let _this = this;
+      let url = '';
+
+      if(_this.thisAddress.id){
+        url = 'updateaddress'
+      }
+      else{
+        url = 'createaddress'
+      }
+      this.$fly.request({
+          method:"post", //post/get 请求方式
+          url:url,
+          body:{
+            id: _this.thisAddress.id,
+            address: _this.thisAddress.address,
+            name: _this.thisAddress.name,
+            mobile: _this.thisAddress.mobile
+          }
+        }).then(res =>{
+          if(res.status === 100){
+            wx.showToast({
+              title: '保存成功',
+              icon: 'success',
+              duration: 2000
+            })
+            mpvue.navigateTo({url: '../main'})
+          }
+      })
+      
     }
   },
 
   mounted(){
-    
+    console.log(this.address);
+    this.thisAddress = this.address;
   }
 }
 </script>

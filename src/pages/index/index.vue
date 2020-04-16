@@ -250,8 +250,7 @@
       <button
         open-type="getUserInfo"
         @getuserinfo="bindgetuserinfo"
-        class="loginBtn"
-      >
+        class="loginBtn">
         登录
       </button>
     </div>
@@ -272,10 +271,11 @@
       <button
         open-type="getPhoneNumber"
         @getphonenumber="getPhoneNumber"
-        class="loginBtn"
-      >获取微信手机号</button>
+        class="loginBtn">获取微信手机号</button>
     </div>
 
+    <button @click="payNow">微信支付</button>
+    <!-- <button @click="payNowPay">立即支付</button> -->
     <!-- <button open-type="getPhoneNumber" @bindgetphonenumber="getPhoneNumber">同意</button> -->
   </div>
 </template>
@@ -345,7 +345,7 @@ export default {
         }).then(res =>{
           console.log(res)
           if (res.status === 100) {
-            _this.res = JSON.stringify(res);
+            store.commit('savePhone', res.data.phonenumber);
 
             _this.bool.mask = false;
             _this.bool.phone = false;
@@ -354,13 +354,6 @@ export default {
               title: '登录成功',
               icon: 'success',
               duration: 2000
-            })
-          }
-          else{
-            wx.showToast({
-              title: JSON.stringify(res.msg),
-              icon: 'none',
-              duration: 3000
             })
           }
       })
@@ -407,7 +400,43 @@ export default {
       })
     },
     payNow() {
-
+      let _this = this;
+      console.log(wx.getStorageSync('token'))
+       wx.request({
+        url: 'http://129.204.70.218:8080/api/v1/pay/pre_order', //仅为示例，并非真实的接口地址
+        data: {
+          "id":539
+        },
+        method: 'POST',
+        header: {
+          'content-type': 'application/json', // 默认值
+          'token': wx.getStorageSync('token')
+        },
+        success (res) {
+          _this.res = JSON.stringify(res)
+          console.log(res.data)
+          // _this.payParam = res.data.data;
+          console.log(res.data.data.timeStamp)
+          console.log(res.data.data.nonceStr)
+          console.log(res.data.data.package)
+          console.log(res.data.data.paySign)
+          wx.requestPayment({
+            timeStamp: res.data.data.timeStamp,
+            nonceStr: res.data.data.nonceStr,
+            package: res.data.data.package,
+            signType: res.data.data.signType,
+            paySign: res.data.data.paySign,
+            success (res2) {
+              _this.res = JSON.stringify(res2)
+              console.log('成功', res2)
+            },
+            fail (res2) {
+              // alert(JSON.stringify(res2));
+              console.log('失败', res2)
+            }
+          })
+        }
+      })
     },
 
     getAddress() {
@@ -497,7 +526,7 @@ export default {
 
     wx.getSetting({
       success(res) {
-        console.log(res);
+        console.log('resresres', res);
         if (!res.authSetting["scope.userInfo"]) {
           _this.bool.login = true;
           _this.bool.mask = true;

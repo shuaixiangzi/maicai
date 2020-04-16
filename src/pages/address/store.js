@@ -7,7 +7,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    address: {
+      name: '',
+      mobile: '',
+      address: ''
+    }
   },
   mutations: {
     increment: (state) => {
@@ -17,6 +22,10 @@ const store = new Vuex.Store({
     decrement: (state) => {
       const obj = state
       obj.count -= 1
+    },
+    saveAddress: (state, data) => {
+      const obj = state
+      obj.address = data
     }
   }
 })

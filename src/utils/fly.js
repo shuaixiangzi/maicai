@@ -52,15 +52,33 @@ fly.interceptors.request.use((request) => {
 fly.interceptors.response.use(
   (response) => {
     wx.hideLoading();
+    if(response.data.status !== 100){
+      wx.showToast({
+        title: JSON.stringify(response.data.msg),
+        icon: 'none',
+        duration: 3000
+      })
+    }
     return response.data;//请求成功之后将返回值返回
   },
   (err) => {
     //请求出错，根据返回状态码判断出错原因
     console.log(err);
+    console.log('111111', err.engine.response)
+    let data = err.engine.response;
     wx.hideLoading();
-    if(err){
+    /* if(err){
       return "请求失败";
-    };
+    }; */
+    if(data.status !== 100){
+      wx.showToast({
+        title: data.msg,
+        icon: 'none',
+        duration: 3000
+      })
+    }
+    
+    return data;//请求成功之后将返回值返回
   }
 );
 

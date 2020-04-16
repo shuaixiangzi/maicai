@@ -91,7 +91,7 @@
         </li>
       </ul>
     </div>
-
+    <text id='textId' data-userxxx='100' @tap='subUns()'>cilck here</text>
    
   </div>
 </template>
@@ -124,10 +124,21 @@ export default {
     },
     selQuan(){
       this.bool.selQuan = !this.bool.selQuan;
+    },
+
+    subUns(){
+      console.log(1111)
+      wx.requestSubscribeMessage({
+        tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
+        success (res) { 
+          console.log('授权', res)
+        }
+      })
     }
   },
 
   mounted(){
+    console.log(111)
     
   }
 }

@@ -4,7 +4,7 @@
       <div class="header"><img :src="userInfo.avatarUrl"/></div>
       <div class="infoBox">
         <p>{{userInfo.nickName ? userInfo.nickName: '翟子'}}</p>
-        <p class="phoneBox">13295327761</p>
+        <p class="phoneBox">{{phone}}</p>
       </div>
     </div>
 
@@ -58,9 +58,9 @@
       </div>
       <div class="quanBottom">
         <ul class="quanList">
-          <li v-for="(item, i) in quan" :key="i" :style="{background: item.color}">
-            <p class="quanName">{{item.value}}</p>
-            <p class="detail">{{item.conditions}}</p>
+          <li v-for="(item, i) in quan" :key="i">
+            <p class="quanName">{{item.money}} 元优惠券</p>
+            <p class="detail">满{{item.min_money}}元可用</p>
           </li>
         </ul>
       </div>
@@ -76,20 +76,7 @@ import indexStore from '../index/store'
 export default {
   data(){
     return {
-      quan:[
-        {
-          id: '1',
-          value: '10元优惠券',
-          conditions: '满100元使用',
-          color: 'rgb(255,220,81)'
-        },
-        {
-          id: '2',
-          value: '5元优惠券',
-          conditions: '满100元使用',
-          color: 'rgb(255,121,81)'
-        }
-      ]
+      quan:[]
     }
   },
   computed: {
@@ -98,6 +85,9 @@ export default {
     },
     userInfo () {
       return indexStore.state.userInfo
+    },
+    phone (){
+      return indexStore.state.phone
     }
   },
   methods: {
@@ -106,11 +96,30 @@ export default {
     },
     toQuan(){
       mpvue.navigateTo({url: '../quan/main'})
+    },
+    getAllQuan(){
+      let _this = this;
+      this.$fly.request({
+          method:"get", //post/get 请求方式
+          url:"admincoupon/couponlist",
+          body:{
+            type: 1,
+            page: 1,
+            pagesize: 2
+          }
+        }).then(res =>{
+          console.log(res)
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+            _this.quan = res.data.data;
+          }
+      })
     }
   },
 
   mounted(){
     console.log('用户信息', this.userInfo);
+    this.getAllQuan();
   }
 }
 </script>
@@ -242,6 +251,14 @@ page{
   max-width: 48%;
   box-sizing: border-box;
   padding: 20rpx 0;
+}
+
+.quanList li:nth-of-type(2n-1){
+  background-color: rgb(225,220,81);
+}
+
+.quanList li:nth-of-type(2n){
+  background-color: rgb(255,121,81);
 }
 
 .quanList li p:first-child{
