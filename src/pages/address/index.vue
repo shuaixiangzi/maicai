@@ -10,6 +10,7 @@
         </p>
 
         <p class="address">{{item.address}}</p>
+        
       </li>
     </ul>
 
@@ -26,7 +27,15 @@ export default {
   data(){
     return {
       num: 1,
-      addressList: []
+      addressList: [],
+      objectarray: [
+        {
+          name: '是'
+        },
+        {
+          name: '否'
+        }
+      ]
     }
   },
   computed: {
@@ -106,4 +115,6 @@ ul .address{
   color: #4adc9f;
   text-align: center;
 }
+
+
 </style>

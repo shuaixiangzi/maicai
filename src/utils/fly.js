@@ -28,12 +28,12 @@ fly.interceptors.request.use((request) => {
 
   let authParams = {
     //公共参数
-    "categoryType": "SaleGoodsType@sim",
+    /* "categoryType": "SaleGoodsType@sim",
     "streamNo": "wxapp153570682909641893",
     "reqSource": "MALL_H5",
     "appid": "string",
     "timestamp": new Date().getTime(),
-    "sign": "string"
+    "sign": "string" */
   };
 
   request.body && Object.keys(request.body).forEach((val) => {

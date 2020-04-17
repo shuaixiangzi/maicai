@@ -16,12 +16,7 @@
 
     <div class="proList">
       <ul class="leftBar">
-        <li :class="{'active': leftIndex === 1}" @click="selLeftClass(1)">蔬菜</li>
-        <li :class="{'active': leftIndex === 2}" @click="selLeftClass(2)">肉类</li>
-        <li :class="{'active': leftIndex === 3}" @click="selLeftClass(3)">蛋类</li>
-        <li :class="{'active': leftIndex === 4}" @click="selLeftClass(4)">水果</li>
-        <li :class="{'active': leftIndex === 5}" @click="selLeftClass(5)">海鲜</li>
-        <li :class="{'active': leftIndex === 6}" @click="selLeftClass(6)">粮油</li>
+        <li v-for="(item, index) in classifiList" :key="index" :class="{'active': leftIndex == item.id}" @click="selLeftClass(item.id)">{{item.name}}{{leftIndex}}{{item.id}}</li>
       </ul>
 
       <ul class="proBox" @click="toDetail()">
@@ -98,6 +93,7 @@
 <script>
 import card from '@/components/card'
 import store from './store'
+import indexStore from '../index/store'
 
 export default {
   data () {
@@ -111,23 +107,70 @@ export default {
     card
   },
 
+  computed: {
+    classificationId() {
+      return indexStore.state.classificationId;
+    },
+    classifiList() {
+      return indexStore.state.classifiList;
+    }
+  },
+
   methods: {
     selClass(i){
       this.index = i;
+      this.getProduct(this.leftIndex, this.index, 1, 10);
     },
     selLeftClass(i){
       this.leftIndex = i;
+      this.getProduct(this.leftIndex, this.index, 1, 10);
     },
     toDetail(){
       mpvue.navigateTo({url: '../product/main'})
-    }
+    },
+    // 获取商品
+    getProduct(id, type, page, size) {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "product/categoryproduct",
+          body: {
+            page: page,
+            size: size,
+            type: type,
+            id: id
+          },
+        })
+        .then((res) => {
+          console.log("产品", res);
+          if (res.status === 100) {
+            _this.productList = res.data;
+          }
+        });
+    },
   },
 
   created () {
     let _this = this;
     // let app = getApp()
+    console.log(111)
+    
   },
   mounted (){
+    
+  },
+  onLoad() {
+    console.log(this.classificationId)
+    this.leftIndex = this.classificationId;
+    // this.index = this.classificationId;
+    this.getProduct(this.leftIndex, this.index, 1, 10);
+  },
+  onReady () {
+    // console.log(3333)
+  },
+  onShow() {
+    // console.log(444)
   }
 }
 </script>

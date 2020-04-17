@@ -47,8 +47,8 @@
         <div class="fr more"  @click="toAddress()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="addressBottom">
-        <p class="namePhoneBox"><span class="name">钢弹</span> <span>13569337869</span></p>
-        <p>李沧区 金水路 春和景明一期 2号楼2单元 1602户</p>
+        <p class="namePhoneBox"><span class="name">{{address.name}}</span> <span>{{address.mobile}}</span></p>
+        <p>{{address.address}}</p>
       </div>
     </div>
     <div class="func">
@@ -76,7 +76,10 @@ import indexStore from '../index/store'
 export default {
   data(){
     return {
-      quan:[]
+      quan:[],
+      address: {
+
+      }
     }
   },
   computed: {
@@ -114,12 +117,32 @@ export default {
             _this.quan = res.data.data;
           }
       })
+    },
+    getAllAddress(){
+      let _this = this;
+      this.$fly.request({
+          method:"get", //post/get 请求方式
+          url:"address",
+          body:{}
+        }).then(res =>{
+          console.log('地址',res)
+          if(res.status === 100){
+            let data = res.data;
+            for(let i = 0; i < data.length; i++){
+              if(data[i].default === 1){
+                _this.address = data[i];
+                console.log(2222, _this.address)
+              }
+            }
+          }
+      })
     }
   },
 
   mounted(){
     console.log('用户信息', this.userInfo);
     this.getAllQuan();
+    this.getAllAddress();
   }
 }
 </script>

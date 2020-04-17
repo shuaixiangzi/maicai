@@ -10,6 +10,17 @@
       <li>
         <input class="weui-input" auto-focus placeholder="详细地址：如道路、小区、楼栋、单元、户等" v-model="thisAddress.address"/>
       </li>
+      <li class="defualt">
+        <div>是否为默认地址：</div>
+        <picker
+          mode="selector"
+          @change="bindPickerChange"
+          :value="thisAddress.default"
+          :range="objectarray"
+          :range-key="'name'">
+          <view>{{ objectarray[thisAddress.default].name }}</view>
+        </picker>
+      </li>
     </ul>
 
     <div class="save" @click="save()">保存</div>
@@ -28,8 +39,20 @@ export default {
       thisAddress:{
         name:'',
         mobile: '',
-        address: ''
-      }
+        address: '',
+        default: 0
+      },
+      index: 0,
+      objectarray: [
+        {
+          id: 0,
+          name: "否",
+        },
+        {
+          id: 1,
+          name: "是",
+        },
+      ],
     }
   },
   computed: {
@@ -38,6 +61,10 @@ export default {
     }
   },
   methods: {
+    bindPickerChange(val){
+      this.thisAddress.default = val.mp.detail.value;
+      console.log(1111, val)
+    },
     save(){
       let _this = this;
       let url = '';
@@ -55,7 +82,8 @@ export default {
             id: _this.thisAddress.id,
             address: _this.thisAddress.address,
             name: _this.thisAddress.name,
-            mobile: _this.thisAddress.mobile
+            mobile: _this.thisAddress.mobile,
+            default:  _this.thisAddress.default
           }
         }).then(res =>{
           if(res.status === 100){
@@ -104,5 +132,9 @@ export default {
   width: 60%;
   margin-left: 20%;
   color: #fff;
+}
+
+.defualt{
+  display: flex;
 }
 </style>

@@ -42,7 +42,17 @@
     </div>
     <!--分类-->
     <ul class="classification">
-      <li>
+      <li
+        v-for="(item, index) in category"
+        :key="index"
+        @click="tocategory(item.id)"
+      >
+        <div class="classiImg">
+          <img :src="item.url" mode="widthFix" />
+        </div>
+        <p>{{ item.name }}</p>
+      </li>
+      <!-- <li>
         <div class="classiImg">
           <img src="../../../static/images/shucai.png" mode="widthFix" />
         </div>
@@ -58,11 +68,9 @@
         <div class="classiImg">
           <img src="../../../static/images/danlei.png" mode="widthFix" />
         </div>
-        <!-- <div class="classiImg" style="background:url('../../../static/images/danlei.png')"></div> -->
         <p>蛋类</p>
       </li>
       <li>
-        <!-- <div class="classiImg" style="background:url('../../../static/images/shuiguo.png')"></div> -->
         <div class="classiImg">
           <img src="../../../static/images/shuiguo.png" mode="widthFix" />
         </div>
@@ -72,16 +80,14 @@
         <div class="classiImg">
           <img src="../../../static/images/haixian.png" mode="widthFix" />
         </div>
-        <!-- <div class="classiImg" style="background:url('../../../static/images/haixian.png')"></div> -->
         <p>海鲜</p>
       </li>
       <li>
         <div class="classiImg">
           <img src="../../../static/images/lianyou.png" mode="widthFix" />
         </div>
-        <!-- <div class="classiImg" style="background:url('../../../static/images/lianyou.png')"></div> -->
         <p>粮油调味品</p>
-      </li>
+      </li> -->
     </ul>
 
     <!--市场布局图和优惠券-->
@@ -104,17 +110,11 @@
       </swiper>
 
       <ul class="indexQuanList">
-        <li>
+        <li v-for="(item, index) in quan" :key="index">
           <div class="quanImg">
             <img src="../../../static/images/quan.png" mode="widthFix" />
           </div>
-          <p>10元优惠券</p>
-        </li>
-        <li>
-          <div class="quanImg">
-            <img src="../../../static/images/quan.png" mode="widthFix" />
-          </div>
-          <p>20元优惠券</p>
+          <p>{{ item.money }}元优惠券</p>
         </li>
       </ul>
     </div>
@@ -129,27 +129,11 @@
       </div>
 
       <ul class="productList three" @click="toDetail()">
-        <li>
+        <li v-for="(item, index) in renqitemai" :key="index">
           <div class="proImg">
             <!-- <img src=""/> -->
           </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
+          <p class="name">{{}}</p>
           <p class="weight">约1KG</p>
           <p class="price">0.5元/颗</p>
         </li>
@@ -165,31 +149,7 @@
       </div>
 
       <ul class="productList two">
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
+        <li v-for="(item, index) in dianzhangyouhui" :key="index">
           <div class="proImg">
             <!-- <img src=""/> -->
           </div>
@@ -209,31 +169,7 @@
       </div>
 
       <ul class="productList two">
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
-          <div class="proImg">
-            <!-- <img src=""/> -->
-          </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
-        </li>
-        <li>
+        <li v-for="(item, index) in nonghuzhigong" :key="index">
           <div class="proImg">
             <!-- <img src=""/> -->
           </div>
@@ -250,7 +186,8 @@
       <button
         open-type="getUserInfo"
         @getuserinfo="bindgetuserinfo"
-        class="loginBtn">
+        class="loginBtn"
+      >
         登录
       </button>
     </div>
@@ -266,12 +203,15 @@
       </button>
     </div> -->
 
-     <div class="login" v-show="bool.phone">
+    <div class="login" v-show="bool.phone">
       <p class="title">手机号授权</p>
       <button
         open-type="getPhoneNumber"
         @getphonenumber="getPhoneNumber"
-        class="loginBtn">获取微信手机号</button>
+        class="loginBtn"
+      >
+        获取微信手机号
+      </button>
     </div>
 
     <button @click="payNow">微信支付</button>
@@ -311,8 +251,13 @@ export default {
         mask: true,
         phone: true,
       },
-      sessionKey: '',
-      saveToken: ''
+      sessionKey: "",
+      saveToken: "",
+      category: [],
+      quan: [],
+      renqiremai: [],
+      dianzhangyouhui: [],
+      nonghuzhigong: [],
     };
   },
 
@@ -325,6 +270,41 @@ export default {
   components: {},
 
   methods: {
+    // 跳转分类
+    tocategory(id) {
+      let url = "../classification/main";
+      store.commit("saveClassificationId", id);
+      wx.switchTab({
+        url: url,
+        success: function (e) {
+          let page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        },
+      });
+    },
+
+    // 获取优惠券
+    getAllQuan() {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "admincoupon/couponlist",
+          body: {
+            type: 1,
+            page: 1,
+            pagesize: 2,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+            _this.quan = res.data.data;
+          }
+        });
+    },
     // 获取手机号
     getPhoneNumber(e) {
       let _this = this;
@@ -332,31 +312,33 @@ export default {
       console.log(e.mp.detail.errMsg);
       console.log(e.mp.detail.iv);
       console.log(e.mp.detail.encryptedData);
-      console.log('token',  _this.saveToken)
+      console.log("token", _this.saveToken);
 
-      this.$fly.request({
-          method:"post", //post/get 请求方式
-          url:"token/phone",
-          body:{
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "token/phone",
+          body: {
             sessionkey: _this.sessionKey,
             encrypteddata: e.mp.detail.encryptedData,
-            iv: e.mp.detail.iv
-          }
-        }).then(res =>{
-          console.log(res)
+            iv: e.mp.detail.iv,
+          },
+        })
+        .then((res) => {
+          console.log(res);
           if (res.status === 100) {
-            store.commit('savePhone', res.data.phonenumber);
+            store.commit("savePhone", res.data.phonenumber);
 
             _this.bool.mask = false;
             _this.bool.phone = false;
 
             wx.showToast({
-              title: '登录成功',
-              icon: 'success',
-              duration: 2000
-            })
+              title: "登录成功",
+              icon: "success",
+              duration: 2000,
+            });
           }
-      })
+        });
     },
     // 绑定用户信息
     bindgetuserinfo(e) {
@@ -371,72 +353,73 @@ export default {
     bindgetusertoken() {
       console.log("走我了111", this.userInfo);
       let _this = this;
-      this.$fly.request({
-          method:"post", //post/get 请求方式
-          url:"token/user",
-          body:{
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "token/user",
+          body: {
             code: _this.code,
             nickname: _this.userInfo.nickName,
-          }
-        }).then(res =>{
-          console.log(res)
+          },
+        })
+        .then((res) => {
+          console.log(res);
           if (res.status === 100) {
-            console.log("成功了1111", res,res.data.sessionkey, res.data.token);
-            _this.sessionKey = res.data.sessionkey
-            _this.saveToken = res.data.token
-            console.log(1111, _this.sessionKey, _this.saveToken)
+            console.log("成功了1111", res, res.data.sessionkey, res.data.token);
+            _this.sessionKey = res.data.sessionkey;
+            _this.saveToken = res.data.token;
+            console.log(1111, _this.sessionKey, _this.saveToken);
             mpvue.setStorage({
               key: "token",
               data: res.data.token,
             });
-          }
-          else{
+          } else {
             wx.showToast({
               title: JSON.stringify(res.msg),
-              icon: 'none',
-              duration: 3000
-            })
+              icon: "none",
+              duration: 3000,
+            });
           }
-      })
+        });
     },
     payNow() {
       let _this = this;
-      console.log(wx.getStorageSync('token'))
-       wx.request({
-        url: 'http://129.204.70.218:8080/api/v1/pay/pre_order', //仅为示例，并非真实的接口地址
+      console.log(wx.getStorageSync("token"));
+      wx.request({
+        url: "http://129.204.70.218:8080/api/v1/pay/pre_order", //仅为示例，并非真实的接口地址
         data: {
-          "id":539
+          id: 539,
         },
-        method: 'POST',
+        method: "POST",
         header: {
-          'content-type': 'application/json', // 默认值
-          'token': wx.getStorageSync('token')
+          "content-type": "application/json", // 默认值
+          token: wx.getStorageSync("token"),
         },
-        success (res) {
-          _this.res = JSON.stringify(res)
-          console.log(res.data)
+        success(res) {
+          _this.res = JSON.stringify(res);
+          console.log(res.data);
           // _this.payParam = res.data.data;
-          console.log(res.data.data.timeStamp)
-          console.log(res.data.data.nonceStr)
-          console.log(res.data.data.package)
-          console.log(res.data.data.paySign)
+          console.log(res.data.data.timeStamp);
+          console.log(res.data.data.nonceStr);
+          console.log(res.data.data.package);
+          console.log(res.data.data.paySign);
           wx.requestPayment({
             timeStamp: res.data.data.timeStamp,
             nonceStr: res.data.data.nonceStr,
             package: res.data.data.package,
             signType: res.data.data.signType,
             paySign: res.data.data.paySign,
-            success (res2) {
-              _this.res = JSON.stringify(res2)
-              console.log('成功', res2)
+            success(res2) {
+              _this.res = JSON.stringify(res2);
+              console.log("成功", res2);
             },
-            fail (res2) {
+            fail(res2) {
               // alert(JSON.stringify(res2));
-              console.log('失败', res2)
-            }
-          })
-        }
-      })
+              console.log("失败", res2);
+            },
+          });
+        },
+      });
     },
 
     getAddress() {
@@ -499,20 +482,59 @@ export default {
       mpvue.navigateTo({ url: "../product/main" });
     },
 
-    init() {
-      /* wx.getSetting({
-        success(res) {
-          if (!res.authSetting['scope.record']) {
-            wx.authorize({
-              scope: 'scope.userInfo',
-              success () {
-                // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-                wx.userInfo()
-              }
-            })
+    // 获取所有类别
+    getAllCategory() {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "category/all",
+          body: {},
+        })
+        .then((res) => {
+          console.log("类别", res);
+          if (res.status === 100) {
+            _this.category = res.data;
+            store.commit("saveClassifiList", _this.category);
           }
-        }
-      }) */
+        });
+    },
+
+    // 获取商品
+    getProduct(type, page, size) {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "product/typeproduct",
+          body: {
+            page: page,
+            size: size,
+            type: type,
+          },
+        })
+        .then((res) => {
+          console.log("类别", res);
+          if (res.status === 100) {
+            if (type === 1) {
+              _this.renqiremai = res.data;
+            }
+            if (type === 2) {
+              _this.dianzhangyouhui = res.data;
+            }
+            if (type === 3) {
+              _this.nonghuzhigong = res.data;
+            }
+          }
+        });
+    },
+
+    init() {
+      this.getAllCategory();
+      this.getAllQuan();
+      this.getProduct(1, 1, 2);
+      this.getProduct(2, 1, 4);
+      this.getProduct(3, 1, 4);
     },
   },
 
@@ -520,13 +542,14 @@ export default {
     let _this = this;
     // let app = getApp()
   },
+  
   mounted() {
     let _this = this;
     this.init();
 
     wx.getSetting({
       success(res) {
-        console.log('resresres', res);
+        console.log("resresres", res);
         if (!res.authSetting["scope.userInfo"]) {
           _this.bool.login = true;
           _this.bool.mask = true;
@@ -634,7 +657,7 @@ export default {
 .classification .classiImg {
   width: 80rpx;
   height: 40px;
-  /* background-color: #4adc9f; */
+  background-color: #4adc9f;
   margin: 0 auto;
 }
 
