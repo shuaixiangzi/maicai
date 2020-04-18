@@ -6,20 +6,20 @@
     </div>
 
     <!--banner-->
-    <swiper :indicator-dots="indicatorDots" class="swiperBox"
+    <!-- <swiper :indicator-dots="indicatorDots" class="swiperBox"
       :autoplay="autoplay" :interval="interval" :duration="duration">
-        <swiper-item class="item1">
+        <swiper-item class="item1" v-for="(item, index) in detail.imgs" :key="index">
           <img src="/static/images/prodetail.jpg" mode="widthFix"/>
         </swiper-item>
-        <swiper-item  class="item1">
-          <img src="/static/images/prodetail.jpg" mode="widthFix"/>
-        </swiper-item>
-    </swiper>
+    </swiper> -->
+    <div class="swiperBox">
+      <img :src="detail.main_img_url" mode="widthFix"/>
+    </div>
 
     <div class="infoTop">
-      <div class="price"><span>￥45</span> <i>/份</i></div>
-      <div class="weight">约500g/份</div>
-      <div class="num">销量：168件</div>
+      <div class="price"><span>￥{{detail.price}}</span> <i>/份</i></div>
+      <div class="weight">约{{detail.weight}}KG/份</div>
+      <div class="num">销量：{{detail.salecount}}件</div>
       <i class="iconfont iconfenxiang"></i>
     </div>
 
@@ -39,17 +39,19 @@
     <div class="detail">
       <p class="detailTitle">详情</p>
 
-      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
-      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
-      <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+      <img  v-for="(item, index) in detail.imgs" :key="index" :src="item.img_url.url" mode="widthFix"/>
     </div>
 
     <div class="alert" v-show="bool.showSuccess">加入购物车成功</div>
     <div class="buyNow">
-      <navigator url="/page/navigate/navigate?title=navigate" hover-class="navigator-hover">
+      <!-- <navigator url="/page/index/main" hover-class="navigator-hover">
         <img src="/static/tabs/home.png" mode="widthFix"/>
         <p>回到首页</p>
-      </navigator>
+      </navigator> -->
+      <div class="backHome _navigator" @click="backHome()">
+        <img src="/static/tabs/home.png" mode="widthFix"/>
+        <p>回到首页</p>
+      </div>
       <div @click="addCar()" class="_navigator">
         <img src="/static/tabs/car.png" mode="widthFix"/>
         <p>加入购物车</p>
@@ -65,7 +67,7 @@
 <script>
 // Use Vuex
 import store from './store'
-import indexStore from '../index/store'
+import commonStore from '@/store'
 
 export default {
   data(){
@@ -77,6 +79,20 @@ export default {
       num: 1,
       bool:{
         showSuccess: false
+      },
+      id: 0,
+      detail: {
+        img_id: 10,
+        imgs: [{img_url:{url:''}}],
+        main_img_url: "",
+        marketid: "",
+        name: "",
+        price: 0,
+        properties: [],
+        salecount: 0,
+        stock: 0,
+        summary: null,
+        weight: "0"
       }
     }
   },
@@ -94,18 +110,53 @@ export default {
       this.num ++
     },
     buyNow(){
+      this.detail.count = this.num
+      let productList = [
+        this.detail
+      ]
+      commonStore.commit('orderProduct', productList)
       mpvue.navigateTo({url: '../order/main'})
     },
     addCar(){
+      this.detail.count = this.num
+      commonStore.commit('pushCarProduct', this.detail);
       this.bool.showSuccess = true;
       setTimeout(()=>{
         this.bool.showSuccess = false;
       }, 2000)
-    }
+    },
+    backHome(){
+      let url = "../index/main";
+      wx.switchTab({url});
+    },
+    // 获取商品详情
+    getPorductDetail(id) {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "product/singleproduct",
+          body: {
+            id: id,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+            _this.detail = res.data;
+          }
+        });
+    },
   },
 
   mounted(){
     
+  },
+  onLoad(options){
+    console.log('options', options)
+    this.id = options.id;
+    this.getPorductDetail(this.id);
   }
 }
 </script>
@@ -132,6 +183,8 @@ export default {
   overflow: hidden;
   margin: 10rpx 40rpx 0 40rpx;
   height: 400rpx;
+  background-color: #999;
+  border-radius: 20rpx;
 }
 
 .item1{

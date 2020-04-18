@@ -8,78 +8,26 @@
     </div>
 
     <ul class="classBar" >
-      <li :class="{'active': index === 1}" @click="selClass(1)">全部</li>
-      <li :class="{'active': index === 2}" @click="selClass(2)">人气热卖</li>
-      <li :class="{'active': index === 3}" @click="selClass(3)">店长优惠</li>
-      <li :class="{'active': index === 4}" @click="selClass(4)">农户直供</li>
+      <li :class="{'active': index === 0}" @click="selClass(0)">全部</li>
+      <li :class="{'active': index === 1}" @click="selClass(1)">人气热卖</li>
+      <li :class="{'active': index === 2}" @click="selClass(2)">店长优惠</li>
+      <li :class="{'active': index === 3}" @click="selClass(3)">农户直供</li>
     </ul>
 
     <div class="proList">
       <ul class="leftBar">
-        <li v-for="(item, index) in classifiList" :key="index" :class="{'active': leftIndex == item.id}" @click="selLeftClass(item.id)">{{item.name}}{{leftIndex}}{{item.id}}</li>
+        <li v-for="(item, index) in classifiList" :key="index" :class="{'active': leftIndex == item.id}" @click="selLeftClass(item.id)">{{item.name}}</li>
       </ul>
 
-      <ul class="proBox" @click="toDetail()">
-        <li>
+      <ul class="proBox">
+        <li v-for="(item, index) in productList" :key="index"  @click="toDetail(item.id)">
           <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
+            <img :src="item.main_img_url"  mode='widthFix'/>
           </div>
           <div class="info">
-            <p class="title">现摘新鲜大南瓜</p>
-            <p class="weight">约1kg</p>
-            <p class="price">0.5元/颗</p>
-
-            <div class="selGui">选规格</div>
-          </div>
-
-        </li>
-        <li>
-          <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
-          </div>
-          <div class="info">
-            <p class="title">现摘新鲜大南瓜</p>
-            <p class="weight">约1kg</p>
-            <p class="price">0.5元/颗</p>
-
-            <div class="selGui">选规格</div>
-          </div>
-
-        </li>
-        <li>
-          <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
-          </div>
-          <div class="info">
-            <p class="title">现摘新鲜大南瓜</p>
-            <p class="weight">约1kg</p>
-            <p class="price">0.5元/颗</p>
-
-            <div class="selGui">选规格</div>
-          </div>
-
-        </li>
-        <li>
-          <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
-          </div>
-          <div class="info">
-            <p class="title">现摘新鲜大南瓜</p>
-            <p class="weight">约1kg</p>
-            <p class="price">0.5元/颗</p>
-
-            <div class="selGui">选规格</div>
-          </div>
-
-        </li>
-        <li>
-          <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
-          </div>
-          <div class="info">
-            <p class="title">现摘新鲜大南瓜</p>
-            <p class="weight">约1kg</p>
-            <p class="price">0.5元/颗</p>
+            <p class="title">{{item.name}}</p>
+            <p class="weight">约{{item.weight}}kg</p>
+            <p class="price">{{item.price}}</p>
 
             <div class="selGui">选规格</div>
           </div>
@@ -98,8 +46,9 @@ import indexStore from '../index/store'
 export default {
   data () {
     return {
-      index: 1,
-      leftIndex: 1
+      index: 0,
+      leftIndex: 1,
+      productList: []
     }
   },
 
@@ -113,6 +62,9 @@ export default {
     },
     classifiList() {
       return indexStore.state.classifiList;
+    },
+    category() {
+      return indexStore.state.category;
     }
   },
 
@@ -125,27 +77,30 @@ export default {
       this.leftIndex = i;
       this.getProduct(this.leftIndex, this.index, 1, 10);
     },
-    toDetail(){
-      mpvue.navigateTo({url: '../product/main'})
+    toDetail(id){
+      let url = '../product/main?id=' + id;
+      mpvue.navigateTo({url})
     },
     // 获取商品
     getProduct(id, type, page, size) {
       let _this = this;
       this.$fly
         .request({
-          method: "post", //post/get 请求方式
+          method: "get", //post/get 请求方式
           url: "product/categoryproduct",
           body: {
             page: page,
             size: size,
-            type: type,
-            id: id
+            type: type?type:0,
+            id: id?id:0
           },
         })
         .then((res) => {
-          console.log("产品", res);
+          
           if (res.status === 100) {
-            _this.productList = res.data;
+
+            _this.productList = res.data.data;
+            console.log("产品", _this.productList);
           }
         });
     },
@@ -162,7 +117,13 @@ export default {
   },
   onLoad() {
     console.log(this.classificationId)
-    this.leftIndex = this.classificationId;
+    if(this.classificationId){
+      this.leftIndex = this.classificationId;
+    }
+    else{
+      this.leftIndex = this.classifiList[0].id;
+    }
+    
     // this.index = this.classificationId;
     this.getProduct(this.leftIndex, this.index, 1, 10);
   },
@@ -235,7 +196,10 @@ export default {
 
 .proList .proBox .imgBox{
   width: 180rpx;
+  height: 180rpx;
+  overflow: hidden;
   margin-right: 20rpx;
+  background-color: #999;
 }
 
 .proList .proBox .imgBox img{
@@ -263,7 +227,7 @@ export default {
 }
 
 .proBox .info .weight{
-  color: #f5f5f5;
+  color: #999;
 }
 
 .proBox .info .selGui{

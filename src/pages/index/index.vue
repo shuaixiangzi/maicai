@@ -32,8 +32,8 @@
         :interval="interval"
         :duration="duration"
       >
-        <swiper-item class="item1">
-          1
+        <swiper-item class="item1" v-for="(item, index) in banner" :key="index">
+          <img :src="item.img.url" mode="widthFix"/>
         </swiper-item>
         <swiper-item class="item1">
           2
@@ -128,14 +128,14 @@
         </div>
       </div>
 
-      <ul class="productList three" @click="toDetail()">
-        <li v-for="(item, index) in renqitemai" :key="index">
+      <ul class="productList three">
+        <li v-for="(item, index) in renqiremai" :key="index"  @click="toDetail(item.id)">
           <div class="proImg">
-            <!-- <img src=""/> -->
+            <img :src="item.main_img_url" mode="widthFix"/>
           </div>
-          <p class="name">{{}}</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
+          <p class="name">{{item.name}}</p>
+          <p class="weight">约{{item.weight}}KG</p>
+          <p class="price">{{item.price}}</p>
         </li>
       </ul>
     </div>
@@ -149,13 +149,13 @@
       </div>
 
       <ul class="productList two">
-        <li v-for="(item, index) in dianzhangyouhui" :key="index">
+        <li v-for="(item, index) in dianzhangyouhui" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <!-- <img src=""/> -->
+            <img :src="item.main_img_url" mode="widthFix"/>
           </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
+          <p class="name">{{item.name}}</p>
+          <p class="weight">约{{item.weight}}KG</p>
+          <p class="price">{{item.price}}</p>
         </li>
       </ul>
     </div>
@@ -169,13 +169,13 @@
       </div>
 
       <ul class="productList two">
-        <li v-for="(item, index) in nonghuzhigong" :key="index">
+        <li v-for="(item, index) in nonghuzhigong" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <!-- <img src=""/> -->
+            <img :src="item.main_img_url" mode="widthFix"/>
           </div>
-          <p class="name">黄金小南瓜</p>
-          <p class="weight">约1KG</p>
-          <p class="price">0.5元/颗</p>
+          <p class="name">{{item.name}}</p>
+          <p class="weight">约{{item.weight}}KG</p>
+          <p class="price">{{item.price}}</p>
         </li>
       </ul>
     </div>
@@ -258,6 +258,11 @@ export default {
       renqiremai: [],
       dianzhangyouhui: [],
       nonghuzhigong: [],
+      banner: [{
+        img:{
+          url:''
+        }
+      }]
     };
   },
 
@@ -302,6 +307,24 @@ export default {
           if (res.status === 100) {
             console.log("成功了1111", res);
             _this.quan = res.data.data;
+          }
+        });
+    },
+
+    // 获取banner
+    getBanner(){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "banner",
+          body: {},
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取banner", res);
+            _this.banner = res.data.items;
           }
         });
     },
@@ -478,8 +501,9 @@ export default {
       store.commit("saveMarket", e.mp.detail.value);
     },
 
-    toDetail() {
-      mpvue.navigateTo({ url: "../product/main" });
+    toDetail(id) {
+      let url = '../product/main?id=' + id;
+      mpvue.navigateTo({url})
     },
 
     // 获取所有类别
@@ -505,7 +529,7 @@ export default {
       let _this = this;
       this.$fly
         .request({
-          method: "post", //post/get 请求方式
+          method: "get", //post/get 请求方式
           url: "product/typeproduct",
           body: {
             page: page,
@@ -517,13 +541,13 @@ export default {
           console.log("类别", res);
           if (res.status === 100) {
             if (type === 1) {
-              _this.renqiremai = res.data;
+              _this.renqiremai = res.data.data;
             }
             if (type === 2) {
-              _this.dianzhangyouhui = res.data;
+              _this.dianzhangyouhui = res.data.data;
             }
             if (type === 3) {
-              _this.nonghuzhigong = res.data;
+              _this.nonghuzhigong = res.data.data;
             }
           }
         });
@@ -535,6 +559,7 @@ export default {
       this.getProduct(1, 1, 2);
       this.getProduct(2, 1, 4);
       this.getProduct(3, 1, 4);
+      this.getBanner();
     },
   },
 
@@ -770,9 +795,19 @@ export default {
 
 .productList .proImg {
   width: 100%;
-  height: 200rpx;
-  background-color: #4adc9f;
+  height: 280rpx;
+  /* background-color: #4adc9f; */
   margin-bottom: 10rpx;
+  overflow: hidden;
+}
+
+.three li .proImg{
+  height: 200rpx;
+}
+
+.proImg img{
+  width: 100%;
+  height: 100%;
 }
 
 .productList .weight {

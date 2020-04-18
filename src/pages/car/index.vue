@@ -3,7 +3,7 @@
     <div class="top clearfix">
       <checkbox-group bindchange="checkboxChange" class="fl">
         <label class="checkbox" v-for="(index, item) in items" :key="index">
-          <checkbox :value="item.name" :checked="item.checked"/>{{item.value}}
+          <checkbox value="1" :checked="item.checked"/>{{item.value}}
         </label>
       </checkbox-group>
       <p class="fl" style="margin-right:20rpx">全选</p>
@@ -11,24 +11,24 @@
       <p class="fr">删除</p>
     </div>
     <div class="cardBox">
-      <div class="proBox">
-        <checkbox-group bindchange="checkboxChange" class="sel">
-          <label class="checkbox" v-for="(index, item) in items" :key="index">
-            <checkbox :value="item.name" :checked="item.checked"/>{{item.value}}
+      <div class="proBox" v-for="(carItem, carIndex) in car" :key="carIndex">
+        <checkbox-group @change="bindchange" class="sel">
+          <label class="checkbox">
+            <checkbox :value="carItem.sel"/>
           </label>
         </checkbox-group>
 
         <div class="right">
           <div class="imgBox">
-            <img src="../../../static/images/baicai.png"  mode='widthFix'/>
+            <img :src="carItem.main_img_url"  mode='widthFix'/>
           </div>
 
           <div class="infoBox">
-            <p class="name">当日新鲜先切猪肉</p>
-            <p class="weight">约1kg</p>
-            <p class="unit">45元/份</p>
+            <p class="name">{{carItem.name}}</p>
+            <p class="weight">约{{carItem.weight}}kg</p>
+            <p class="unit">{{carItem.price}}元/份</p>
 
-            <div class="num">×1</div>
+            <div class="num">×{{carItem.count}}</div>
           </div>
         </div>    
       </div>
@@ -48,25 +48,37 @@
 // Use Vuex
 import store from './store'
 import indexStore from '../index/store'
+import commonStore from '@/store'
 
 export default {
   data(){
     return {
       num: 1,
       items: [
-        { name: 'usa', value: '全选' },
+        { name: 'usa', value: 1 },
       ],
     }
   },
   computed: {
-   
+    car() {
+      return commonStore.state.car;
+    }
   },
   methods: {
     buyNow(){
+      let buy = []
+
+      for(let i = 0; i< car.length; i++){
+        if(car[i].sel === 1){
+          buy.push(car);
+        }
+      }
+      let productList = buy
+      commonStore.commit('orderProduct', productList)
       mpvue.navigateTo({url: '../order/main'})
     },
-    checkboxChange: function (e) {
-      console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+    bindchange: function (e) {
+      console.log('checkbox发生change事件，携带value值为：', e)
     }
   },
 
