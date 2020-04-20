@@ -160,7 +160,8 @@ export default {
 
     selQuanSet(data){
       this.quan = data;
-      this.bool.selQuan = false
+      this.bool.selQuan = false;
+      this.setCoutPrice();
     },
 
     setCoutPrice(){

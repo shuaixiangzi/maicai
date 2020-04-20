@@ -11,7 +11,7 @@
  */
 import Fly from 'flyio/dist/npm/wx'
 const fly = new Fly()
-const host = "http://129.204.70.218:8080/api/v1/"
+const host = "http://129.204.70.218/api/v1/"
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
   wx.showLoading({

@@ -35,9 +35,6 @@
         <swiper-item class="item1" v-for="(item, index) in banner" :key="index">
           <img :src="item.img.url" mode="widthFix"/>
         </swiper-item>
-        <swiper-item class="item1">
-          2
-        </swiper-item>
       </swiper>
     </div>
     <!--分类-->
