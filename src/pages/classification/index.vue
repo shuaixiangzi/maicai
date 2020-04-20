@@ -22,7 +22,7 @@
       <ul class="proBox">
         <li v-for="(item, index) in productList" :key="index"  @click="toDetail(item.id)">
           <div class="imgBox">
-            <img :src="item.main_img_url"  mode='widthFix'/>
+            <img :src="item.main_img_url.url"/>
           </div>
           <div class="info">
             <p class="title">{{item.name}}</p>
@@ -48,7 +48,8 @@ export default {
     return {
       index: 0,
       leftIndex: 1,
-      productList: []
+      productList: [],
+      market: '73753-55420'
     }
   },
 
@@ -92,11 +93,12 @@ export default {
             page: page,
             size: size,
             type: type?type:0,
-            id: id?id:0
+            id: id?id:0,
+            paramid: _this.market
           },
         })
         .then((res) => {
-          
+
           if (res.status === 100) {
 
             _this.productList = res.data.data;
@@ -110,10 +112,10 @@ export default {
     let _this = this;
     // let app = getApp()
     console.log(111)
-    
+
   },
   mounted (){
-    
+
   },
   onLoad() {
     console.log(this.classificationId)
@@ -123,7 +125,7 @@ export default {
     else{
       this.leftIndex = this.classifiList[0].id;
     }
-    
+
     // this.index = this.classificationId;
     this.getProduct(this.leftIndex, this.index, 1, 10);
   },
@@ -203,7 +205,8 @@ export default {
 }
 
 .proList .proBox .imgBox img{
-  width: 100%;
+  /* width: 100%; */
+  height: 100%;
 }
 
 .proList .proBox{

@@ -13,7 +13,7 @@
         </swiper-item>
     </swiper> -->
     <div class="swiperBox">
-      <img :src="detail.main_img_url" mode="widthFix"/>
+      <img :src="detail.main_img_url.url" mode="widthFix"/>
     </div>
 
     <div class="infoTop">
@@ -97,7 +97,7 @@ export default {
     }
   },
   computed: {
-   
+
   },
   methods: {
     decrement(){
@@ -151,7 +151,7 @@ export default {
   },
 
   mounted(){
-    
+
   },
   onLoad(options){
     console.log('options', options)

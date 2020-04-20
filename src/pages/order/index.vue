@@ -77,7 +77,7 @@
       </ul>
     </div>
     <text id='textId' data-userxxx='100' @tap='subUns()'>cilck here</text>
-   
+
   </div>
 </template>
 
@@ -121,7 +121,8 @@ export default {
           url: "pay/pre_order",
           body: {
             id: _this.order_id,
-            type: _this.quan.id?_this.quan.id:0
+            type: _this.quan.id?_this.quan.id:0,
+            paramid: 0
           },
         })
         .then((res) => {
@@ -165,12 +166,12 @@ export default {
     },
 
     setCoutPrice(){
-      
+
       let price = 0
       console.log('orderProduct', this.orderProduct)
       for(let i = 0; i<this.orderProduct.length; i++){
         price += this.orderProduct[i].price * this.orderProduct[i].count
-      } 
+      }
       if(this.quan.money){
         price = price -this.quan.money
       }
@@ -182,7 +183,7 @@ export default {
       console.log(1111)
       wx.requestSubscribeMessage({
         tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
-        success (res) { 
+        success (res) {
           console.log('授权', res)
         }
       })
@@ -206,7 +207,7 @@ export default {
           body: {
             products: product,
             address: this.address.id,
-            quan: this.quan.id 
+            quan: this.quan.id
           },
         })
         .then((res) => {
