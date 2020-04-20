@@ -131,7 +131,7 @@
       <ul class="productList three">
         <li v-for="(item, index) in renqiremai" :key="index"  @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix"/>
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -151,7 +151,7 @@
       <ul class="productList two">
         <li v-for="(item, index) in dianzhangyouhui" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix"/>
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -171,7 +171,7 @@
       <ul class="productList two">
         <li v-for="(item, index) in nonghuzhigong" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix"/>
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -262,7 +262,8 @@ export default {
         img:{
           url:''
         }
-      }]
+      }],
+      market: '73753-55420'
     };
   },
 
@@ -535,6 +536,7 @@ export default {
             page: page,
             size: size,
             type: type,
+            paramid: _this.market
           },
         })
         .then((res) => {
@@ -567,7 +569,7 @@ export default {
     let _this = this;
     // let app = getApp()
   },
-  
+
   mounted() {
     let _this = this;
     this.init();
@@ -662,10 +664,10 @@ export default {
   /* padding: 40rpx; */
   height: 180px;
   box-sizing: border-box;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   overflow: hidden;
   margin: 10rpx 0;
-  padding: 0 40rpx;
+  /* padding: 0 40rpx; */
   box-sizing: border-box;
 }
 
