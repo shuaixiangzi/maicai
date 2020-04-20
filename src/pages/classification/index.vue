@@ -140,13 +140,13 @@ export default {
 
 <style scoped>
 .searchBox{
-  background-color: #4adc9f;
+  background-color: #0ade7d;
   padding: 20rpx 40rpx;
 }
 
 .search{
   display: flex;
-  background-color: rgb(66,198,141);
+  background-color: rgba(0,0,0,.1);
   padding: 10rpx 20rpx;
   border-radius: 40rpx;
 }
@@ -154,7 +154,7 @@ export default {
 .search i{
   color: #fff;
   line-height: 100%;
-  margin-top: 5rpx;
+  margin-top: 7rpx;
 }
 
 .search .searchInput{
@@ -175,12 +175,12 @@ export default {
 }
 
 .classBar .active{
-  color: #4adc9f;
-  border-bottom: 4px solid #4adc9f;
+  color: #0ade7d;
+  border-bottom: 4px solid #0ade7d;
 }
 
 .leftBar .active{
-  color: #4adc9f;
+  color: #0ade7d;
 }
 
 .proList{
@@ -198,15 +198,11 @@ export default {
 
 .proList .proBox .imgBox{
   width: 180rpx;
-  height: 180rpx;
-  overflow: hidden;
   margin-right: 20rpx;
-  background-color: #999;
 }
 
 .proList .proBox .imgBox img{
-  /* width: 100%; */
-  height: 100%;
+  width: 100%;
 }
 
 .proList .proBox{
@@ -225,16 +221,13 @@ export default {
   font-size: 14px;
 }
 
-.proBox .info .title, .price{
-  color: #666;
-}
-
 .proBox .info .weight{
   color: #999;
+  margin: 10rpx 0;
 }
 
 .proBox .info .selGui{
-  background-color: #4adc9f;
+  background-color: #0ade7d;
   padding: 10rpx 20rpx;
   position: absolute;
   border-radius: 40rpx;
@@ -242,5 +235,10 @@ export default {
   bottom: 20rpx;
   font-size: 14px;
   color: #fff;
+}
+
+.title{
+  margin-top: 15rpx;
+  font-weight: bold;
 }
 </style>

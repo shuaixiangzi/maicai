@@ -41,8 +41,12 @@ export default {
 <style>
 @import url('../static/icon/stylesheet.css');
 view,input,p,div,span{
-  font-size: 14px;
+  font-size: 12px;
   color:inherit;
+}
+
+.price{
+  color: rgba(255, 146, 59, 1);
 }
 
 page{
@@ -79,15 +83,5 @@ page{
 
 .fr{
   float: right;
-}
-
-.mask{
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,.3);
-  left: 0;
-  top: 0;
-  z-index: 100;
 }
 </style>

@@ -83,17 +83,17 @@ export default {
 <style scoped>
 @import url('./order.css');
 .addressBox{
-  padding: 40rpx 60rpx;
-  margin-top: 20rpx;
+  padding: 10rpx 0;
+  /* margin-top: 20rpx; */
 }
 
 ul li{
-  border-bottom: 1px solid #f5f5f5;
-  padding-bottom: 20rpx;
+  border-bottom: 1px solid #f6f6f6;
+  padding: 20rpx 40rpx;
 }
 
 ul p .fr{
-  color: #4adc9f;
+  color: #0ade7d;
 }
 
 ul p{
@@ -112,9 +112,7 @@ ul .address{
 
 .add{
   margin-top: 50rpx;
-  color: #4adc9f;
+  color: #0ade7d;
   text-align: center;
 }
-
-
 </style>

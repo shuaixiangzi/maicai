@@ -109,12 +109,12 @@ export default {
 <style scoped>
 @import url('./order.css');
 .addAdressBox{
-  padding: 40rpx 60rpx;
+  padding: 10rpx 0;
 }
 
 .setAddress li{
-  border-bottom: 1px solid #f5f5f5;
-  padding: 20rpx 0;
+  border-bottom: 1px solid #f6f6f6;
+  padding: 20rpx 40rpx;
 }
 
 .setAddress li input{
@@ -122,7 +122,7 @@ export default {
 }
 
 .save{
-  background-color: #4adc9f;
+  background-color: #0ade7d;
   border-radius: 100rpx;
   padding: 20rpx;
   box-sizing: border-box;
@@ -132,9 +132,5 @@ export default {
   width: 60%;
   margin-left: 20%;
   color: #fff;
-}
-
-.defualt{
-  display: flex;
 }
 </style>

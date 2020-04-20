@@ -314,11 +314,11 @@ export default {
 <style scoped>
 @import url('./order.css');
 .orderBox{
-  padding: 40rpx;
+  padding: 30rpx 0;
 }
 
 .cardBox{
-  padding: 30rpx;
+  padding:30rpx 40rpx;
   background-color: #fff;
   margin-bottom: 20rpx;
   position: relative;
@@ -351,7 +351,7 @@ export default {
 .proBox .infoBox .weight{
   color: #999;
   margin: 15rpx 0;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .proBox .infoBox .num{
@@ -359,12 +359,18 @@ export default {
   right: 0;
   bottom: 20rpx;
   color: #999;
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.proBox .infoBox .name,.proBox .infoBox .unit{
+.proBox .infoBox .name{
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 18rpx;
+}
+
+.proBox .infoBox .unit{
+  color: rgba(255, 146, 59, 1);
+  font-size: 12px;
 }
 
 .buyNow{
@@ -396,14 +402,15 @@ export default {
 
 .buyn{
   border-radius: 40px;
-  background-color: #4adc9f;
+  background-image: linear-gradient(to right, #ff7703 , #ff4b00);
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   color: #fff;
-  line-height: 60rpx;
-  height: 60rpx;
+  line-height: 70rpx;
+  height: 70rpx;
   margin-top: 5rpx;
+  overflow: hidden;
 }
 
 .buyNow .price{
@@ -412,7 +419,7 @@ export default {
 }
 
 .buyNow .price i{
-  color: red;
+  /* color: red; */
 }
 
 .cardBox .pricer{
@@ -447,7 +454,7 @@ export default {
 
 .addressBox .top .name{
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   margin-right: 20rpx;
 }
 
@@ -457,8 +464,11 @@ export default {
   border-bottom: 1px solid #ddccdd;
 }
 
+.addressBox li div{
+  line-height: 50rpx;
+}
+
 .addressBox li.active{
-  color: #4adc9f;
 }
 
 .addressBox li .addr{
@@ -466,7 +476,7 @@ export default {
 }
 
 .addressBox .top .phone{
-  margin-top: 10rpx;
+  margin-top: 0;
 }
 
 .addressBox li:last-child{
@@ -474,11 +484,11 @@ export default {
 }
 
 .addressBox li.active .addr{
-  color: #4adc9f;
+  /* color: #0ade7d; */
 }
 
 .quanBox li{
-  padding: 40rpx;
+  padding: 20rpx 40rpx;
   margin-bottom: 20rpx;
   position: relative;
 }
@@ -497,9 +507,9 @@ export default {
 
 .quanBox .value{
   font-weight: bold;
-  margin-bottom: 20rpx;
-  font-size: 16px;
-  color: rgb(134,107,0);
+  margin-bottom: 10rpx;
+  font-size: 14px;
+  color: rgba(0,0,0,.4);
 }
 
 .quanBox .valid{
@@ -509,67 +519,24 @@ export default {
 .quanBox .sel{
   position: absolute;
   right: 50rpx;
-  top: 65rpx;
+  top: 45rpx;
   font-weight: bold;
-  color: rgb(134,107,0);
+  color: rgba(0,0,0,.4);
 }
 
-.addressBottom{
-  margin-top: 20rpx;
-  text-align: left;
-  color: #999;
-  font-size: 14px;
+.addressBox li{
+  position: relative;
+  padding-left: 60rpx;
 }
 
-.namePhoneBox{
-  margin-bottom: 10rpx;
-  color: #333;
+.selBox{
+  width: 40rpx;
+  position: absolute;
+  left: 0rpx;
+  top: 50rpx;
 }
 
-.namePhoneBox .name{
-  font-weight: bold;
-  font-size: 14px;
-  margin-right: 10rpx;
-}
-
-.quanBottom{
-  padding: 20rpx;
-}
-
-.quanList{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.quanList li{
-  flex: 1;
-  width: 48%;
-  min-width: 48%;
-  max-width: 48%;
-  box-sizing: border-box;
-  padding: 20rpx 0;
-}
-
-.quanList li:nth-of-type(2n-1){
-  background-color: rgb(225,220,81);
-}
-
-.quanList li:nth-of-type(2n){
-  background-color: rgb(255,121,81);
-}
-
-.quanList li p:first-child{
-  margin-bottom: 5rpx;
-  color: rgb(176,41,0);
-}
-
-.quanList .detail{
-  color: #fff;
-}
-
-.addressBox,.quanBox{
-  max-height: 400rpx;
-  overflow-y: scroll;
+.selBox img{
+  width: 100%;
 }
 </style>

@@ -89,7 +89,7 @@
 
     <!--市场布局图和优惠券-->
     <div class="middle">
-      <p>市场布局图</p>
+      <p  class="title">市场布局图</p>
 
       <swiper
         :indicator-dots="indicatorDots"
@@ -606,130 +606,143 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.topBox {
-  background-color: #4adc9f;
-  height: 160px;
+.topBox{
+  background-color: #0ade7d;
+  height: 280rpx;
 }
 
-.searchBox {
+.searchBox{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content:space-between;
   padding: 20rpx 40rpx;
 }
 
-.searchBox > div {
+.searchBox>div{
   flex: 1;
   width: 50%;
   min-width: 50%;
   max-width: 50%;
 }
 
-.searchBox .left {
+.searchBox .left{
   color: #fff;
   line-height: 100%;
   display: flex;
   margin-top: 10px;
 }
 
-.searchBox .left i {
+.searchBox .left i{
   margin-right: 10rpx;
   font-size: 24px;
 }
 
-.searchBox .right {
-  background-color: rgb(68, 198, 141);
+.searchBox .right{
+  background-color: rgba(0,0,0,.1);
   border-radius: 40rpx;
   box-sizing: border-box;
   font-size: 16px;
   padding: 5px 20px;
 }
 
-.searchBox .right input {
+.searchBox .right input{
   color: #fff;
 }
 
-.item1 {
-  background-color: rgb(229, 229, 229);
+.item1{
+  background-color: rgb(229,229,229);
   text-align: center;
-  line-height: 180px;
+  /* line-height: 180px; */
+  /* border-radius: 20rpx; */
 }
 
-.swiperBox {
-  /* padding: 40rpx; */
-  height: 180px;
+.item2{
+  
+}
+
+.item1 img{
+  width: 100%;
+}
+
+.swiperBox{
+  margin:0 40rpx;
+  height: 300rpx;
   box-sizing: border-box;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   overflow: hidden;
   margin: 10rpx 0;
-  /* padding: 0 40rpx; */
+  padding: 0 40rpx;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-.classification {
+.classification{
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-top: 100px;
+  margin-top: 160rpx;
   width: 86%;
   margin-left: 7%;
   text-align: center;
 }
 
-.classification .classiImg {
-  width: 80rpx;
-  height: 40px;
-  background-color: #4adc9f;
-  margin: 0 auto;
+.classification .classiImg{
+  width: 60rpx;
+  height: 60rpx;
+  /* background-color: #0ade7d; */
+  margin: 0 auto
 }
 
-.classification .classiImg img {
+.classification .classiImg img{
   width: 100%;
 }
 
-.classification li {
+.classification li{
   flex: 1;
-  width: 33%;
-  min-width: 33%;
-  max-width: 33%;
+  width: 25%;
+  min-width: 25%;
+  max-width: 25%;
   box-sizing: border-box;
   padding: 20rpx 0;
 }
 
-.classification li p {
+.classification li p{
   font-size: 14px;
   color: #666;
 }
 
-.middle {
+.middle{
   margin-top: 20px;
 }
 
-.middle p {
+.middle .title{
+  font-weight: bold;
+}
+
+.middle p{
   padding: 0 40rpx;
   margin-bottom: 10px;
 }
 
-.classiImg {
+.classiImg{
   background-size: cover !important;
 }
 
-.indexQuanList {
+.indexQuanList{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 40rpx;
+  margin:40rpx;
 }
 
-.indexQuanList li {
+.indexQuanList li{
   flex: 1;
   width: 48%;
   min-width: 48%;
   max-width: 48%;
   box-sizing: border-box;
-  padding: 20rpx 0;
+  padding: 15rpx 0;
   display: flex;
   background-color: rgba(74, 223, 159);
   color: #fff;
@@ -737,46 +750,46 @@ export default {
   border-radius: 10rpx;
 }
 
-.indexQuanList li p {
+.indexQuanList li p{
   color: #fff;
 }
 
-.indexQuanList li .quanImg {
-  width: 60rpx;
-  height: 60rpx;
+.indexQuanList li .quanImg{
+  width: 50rpx;
+  height: 50rpx;
   background-color: #fff;
   border-radius: 100%;
-  margin-left: 20rpx;
+  margin-left: 50rpx;
   margin-right: 20rpx;
 }
 
-.indexQuanList li .quanImg img {
-  width: 35rpx;
-  margin: 10rpx 15rpx;
+.indexQuanList li .quanImg img{
+  width: 28rpx;
+  margin:10rpx;
 }
 
-.indexQuanList li p {
+.indexQuanList li p{
   margin: 0;
   padding: 0;
-  margin-top: 8rpx;
+  margin-top: 6rpx;
 }
 
-.productCategory {
-  padding: 20rpx 40rpx;
+.productCategory{
+  padding:20rpx 40rpx;
 }
 
-.productCategory .title {
+.productCategory .title{
   font-weight: bold;
   font-size: 14px;
 }
 
-.productList {
+.productList{
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
-.productList li {
+.productList li{
   padding: 10rpx;
   box-sizing: border-box;
   font-size: 14px;
@@ -784,73 +797,61 @@ export default {
   margin-bottom: 40rpx;
 }
 
-.three li {
+.three li{
   width: 30%;
+  margin-bottom: 0;
 }
 
-.two li {
+.two li{
   width: 48%;
 }
 
-.productList .proImg {
+.two li:nth-child(3),.two li:nth-child(4){
+  margin-bottom: 0;
+}
+
+.productList .proImg{
   width: 100%;
-  height: 280rpx;
-  /* background-color: #4adc9f; */
+  /* height: 250rpx; */
+  /* background-color: #0ade7d; */
   margin-bottom: 10rpx;
-  overflow: hidden;
 }
 
-.three li .proImg{
-  height: 200rpx;
+.productList.three .proImg{
+  height: 150rpx;
 }
 
-.proImg img{
+.productList .proImg img{
   width: 100%;
-  height: 100%;
 }
 
-.productList .weight {
-  margin: 10rpx 0;
+.productList .weight{
+  margin: 8rpx 0;
   color: #999;
 }
 
-.top {
+.top{
   display: flex;
   width: 100%;
   justify-content: space-between;
   margin-bottom: 10rpx;
 }
 
-.top .more img {
+.top .more img{
   width: 20rpx;
 }
 
-.top .more {
+.top .more{
   font-size: 14px;
 }
 
-.login {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 105;
-  padding: 20rpx 40rpx;
-  background-color: #fff;
+.name{
+  font-size: 12px; 
 }
 
-.loginBtn {
-  background-color: #4adc9f;
-  color: #fff;
-  line-height: inherit;
+.price{
   font-size: 14px;
-  padding: 20rpx 40rpx;
+  font-weight: bold;
 }
 
-.login .title {
-  padding: 40rpx 0;
-  border-bottom: 1px solid #ececec;
-  margin-bottom: 40rpx;
-  text-align: center;
-}
 </style>

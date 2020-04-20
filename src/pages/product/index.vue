@@ -183,8 +183,6 @@ export default {
   overflow: hidden;
   margin: 10rpx 40rpx 0 40rpx;
   height: 400rpx;
-  background-color: #999;
-  border-radius: 20rpx;
 }
 
 .item1{
@@ -198,7 +196,7 @@ export default {
 
 .infoTop{
   display: flex;
-  padding: 20rpx 40rpx;
+  padding: 20rpx 40rpx 0 20rpx;
   box-sizing: border-box;
   width: 100%;
   justify-content: space-between;
@@ -211,7 +209,7 @@ export default {
 
 .infoTop .price span{
   font-size: 20px;
-  color: #4adc9f;
+  color: rgba(255, 146, 59, 1);
   display: flex;
   position: relative;
   top: -5px;
@@ -219,20 +217,21 @@ export default {
 
 .infoTop .price i{
   font-size: 14px;
-  color: #f5f5f5;
+  color: rgba(255, 146, 59, 1);
+  margin-top: 2rpx;
 }
 
 .proTitle{
   font-weight: bold;
   width: 100%;
-  padding: 10rpx 40rpx 20rpx 40rpx;
+  padding: 10rpx 40rpx;
   box-sizing: border-box;
   line-height: 25px;
   border-bottom: 1px solid #f5f5f5;
 }
 
 .specifications{
-  padding: 40rpx;
+  padding: 20rpx 40rpx;
   border-bottom: 1px solid #f5f5f5;
   display: flex;
 }
@@ -245,6 +244,7 @@ export default {
 .count{
   display: flex;
   margin-right: 20rpx;
+  margin-top: 8rpx;
 }
 
 .count div{
@@ -299,14 +299,16 @@ export default {
 
 .buyn{
   border-radius: 40px;
-  background-color: #4adc9f;
+  background-color: #0ade7d;
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   color: #fff;
-  line-height: 60rpx;
-  height: 60rpx;
+  line-height: 70rpx;
+  height: 70rpx;
   margin-top: 5rpx;
+  display: flex;
+  overflow: hidden;
 }
 
 .detail img{
@@ -323,5 +325,31 @@ export default {
   padding: 20rpx 40rpx;
   color: #fff;
   border-radius: 10rpx;
+}
+
+.buyn .add,.buyn .buy{
+  width: 50%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.buyn .add{
+  background-image: linear-gradient(to right, #fcca0b , #fe9903);
+}
+
+.buyn .buy{
+  background-image: linear-gradient(to right, #ff7703 , #ff4b00);
+}
+
+.weight,.num{
+  line-height: 50rpx;
+}
+
+.infoTop .iconfenxiang{
+  margin-top: 10rpx;
+}
+
+.title .titles{
+  line-height: 45rpx;
 }
 </style>

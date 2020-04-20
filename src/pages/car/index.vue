@@ -94,6 +94,10 @@ export default {
   /* padding: 40rpx; */
 }
 
+page{
+  background-color: #f6f6f6;
+}
+
 .cardBox{
   padding: 30rpx;
   background-color: #fff;
@@ -111,8 +115,12 @@ export default {
   display: flex;
 }
 
+.proBox .selBox{
+  margin-top: 65rpx;
+}
+
 .proBox .imgBox{
-  width: 200rpx;
+  width: 165rpx;
   margin-right: 20rpx;
 }
 
@@ -127,8 +135,8 @@ export default {
 
 .proBox .infoBox .weight{
   color: #999;
-  margin: 15rpx 0;
-  font-size: 14px;
+  margin: 10rpx 0;
+  font-size: 12px;
 }
 
 .proBox .infoBox .num{
@@ -136,12 +144,18 @@ export default {
   right: 0;
   bottom: 20rpx;
   color: #999;
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.proBox .infoBox .name,.proBox .infoBox .unit{
+.proBox .infoBox .name{
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 6rpx;
+}
+
+.proBox .infoBox .unit{
+  color: rgba(255, 146, 59, 1);
+  font-size: 12px;
 }
 
 .buyNow{
@@ -173,14 +187,15 @@ export default {
 
 .buyn{
   border-radius: 40px;
-  background-color: #4adc9f;
+  background-image: linear-gradient(to right, #ff7703 , #ff4b00);
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   color: #fff;
-  line-height: 60rpx;
-  height: 60rpx;
+  line-height: 70rpx;
+  height: 70rpx;
   margin-top: 5rpx;
+  overflow: hidden;
 }
 
 .buyNow .price{
@@ -189,7 +204,7 @@ export default {
 }
 
 .buyNow .price i{
-  color: red;
+  /* color: red; */
 }
 
 .cardBox .pricer{
@@ -200,7 +215,8 @@ export default {
 }
 
 .top{
-  padding: 10rpx 40rpx;
+  padding: 20rpx 40rpx 15rpx 40rpx;
+  line-height: 44rpx;
 }
 
 ._checkbox-group{
@@ -222,4 +238,15 @@ export default {
 .sel{
   margin-top: 70rpx;
 }
+
+.selBox{
+  width: 40rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-top: 2rpx;
+}
+.selBox img{
+  width: 100%;
+}
+
 </style>

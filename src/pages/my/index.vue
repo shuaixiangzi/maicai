@@ -161,7 +161,7 @@ export default {
 }
 
 .myInfo{
-  background-color: #4adc9f;
+  background-color: #0ade7d;
   width: 100%;
   height: 120px;
   box-sizing: border-box;
@@ -198,7 +198,7 @@ export default {
 }
 
 page{
-  background-color: rgba(249,249,249);
+  background-color: #f6f6f6;
 }
 
 .func{
@@ -257,6 +257,17 @@ page{
   margin-bottom: 10rpx;
 }
 
+.namePhoneBox .name{
+  font-weight: bold;
+  margin-right: 20rpx;
+  color: #666;
+  font-size: 14px;
+}
+
+.namePhoneBox .phone{
+  margin-top: 3rpx;
+}
+
 .quanBottom{
   padding: 20rpx;
 }
@@ -276,14 +287,6 @@ page{
   padding: 20rpx 0;
 }
 
-.quanList li:nth-of-type(2n-1){
-  background-color: rgb(225,220,81);
-}
-
-.quanList li:nth-of-type(2n){
-  background-color: rgb(255,121,81);
-}
-
 .quanList li p:first-child{
   margin-bottom: 5rpx;
   color: rgb(176,41,0);
@@ -291,5 +294,9 @@ page{
 
 .quanList .detail{
   color: #fff;
+}
+
+.infoBox .name{
+  font-size: 14px;
 }
 </style>
