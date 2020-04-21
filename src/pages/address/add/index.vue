@@ -8,6 +8,9 @@
         <input class="weui-input" auto-focus placeholder="手机号" v-model="thisAddress.mobile"/>
       </li>
       <li>
+        <div @click="chooseLocation()">选择</div>
+      </li>
+      <li>
         <input class="weui-input" auto-focus placeholder="详细地址：如道路、小区、楼栋、单元、户等" v-model="thisAddress.address"/>
       </li>
       <li class="defualt">
@@ -18,7 +21,7 @@
           :value="thisAddress.default"
           :range="objectarray"
           :range-key="'name'">
-          <view>{{ objectarray[thisAddress.default].name }}</view>
+          <view>{{ objectarray[thisAddress.default]?objectarray[thisAddress.default].name:'' }}</view>
         </picker>
       </li>
     </ul>
@@ -96,7 +99,17 @@ export default {
           }
       })
       
-    }
+    },
+    chooseLocation: function (e) {
+      wx.chooseLocation({
+        success: function(res) {
+          console.log('resresres', res);
+        },
+      })
+    },
+
+    // 坐标纠偏
+
   },
 
   mounted(){

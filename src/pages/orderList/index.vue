@@ -1,19 +1,7 @@
 <template>
-  <div class="orderBox">
-    <ul class="quanBox">
-        <li>
-          <p class="value">10元优惠券</p>
-          <p class="valid">满100元使用</p>
-
-          <div class="sel">选择</div>
-        </li>
-        <li>
-          <p class="value">5元优惠券</p>
-          <p class="valid">满50元使用</p>
-
-          <div class="sel">选择</div>
-        </li>
-      </ul>
+  <div>
+    <ul>
+    </ul>
   </div>
 </template>
 

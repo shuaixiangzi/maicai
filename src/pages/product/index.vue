@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <i class="iconfont icongouwulan"></i>
-      <span>钢蛋的肉店  我们只卖放心肉、健康肉</span>
+      <span class="titles">钢蛋的肉店  我们只卖放心肉、健康肉</span>
     </div>
 
     <!--banner-->
@@ -52,13 +52,16 @@
         <img src="/static/tabs/home.png" mode="widthFix"/>
         <p>回到首页</p>
       </div>
-      <div @click="addCar()" class="_navigator">
+      <div  class="_navigator" @click="toCar()">
         <img src="/static/tabs/car.png" mode="widthFix"/>
-        <p>加入购物车</p>
+        <p>前往购物车</p>
       </div>
 
       <div class="buyBtn">
-        <div class="buyn" @click="buyNow()">立即购买</div>
+        <div class="buyn">
+          <div class="add" @click="addCar()">加入购物车</div>
+          <div class="buy" @click="buyNow()">立即购买</div>
+        </div>
       </div>
     </div>
   </div>
@@ -127,6 +130,10 @@ export default {
     },
     backHome(){
       let url = "../index/main";
+      wx.switchTab({url});
+    },
+    toCar(){
+      let url = "../car/main";
       wx.switchTab({url});
     },
     // 获取商品详情

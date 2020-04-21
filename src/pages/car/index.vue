@@ -68,13 +68,13 @@ export default {
     buyNow(){
       let buy = []
 
-      for(let i = 0; i< car.length; i++){
-        if(car[i].sel === 1){
-          buy.push(car);
+      for(let i = 0; i< this.car.length; i++){
+        if(this.car[i].sel === 1){
+          buy.push(this.car[i]);
         }
       }
       let productList = buy
-      commonStore.commit('orderProduct', productList)
+      commonStore.commit('orderProduct', this.car)
       mpvue.navigateTo({url: '../order/main'})
     },
     bindchange: function (e) {

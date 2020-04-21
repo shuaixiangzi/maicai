@@ -203,6 +203,7 @@ export default {
 
 .proList .proBox .imgBox img{
   width: 100%;
+  max-height: 135rpx;
 }
 
 .proList .proBox{

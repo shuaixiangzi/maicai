@@ -11,7 +11,7 @@
     <div class="func">
       <div class="clearfix top">
         <div class="fl">我的订单</div>
-        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+        <div class="fr more" @click="toMyorder()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="bottom">
         <div class="funcBox">
@@ -99,6 +99,9 @@ export default {
     },
     toQuan(){
       mpvue.navigateTo({url: '../quan/main'})
+    },
+    toMyorder(){
+      mpvue.navigateTo({url: '../orderList/main'})
     },
     getAllQuan(){
       let _this = this;
