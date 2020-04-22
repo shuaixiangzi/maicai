@@ -6,21 +6,21 @@
     </div>
 
     <!--banner-->
-    <!-- <swiper :indicator-dots="indicatorDots" class="swiperBox"
+    <swiper :indicator-dots="indicatorDots" class="swiperBox"
       :autoplay="autoplay" :interval="interval" :duration="duration">
-        <swiper-item class="item1" v-for="(item, index) in detail.imgs" :key="index">
-          <img src="/static/images/prodetail.jpg" mode="widthFix"/>
+        <swiper-item class="item1" v-for="(item, index) in detail.theme" :key="index">
+          <img :src="item.img_url.url" mode="widthFix"/>
         </swiper-item>
-    </swiper> -->
-    <div class="swiperBox">
+    </swiper>
+    <!-- <div class="swiperBox">
       <img :src="detail.main_img_url.url" mode="widthFix"/>
-    </div>
+    </div> -->
 
     <div class="infoTop">
       <div class="price"><span>￥{{detail.price}}</span> <i>/份</i></div>
       <div class="weight">约{{detail.weight}}KG/份</div>
       <div class="num">销量：{{detail.salecount}}件</div>
-      <i class="iconfont iconfenxiang"></i>
+      <!-- <i class="iconfont iconfenxiang"></i> -->
     </div>
 
     <p class="proTitle">当日新鲜先切猪肉纯瘦肉，纯抢购价，抓紧下手，卖完没了</p>
@@ -96,7 +96,8 @@ export default {
         stock: 0,
         summary: null,
         weight: "0"
-      }
+      },
+      shopDetail: {}
     }
   },
   computed: {
@@ -152,6 +153,28 @@ export default {
           if (res.status === 100) {
             console.log("成功了1111", res);
             _this.detail = res.data;
+
+            // _this.getShopDetail(_this.detail.shop_id);
+          }
+        });
+    },
+
+    // 商铺详情
+    getShopDetail(id) {
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "adminshop/singleShop",
+          body: {
+            id: id,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+            _this.shopDetail = res.data;
           }
         });
     },
@@ -189,12 +212,13 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   margin: 10rpx 40rpx 0 40rpx;
-  height: 400rpx;
+  /* width: 100%; */
 }
 
 .item1{
   background-color: rgb(229,229,229);
   /* text-align: center; */
+  width: 100%;
 }
 
 .item1 img{

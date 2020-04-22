@@ -8,7 +8,12 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     orderProduct: [],
-    car: []
+    car: [],
+    searchName: '',
+    market: '73753-55420',
+    searchPaystatus: 0,
+    searchDeliverstatus: 0,
+    searchOrder: ''
   },
   mutations: {
     increment: (state) => {
@@ -34,8 +39,27 @@ const store = new Vuex.Store({
       }
       if(has === false){
         obj.car.push(data)
-      }
-      
+      } 
+    },
+    searchName: (state, data) => {
+      const obj = state
+      obj.searchName = data
+    },
+    market: (state, data) => {
+      const obj = state
+      obj.market = data
+    },
+    searchPaystatus: (state, data) => {
+      const obj = state
+      obj.searchPaystatus = data
+    },
+    searchDeliverstatus: (state, data) => {
+      const obj = state
+      obj.searchDeliverstatus = data
+    },
+    searchOrder: (state, data) => {
+      const obj = state
+      obj.searchOrder = data
     }
   }
 })

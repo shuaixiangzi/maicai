@@ -80,9 +80,9 @@
         </li>
       </ul>
     </div>
-    <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
+    <!-- <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
     <text id='textId' data-userxxx='100' @tap='subUns2()'>22222</text><br/>
-    <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text>
+    <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text> -->
 
   </div>
 </template>
@@ -393,7 +393,7 @@ export default {
 .proBox .infoBox .name{
   color: #666;
   font-size: 12px;
-  margin-top: 18rpx;
+  margin-top: 5rpx;
 }
 
 .proBox .infoBox .unit{
@@ -513,6 +513,11 @@ export default {
 
 .addressBox li.active .addr{
   /* color: #0ade7d; */
+}
+
+.addressBox{
+  overflow: scroll;
+  height: 400rpx;
 }
 
 .quanBox li{

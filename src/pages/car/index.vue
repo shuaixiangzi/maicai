@@ -1,11 +1,10 @@
 <template>
   <div class="orderBox">
     <div class="top clearfix">
-      <checkbox-group bindchange="checkboxChange" class="fl">
-        <label class="checkbox" v-for="(index, item) in items" :key="index">
-          <checkbox value="1" :checked="item.checked"/>{{item.value}}
-        </label>
-      </checkbox-group>
+      <div class="selBox" @click="selNow()">
+        <img src="../../../static/images/sel.png" mode="widthFix" v-if="selAll"/>
+        <img src="../../../static/images/nosel.png" mode="widthFix" v-else/>
+      </div>
       <p class="fl" style="margin-right:20rpx">全选</p>
       
       <p class="fr">删除</p>
@@ -20,7 +19,7 @@
 
         <div class="right">
           <div class="imgBox">
-            <img :src="carItem.main_img_url"  mode='widthFix'/>
+            <img :src="carItem.main_img_url.url"  mode='widthFix'/>
           </div>
 
           <div class="infoBox">
@@ -57,6 +56,7 @@ export default {
       items: [
         { name: 'usa', value: 1 },
       ],
+      selAll: false
     }
   },
   computed: {
@@ -79,11 +79,14 @@ export default {
     },
     bindchange: function (e) {
       console.log('checkbox发生change事件，携带value值为：', e)
+    },
+    selNow(){
+      this.selAll = !this.selAll;
     }
   },
 
   mounted(){
-    
+    console.log(this.car);
   }
 }
 </script>
@@ -95,7 +98,7 @@ export default {
 }
 
 page{
-  background-color: #f6f6f6;
+  background-color: #fff;
 }
 
 .cardBox{
@@ -117,6 +120,8 @@ page{
 
 .proBox .selBox{
   margin-top: 65rpx;
+  width: 90rpx;
+  height: 90rpx;
 }
 
 .proBox .imgBox{
@@ -150,7 +155,7 @@ page{
 .proBox .infoBox .name{
   color: #666;
   font-size: 12px;
-  margin-top: 6rpx;
+  margin-top: 0rpx;
 }
 
 .proBox .infoBox .unit{

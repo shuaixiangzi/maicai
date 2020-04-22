@@ -14,10 +14,10 @@ const fly = new Fly()
 const host = "http://129.204.70.218/api/v1/"
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
-  wx.showLoading({
+  /* wx.showLoading({
     title: "加载中",
     mask:true
-  });
+  }); */
   console.log(request);
   // request.headers["X-Tag"] = "flyio";
   // request.headers['content-type']= 'application/json';
@@ -51,7 +51,7 @@ fly.interceptors.request.use((request) => {
 //添加响应拦截器
 fly.interceptors.response.use(
   (response) => {
-    wx.hideLoading();
+    // wx.hideLoading();
     if(response.data.status !== 100){
       wx.showToast({
         title: JSON.stringify(response.data.msg),
@@ -66,7 +66,7 @@ fly.interceptors.response.use(
     console.log(err);
     console.log('111111', err.engine.response)
     let data = err.engine.response;
-    wx.hideLoading();
+    // wx.hideLoading();
     /* if(err){
       return "请求失败";
     }; */

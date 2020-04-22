@@ -31,6 +31,7 @@
         :autoplay="autoplay"
         :interval="interval"
         :duration="duration"
+        :circular="circular"
       >
         <swiper-item class="item1" v-for="(item, index) in banner" :key="index">
           <img :src="item.img_id.url" mode="widthFix"/>
@@ -97,12 +98,10 @@
         :autoplay="autoplay"
         :interval="interval"
         :duration="duration"
+        :circular="circular"
       >
-        <swiper-item class="item1">
-          布局图1
-        </swiper-item>
-        <swiper-item class="item1">
-          布局图2
+        <swiper-item class="item1" v-for="(item, index) in banner2" :key="index">
+          <img :src="item.img_id.url" mode="widthFix"/>
         </swiper-item>
       </swiper>
 
@@ -223,6 +222,7 @@
 
 <script>
 import store from "./store";
+import commonStore from "../../store";
 import { mapState } from "vuex";
 import { fail } from "assert";
 
@@ -251,7 +251,9 @@ export default {
       dianzhangyouhui: [],
       nonghuzhigong: [],
       banner: [],
-      market: '73753-55420'
+      banner2: [],
+      circular: true,
+      disabled: true
     };
   },
 
@@ -259,6 +261,9 @@ export default {
     userInfo() {
       return store.state.userInfo;
     },
+    market() {
+      return commonStore.state.market
+    }
   },
 
   components: {},
@@ -295,9 +300,14 @@ export default {
     bindconfirm(e){
       console.log(e)
       let _this = this;
+      let url = '../classification/main';
       let name = e.mp.detail.value;
+      commonStore.commit('searchName', name);
+      wx.switchTab({
+        url: url
+      });
 
-      this.$fly
+      /* this.$fly
         .request({
           method: "POST", //post/get 请求方式
           url: "product/searchproduct",
@@ -315,7 +325,7 @@ export default {
             console.log("成功了1111", res);
            
           }
-        });
+        }); */
 
     },
     // 跳转分类
@@ -355,19 +365,26 @@ export default {
     },
 
     // 获取banner
-    getBanner(){
+    getBanner(type){
       let _this = this;
       this.$fly
         .request({
           method: "get", //post/get 请求方式
           url: "banner",
-          body: {},
+          body: {
+            type: type
+          },
         })
         .then((res) => {
           console.log(res);
           if (res.status === 100) {
             console.log("获取banner", res);
-            _this.banner = res.data.data;
+            if(type === 1){
+              _this.banner = res.data.data;
+            }
+            else{
+              _this.banner2 = res.data.data;
+            }
           }
         });
     },
@@ -635,7 +652,8 @@ export default {
       this.getProduct(1, 1, 3);
       this.getProduct(2, 1, 4);
       this.getProduct(3, 1, 4);
-      this.getBanner();
+      this.getBanner(1);
+      this.getBanner(2);
       this.getMarket();
     },
   },
@@ -682,6 +700,13 @@ export default {
 
     // _this.wxToLogin();
   },
+  onPageScroll:function(e){
+    if(e.scrollTop<0){
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+  }
 };
 </script>
 <style scoped>
@@ -750,7 +775,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   margin: 10rpx 0;
-  padding: 0 40rpx;
+  margin: 0 40rpx;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -840,20 +865,19 @@ export default {
 
 .indexQuanList li p{
   color: #fff;
+  line-height: 50rpx;
 }
 
 .indexQuanList li .quanImg{
-  width: 50rpx;
-  height: 50rpx;
-  background-color: #fff;
+  width: 60rpx;
+  height: 60rpx;
   border-radius: 100%;
-  margin-left: 50rpx;
+  margin-left: 30rpx;
   margin-right: 20rpx;
 }
 
 .indexQuanList li .quanImg img{
-  width: 28rpx;
-  margin:10rpx;
+  width: 100%;
 }
 
 .indexQuanList li p{
