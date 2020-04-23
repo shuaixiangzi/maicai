@@ -11,28 +11,28 @@
     <div class="func">
       <div class="clearfix top">
         <div class="fl">我的订单</div>
-        <div class="fr more">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
+        <div class="fr more" @click="toMyorder()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="bottom">
-        <div class="funcBox">
+        <div class="funcBox" @click="search(1, 0)">
           <a>
             <i class="iconfont icondaifukuan"></i>
             <p>待付款</p>
           </a>
         </div>
-        <div class="funcBox">
+        <div class="funcBox" @click="search(0, 2)">
           <a>
             <i class="iconfont icondaifahuo"></i>
             <p>待发货</p>
           </a>
         </div>
-        <div class="funcBox">
+        <div class="funcBox" @click="search(0, 3)">
           <a>
             <i class="iconfont icongedongzuo-"></i>
             <p>派送中</p>
           </a>
         </div>
-        <div class="funcBox">
+        <div class="funcBox" @click="search(0, 4)">
           <a>
             <i class="iconfont iconshiliangzhinengduixiang"></i>
             <p>已完成</p>
@@ -72,6 +72,7 @@
 // Use Vuex
 import store from './store'
 import indexStore from '../index/store'
+import commonStore from '../../store'
 
 export default {
   data(){
@@ -99,6 +100,9 @@ export default {
     },
     toQuan(){
       mpvue.navigateTo({url: '../quan/main'})
+    },
+    toMyorder(){
+      mpvue.navigateTo({url: '../orderList/main'})
     },
     getAllQuan(){
       let _this = this;
@@ -136,6 +140,13 @@ export default {
             }
           }
       })
+    },
+    search(paystatus, deliverstatus){
+      commonStore.commit('searchPaystatus', paystatus);
+      commonStore.commit('searchDeliverstatus', deliverstatus);
+
+      let url = "../orderList/main";
+      mpvue.navigateTo({url});
     }
   },
 
@@ -285,6 +296,14 @@ page{
   max-width: 48%;
   box-sizing: border-box;
   padding: 20rpx 0;
+}
+
+.quanList li:nth-of-type(2n-1){
+  background-color: rgb(255, 220, 81);
+}
+
+.quanList li:nth-of-type(2n){
+  background-color: rgb(255, 121, 81);
 }
 
 .quanList li p:first-child{

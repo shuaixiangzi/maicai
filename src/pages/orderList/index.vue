@@ -1,19 +1,46 @@
 <template>
-  <div class="orderBox">
-    <ul class="quanBox">
-        <li>
-          <p class="value">10元优惠券</p>
-          <p class="valid">满100元使用</p>
+  <div>
+    <ul class="tabs">
+      <li :class="{'active': (deliverstatus == 0 && paystatus == 0) || (deliverstatus == undefined && paystatus == undefined)}" @click="getOrderList(0,0,1,10)">全部</li>
+      <li :class="{'active': paystatus === 1}" @click="getOrderList(1,0,1,10)">待付款</li>
+      <li :class="{'active': deliverstatus === 2}" @click="getOrderList(0,2,1,10)">待发货</li>
+      <li :class="{'active': deliverstatus === 3}" @click="getOrderList(0,3,1,10)">派送中</li>
+      <li :class="{'active': deliverstatus === 4}" @click="getOrderList(0,4,1,10)">已完成</li>
+    </ul>
 
-          <div class="sel">选择</div>
-        </li>
-        <li>
-          <p class="value">5元优惠券</p>
-          <p class="valid">满50元使用</p>
+    <ul class="orderList">
+      <li v-for="(item, index) in orderList" :key="index" class="orderItem">
+        <div class="orderStatus">
+          <p v-if="item.status === 1">等待付款</p>
+          <p v-if="item.status === 2 && item.dadaorderstatus === 2">等待发货</p>
+          <p v-if="item.status === 2 && item.dadaorderstatus === 3">派送中</p>
+          <p v-if="item.status === 2 && item.dadaorderstatus === 4">已完成</p>
+        </div>
+        <div class="proBox" v-for="(item2, index2) in item.snap_items" :key="index2">
+          <div class="imgBox">
+            <img :src="item.snap_img.url"  mode='widthFix'/>
+          </div>
 
-          <div class="sel">选择</div>
-        </li>
-      </ul>
+          <div class="infoBox">
+            <p class="name">{{item2.name}}</p>
+            <p class="weight">约{{item2.weight}}kg</p>
+            <p class="unit">{{item2.price}}元/份</p>
+            <div class="num">× {{item2.count}}</div>
+          </div>
+        </div>
+
+        <div class="funcBox clearfix" v-if="item.status === 1 || (item.status === 2 && item.dadaorderstatus === 3)">
+          <ul class="btnList clearfix" v-if="item.status === 1">
+            <li @click="cancelOrder(item.id)">取消订单</li>
+            <li class="active">付款</li>
+          </ul>
+
+          <ul class="btnList clearfix" v-if="item.status === 2 && item.dadaorderstatus === 3">
+            <li class="active" @click="lookPaisong(item.id)">查看派送状态</li>
+          </ul>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -21,6 +48,7 @@
 // Use Vuex
 import store from './store'
 import indexStore from '../index/store'
+import commonStore from '../../store'
 
 export default {
   data(){
@@ -30,38 +58,203 @@ export default {
         selAddr: false,
         selQuan: false
       },
-      addressIndex: 1
+      addressIndex: 1,
+      page: 1,
+      size: 10,
+      paystatus: 0,
+      deliverstatus: 0,
+      orderList: []
     }
   },
   computed: {
-   
+    searchPaystatus (){
+      return commonStore.state.searchPaystatus
+    },
+    searchDeliverstatus (){
+      return commonStore.state.searchDeliverstatus
+    }
   },
   methods: {
-    buyNow(){
-      mpvue.navigateTo({url: '../order/main'})
+    // 获取订单
+    getOrderList(paystatus,deliverstatus,page,pageSize){
+      let _this = this;
+      _this.paystatus = paystatus?paystatus:0;
+      _this.deliverstatus = deliverstatus?deliverstatus:0;
+      _this.page = page?page:1;
+      _this.size = pageSize?pageSize:10;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "order/byuser",
+          body: {
+            type: 1,
+            page: _this.page,
+            pageSize: _this.size,
+            param: {
+              "paystatus": _this.paystatus,
+              "deliverstatus": _this.deliverstatus
+            }
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取", res.data.data);
+            let data = res.data.data;
+            _this.orderList = res.data.data
+            /* if(_this.orderList.length > 0){
+              for(let i = 0; i < data.length; i++){
+                _this.orderList.push(data[i]);
+              }
+            }
+            else{
+              if(_this.page>1){
+                _this.page = _this.page - 1
+              }
+            } */
+          }
+        });
     },
-    selAddr(){
-      this.bool.selAddr = !this.bool.selAddr;
+
+    // 查看详情
+    lookPaisong(id){
+      commonStore.commit('searchOrder', id);
+
+      let url = "../orderDetail/main";
+      mpvue.navigateTo({url});
     },
-    selQuan(){
-      this.bool.selQuan = !this.bool.selQuan;
+
+    moreOrder(paystatus,deliverstatus,page,pageSize){
+      let _this = this;
+      _this.paystatus = paystatus?paystatus:0;
+      _this.deliverstatus = deliverstatus?deliverstatus:0;
+      _this.page = page?page:1;
+      _this.size = pageSize?pageSize:10;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "order/byuser",
+          body: {
+            type: 1,
+            page: _this.page,
+            pageSize: _this.size,
+            param: {
+              "paystatus": _this.paystatus,
+              "deliverstatus": _this.deliverstatus
+            }
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            let data = res.data.data
+            console.log("获取", res.data.data);
+            // _this.orderList = data;
+            if(_this.orderList.length > 0){
+              for(let i = 0; i < data.length; i++){
+                _this.orderList.push(data[i]);
+              }
+            }
+            else{
+              if(_this.page>1){
+                _this.page = _this.page - 1
+              }
+            }
+          }
+        });
+    },
+
+    // 获取订单详情
+    getOrderDetail(){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "order/singleorder",
+          body: {
+            id: 590
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取", res);
+          }
+        });
+    },
+
+    // 推送的详情
+    getTsOrderDetail(){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "order/singlejumporder",
+          body: {
+            id: 590
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取", res);
+          }
+        });
+    },
+
+    // 取消订单
+    cancelOrder(id){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "order/deleteorder",
+          body: {
+            id: id
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取", res);
+            _this.getOrderList(_this.paystatus,_this.deliverstatus,_this.page,_this.size);
+          }
+        });
     }
   },
 
   mounted(){
     
+  },
+  onLoad() {
+    console.log(this.searchPaystatus,this.searchDeliverstatus)
+    this.paystatus = this.searchPaystatus
+    this.deliverstatus = this.searchDeliverstatus
+    this.getOrderList(this.paystatus,this.deliverstatus,this.page,this.size);
+    /* this.getOrderDetail();
+    this.getTsOrderDetail();
+    this.cancelOrder(); */
+  },
+  onReachBottom(){
+    console.log('触底')
+    console.log('触底');
+    this.page = this.page + 1;
+    this.moreOrder(this.paystatus,this.deliverstatus,this.page,this.size);
   }
 }
 </script>
 
 <style scoped>
 @import url('./order.css');
+page{
+  background-color: rgb(249, 249, 249);
+}
 .orderBox{
-  padding: 40rpx;
+  padding: 30rpx 0;
 }
 
 .cardBox{
-  padding: 30rpx;
+  padding:30rpx 40rpx;
   background-color: #fff;
   margin-bottom: 20rpx;
   position: relative;
@@ -94,7 +287,7 @@ export default {
 .proBox .infoBox .weight{
   color: #999;
   margin: 15rpx 0;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .proBox .infoBox .num{
@@ -102,12 +295,18 @@ export default {
   right: 0;
   bottom: 20rpx;
   color: #999;
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.proBox .infoBox .name,.proBox .infoBox .unit{
+.proBox .infoBox .name{
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 5rpx;
+}
+
+.proBox .infoBox .unit{
+  color: rgba(255, 146, 59, 1);
+  font-size: 12px;
 }
 
 .buyNow{
@@ -139,14 +338,15 @@ export default {
 
 .buyn{
   border-radius: 40px;
-  background-color: #4adc9f;
+  background-image: linear-gradient(to right, #ff7703 , #ff4b00);
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   color: #fff;
-  line-height: 60rpx;
-  height: 60rpx;
+  line-height: 70rpx;
+  height: 70rpx;
   margin-top: 5rpx;
+  overflow: hidden;
 }
 
 .buyNow .price{
@@ -155,7 +355,7 @@ export default {
 }
 
 .buyNow .price i{
-  color: red;
+  /* color: red; */
 }
 
 .cardBox .pricer{
@@ -190,7 +390,7 @@ export default {
 
 .addressBox .top .name{
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   margin-right: 20rpx;
 }
 
@@ -200,8 +400,11 @@ export default {
   border-bottom: 1px solid #ddccdd;
 }
 
+.addressBox li div{
+  line-height: 50rpx;
+}
+
 .addressBox li.active{
-  color: #4adc9f;
 }
 
 .addressBox li .addr{
@@ -209,7 +412,7 @@ export default {
 }
 
 .addressBox .top .phone{
-  margin-top: 10rpx;
+  margin-top: 0;
 }
 
 .addressBox li:last-child{
@@ -217,11 +420,16 @@ export default {
 }
 
 .addressBox li.active .addr{
-  color: #4adc9f;
+  /* color: #0ade7d; */
+}
+
+.addressBox{
+  overflow: scroll;
+  height: 400rpx;
 }
 
 .quanBox li{
-  padding: 40rpx;
+  padding: 20rpx 40rpx;
   margin-bottom: 20rpx;
   position: relative;
 }
@@ -240,9 +448,9 @@ export default {
 
 .quanBox .value{
   font-weight: bold;
-  margin-bottom: 20rpx;
-  font-size: 16px;
-  color: rgb(134,107,0);
+  margin-bottom: 10rpx;
+  font-size: 14px;
+  color: rgba(0,0,0,.4);
 }
 
 .quanBox .valid{
@@ -252,8 +460,83 @@ export default {
 .quanBox .sel{
   position: absolute;
   right: 50rpx;
-  top: 65rpx;
+  top: 45rpx;
   font-weight: bold;
-  color: rgb(134,107,0);
+  color: rgba(0,0,0,.4);
+}
+
+.addressBox li{
+  position: relative;
+  padding-left: 60rpx;
+}
+
+.selBox{
+  width: 40rpx;
+  position: absolute;
+  left: 0rpx;
+  top: 50rpx;
+}
+
+.selBox img{
+  width: 100%;
+}
+
+.tabs{
+  display: flex;
+  justify-content: space-between;
+}
+
+.tabs li{
+  padding: 40rpx 0;
+  width: 20%;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tabs .active{
+  color: #0ade7d;
+}
+
+.orderItem{
+  background-color: #fff;
+  margin: 40rpx;
+}
+
+.btnList{
+  display: flex;
+  float: right;
+}
+
+.btnList li{
+  padding: 5rpx 20rpx;
+  border: 1px solid #ddccdd;
+  color: #666;
+  border-radius: 60rpx;
+  margin-left: 30rpx;
+  cursor: pointer;
+}
+
+.btnList li.active{
+  background-color: rgb(34, 213, 136);
+  color: #fff;
+  border: 1px solid  rgb(34, 213, 136);
+}
+
+.orderStatus{
+  text-align: right;
+  padding: 10rpx 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20rpx;
+  color: rgba(255, 121, 81, 1);
+}
+
+.proBox{
+  padding: 20rpx;
+}
+
+.funcBox{
+  padding: 20rpx;
+  border-top: 1px solid #f0f0f0;
 }
 </style>

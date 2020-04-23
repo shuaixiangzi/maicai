@@ -11,7 +11,8 @@
     "pages/address/main",
     "pages/address/add/main",
     "pages/quan/main",
-    "pages/orderList/main"
+    "pages/orderList/main",
+    "pages/orderDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

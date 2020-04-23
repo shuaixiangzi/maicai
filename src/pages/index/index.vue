@@ -9,9 +9,8 @@
             @change="bindPickerChange"
             :value="index"
             :range="objectarray"
-            :range-key="'name'"
-          >
-            <view>{{ objectarray[index].name }}</view>
+            :range-key="'name'">
+            <view>{{ objectarray[index]?objectarray[index].name:'' }}</view>
           </picker>
         </div>
         <div class="right">
@@ -20,6 +19,7 @@
             placeholder="搜索菜品"
             confirm-type="search"
             placeholder-style="color:#FFF"
+            @confirm="bindconfirm"
           />
         </div>
       </div>
@@ -31,9 +31,10 @@
         :autoplay="autoplay"
         :interval="interval"
         :duration="duration"
+        :circular="circular"
       >
         <swiper-item class="item1" v-for="(item, index) in banner" :key="index">
-          <img :src="item.img.url" mode="widthFix"/>
+          <img :src="item.img_id.url" mode="widthFix"/>
         </swiper-item>
       </swiper>
     </div>
@@ -43,9 +44,9 @@
         v-for="(item, index) in category"
         :key="index"
         @click="tocategory(item.id)"
-      >
+        :class="{'three': category.length <= 6,'four': category.length>6}">
         <div class="classiImg">
-          <img :src="item.url" mode="widthFix" />
+          <img :src="item.topic_img_id.url" mode="widthFix" />
         </div>
         <p>{{ item.name }}</p>
       </li>
@@ -97,12 +98,10 @@
         :autoplay="autoplay"
         :interval="interval"
         :duration="duration"
+        :circular="circular"
       >
-        <swiper-item class="item1">
-          布局图1
-        </swiper-item>
-        <swiper-item class="item1">
-          布局图2
+        <swiper-item class="item1" v-for="(item, index) in banner2" :key="index">
+          <img :src="item.img_id.url" mode="widthFix"/>
         </swiper-item>
       </swiper>
 
@@ -214,11 +213,16 @@
     <button @click="payNow">微信支付</button>
     <!-- <button @click="payNowPay">立即支付</button> -->
     <!-- <button open-type="getPhoneNumber" @bindgetphonenumber="getPhoneNumber">同意</button> -->
+
+    <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
+    <text id='textId' data-userxxx='100' @tap='subUns2()'>22222</text><br/>
+    <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text>
   </div>
 </template>
 
 <script>
 import store from "./store";
+import commonStore from "../../store";
 import { mapState } from "vuex";
 import { fail } from "assert";
 
@@ -226,16 +230,7 @@ export default {
   data() {
     return {
       index: 0,
-      objectarray: [
-        {
-          id: 0,
-          name: "百通民生市场",
-        },
-        {
-          id: 1,
-          name: "东李蔬菜市场",
-        },
-      ],
+      objectarray: [],
       searchTxt: "",
       indicatorDots: true,
       autoplay: true,
@@ -255,12 +250,10 @@ export default {
       renqiremai: [],
       dianzhangyouhui: [],
       nonghuzhigong: [],
-      banner: [{
-        img:{
-          url:''
-        }
-      }],
-      market: '73753-55420'
+      banner: [],
+      banner2: [],
+      circular: true,
+      disabled: true
     };
   },
 
@@ -268,11 +261,73 @@ export default {
     userInfo() {
       return store.state.userInfo;
     },
+    market() {
+      return commonStore.state.market
+    }
   },
 
   components: {},
 
   methods: {
+    subUns(){
+      console.log(1111)
+      wx.requestSubscribeMessage({
+        tmplIds: ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'],
+        success (res) {
+          console.log('授权', res)
+        }
+      })
+    },
+    subUns2(){
+      console.log(222)
+      wx.requestSubscribeMessage({
+        tmplIds: ['azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs'],
+        success (res) {
+          console.log('授权', res)
+        }
+      })
+    },
+    subUns3(){
+      console.log(333)
+      wx.requestSubscribeMessage({
+        tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
+        success (res) {
+          console.log('授权', res)
+        }
+      })
+    },
+    // 输入
+    bindconfirm(e){
+      console.log(e)
+      let _this = this;
+      let url = '../classification/main';
+      let name = e.mp.detail.value;
+      commonStore.commit('searchName', name);
+      wx.switchTab({
+        url: url
+      });
+
+      /* this.$fly
+        .request({
+          method: "POST", //post/get 请求方式
+          url: "product/searchproduct",
+          body: {
+            name: name,
+            page: 1,
+            pagesize: 10,
+            type: 0,
+            paramid: _this.objectarray[_this.index].dada
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+           
+          }
+        }); */
+
+    },
     // 跳转分类
     tocategory(id) {
       let url = "../classification/main";
@@ -310,22 +365,48 @@ export default {
     },
 
     // 获取banner
-    getBanner(){
+    getBanner(type){
       let _this = this;
       this.$fly
         .request({
           method: "get", //post/get 请求方式
           url: "banner",
-          body: {},
+          body: {
+            type: type
+          },
         })
         .then((res) => {
           console.log(res);
           if (res.status === 100) {
             console.log("获取banner", res);
-            _this.banner = res.data.items;
+            if(type === 1){
+              _this.banner = res.data.data;
+            }
+            else{
+              _this.banner2 = res.data.data;
+            }
           }
         });
     },
+
+    // 获取banner
+    getMarket(){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "get", //post/get 请求方式
+          url: "adminmarkets/marketlist",
+          body: {},
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            console.log("获取市场", res);
+            _this.objectarray = res.data;
+          }
+        });
+    },
+
     // 获取手机号
     getPhoneNumber(e) {
       let _this = this;
@@ -554,13 +635,28 @@ export default {
         });
     },
 
+    // 计算距离
+    getDistance(lat1, lng1, lat2, lng2){
+      var radLat1 = lat1*Math.PI / 180.0;
+      var radLat2 = lat2*Math.PI / 180.0;
+      var a = radLat1 - radLat2;
+      var b = lng1*Math.PI / 180.0 - lng2*Math.PI / 180.0;
+      var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+      Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+      s = s *6378.137 ;// EARTH_RADIUS;
+      s = Math.round(s * 10000) / 10000;
+      return s;
+    },
+
     init() {
       this.getAllCategory();
       this.getAllQuan();
-      this.getProduct(1, 1, 2);
+      this.getProduct(1, 1, 3);
       this.getProduct(2, 1, 4);
       this.getProduct(3, 1, 4);
-      this.getBanner();
+      this.getBanner(1);
+      this.getBanner(2);
+      this.getMarket();
     },
   },
 
@@ -606,6 +702,13 @@ export default {
 
     // _this.wxToLogin();
   },
+  onPageScroll:function(e){
+    if(e.scrollTop<0){
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+  }
 };
 </script>
 <style scoped>
@@ -674,14 +777,14 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   margin: 10rpx 0;
-  padding: 0 40rpx;
+  margin: 0 40rpx;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .classification{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   margin-top: 160rpx;
   width: 86%;
@@ -702,11 +805,21 @@ export default {
 
 .classification li{
   flex: 1;
+  
+  box-sizing: border-box;
+  padding: 20rpx 0;
+}
+
+.classification li.three{
+  width: 33.33%;
+  min-width: 33.33%;
+  max-width: 33.33%;
+}
+
+.classification li.four{
   width: 25%;
   min-width: 25%;
   max-width: 25%;
-  box-sizing: border-box;
-  padding: 20rpx 0;
 }
 
 .classification li p{
@@ -754,20 +867,19 @@ export default {
 
 .indexQuanList li p{
   color: #fff;
+  line-height: 50rpx;
 }
 
 .indexQuanList li .quanImg{
-  width: 50rpx;
-  height: 50rpx;
-  background-color: #fff;
+  width: 60rpx;
+  height: 60rpx;
   border-radius: 100%;
-  margin-left: 50rpx;
+  margin-left: 30rpx;
   margin-right: 20rpx;
 }
 
 .indexQuanList li .quanImg img{
-  width: 28rpx;
-  margin:10rpx;
+  width: 100%;
 }
 
 .indexQuanList li p{

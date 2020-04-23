@@ -5,7 +5,7 @@
 
       <div class="proBox" v-for="(item, index) in orderProduct" :key="index">
         <div class="imgBox">
-          <img :src="item.main_img_url"  mode='widthFix'/>
+          <img :src="item.main_img_url.url"  mode='widthFix'/>
         </div>
 
         <div class="infoBox">
@@ -55,6 +55,10 @@
 
       <ul class="addressBox">
         <li v-for="(item, index) in addressList" :key="index" :class="{'active': item.id === address.id}" @click="selAddrSet(item)">
+          <div class="selBox">
+            <img src="../../../static/images/sel.png" mode="widthFix" v-if="item.id === address.id" class="sel"/>
+            <img src="../../../static/images/nosel.png" mode="widthFix" v-else class="nosel"/>
+          </div>
           <div class="top">
             <p class="name">{{item.name}}</p>
             <p class="phone">{{item.mobile}}</p>
@@ -76,7 +80,9 @@
         </li>
       </ul>
     </div>
-    <text id='textId' data-userxxx='100' @tap='subUns()'>cilck here</text>
+    <!-- <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
+    <text id='textId' data-userxxx='100' @tap='subUns2()'>22222</text><br/>
+    <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text> -->
 
   </div>
 </template>
@@ -174,6 +180,10 @@ export default {
       }
       if(this.quan.money){
         price = price -this.quan.money
+
+        if(price<0){
+          price = 0
+        }
       }
       price = price + (this.freight-0)
       this.countPrice = price
@@ -183,6 +193,24 @@ export default {
       console.log(1111)
       wx.requestSubscribeMessage({
         tmplIds: ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'],
+        success (res) {
+          console.log('授权', res)
+        }
+      })
+    },
+    subUns2(){
+      console.log(222)
+      wx.requestSubscribeMessage({
+        tmplIds: ['azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs'],
+        success (res) {
+          console.log('授权', res)
+        }
+      })
+    },
+    subUns3(){
+      console.log(333)
+      wx.requestSubscribeMessage({
+        tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
         success (res) {
           console.log('授权', res)
         }
@@ -365,7 +393,7 @@ export default {
 .proBox .infoBox .name{
   color: #666;
   font-size: 12px;
-  margin-top: 18rpx;
+  margin-top: 5rpx;
 }
 
 .proBox .infoBox .unit{
@@ -485,6 +513,11 @@ export default {
 
 .addressBox li.active .addr{
   /* color: #0ade7d; */
+}
+
+.addressBox{
+  overflow: scroll;
+  height: 400rpx;
 }
 
 .quanBox li{
