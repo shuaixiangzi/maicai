@@ -6,17 +6,15 @@
         <img src="../../../static/images/nosel.png" mode="widthFix" v-else/>
       </div>
       <p class="fl" style="margin-right:20rpx">全选</p>
-      
+
       <p class="fr">删除</p>
     </div>
     <div class="cardBox">
-      <div class="proBox" v-for="(carItem, carIndex) in car" :key="carIndex">
-        <checkbox-group @change="bindchange" class="sel">
-          <label class="checkbox">
-            <checkbox :value="carItem.sel"/>
-          </label>
-        </checkbox-group>
-
+      <div class="proBox" v-for="(carItem, carIndex) in thisCar" :key="carIndex">
+        <div class="selBox" @click="selThisNow(carIndex)" style="margin-top:60rpx">
+          <img src="../../../static/images/sel.png" mode="widthFix" v-if="carItem.sel == true"/>
+          <img src="../../../static/images/nosel.png" mode="widthFix" v-else/>
+        </div>
         <div class="right">
           <div class="imgBox">
             <img :src="carItem.main_img_url.url"  mode='widthFix'/>
@@ -29,12 +27,12 @@
 
             <div class="num">×{{carItem.count}}</div>
           </div>
-        </div>    
+        </div>
       </div>
     </div>
 
     <div class="buyNow">
-      <p class="price">合计：<i>￥45</i></p>
+      <p class="price">合计：<i>￥{{total}}</i></p>
 
       <div class="buyBtn">
         <div class="buyn" @click="buyNow()">立即下单</div>
@@ -56,7 +54,9 @@ export default {
       items: [
         { name: 'usa', value: 1 },
       ],
-      selAll: false
+      selAll: false,
+      thisCar: [],
+      total: 0
     }
   },
   computed: {
@@ -67,14 +67,15 @@ export default {
   methods: {
     buyNow(){
       let buy = []
+      console.log('this.thisCar', this.thisCar)
+      for(let i = 0; i< this.thisCar.length; i++){
 
-      for(let i = 0; i< this.car.length; i++){
-        if(this.car[i].sel === 1){
-          buy.push(this.car[i]);
+        if(this.thisCar[i].sel === true){
+          buy.push(this.thisCar[i]);
         }
       }
       let productList = buy
-      commonStore.commit('orderProduct', this.car)
+      commonStore.commit('orderProduct', productList)
       mpvue.navigateTo({url: '../order/main'})
     },
     bindchange: function (e) {
@@ -82,11 +83,37 @@ export default {
     },
     selNow(){
       this.selAll = !this.selAll;
+      console.log('所有商品', this.thisCar)
+      for(let i =0; i<this.thisCar.length;i++){
+        this.thisCar[i].sel = this.selAll;
+      }
+      this.setPrice();
+    },
+    selThisNow(index){
+      console.log('选择', this.thisCar[index])
+      /* let obj = Object.assign()
+      for() */
+      this.thisCar[index].sel = !this.thisCar[index].sel;
+      this.$set(this.thisCar[index], 'set', !this.thisCar[index].sel);
+      this.setPrice();
+
+    },
+    setPrice(){
+      this.total = 0;
+      for(let i = 0;i<this.thisCar.length;i++){
+      if(this.thisCar[i].sel === true){
+        this.total += this.thisCar[i].price * this.thisCar[i].count
+      }
+    }
     }
   },
 
   mounted(){
-    console.log(this.car);
+    console.log(this.thisCar);
+  },
+  onLoad(){
+    this.thisCar = this.car
+    this.setPrice();
   }
 }
 </script>
@@ -102,7 +129,7 @@ page{
 }
 
 .cardBox{
-  padding: 30rpx;
+  padding: 10rpx 30rpx;
   background-color: #fff;
   margin-bottom: 20rpx;
   position: relative;
@@ -116,9 +143,10 @@ page{
 
 .proBox{
   display: flex;
+  margin-top: 20rpx;
 }
 
-.proBox .selBox{
+.selBox{
   margin-top: 65rpx;
   width: 90rpx;
   height: 90rpx;

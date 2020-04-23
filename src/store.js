@@ -1,3 +1,11 @@
+/*
+ * @Author: 翟海祥
+ * @Date: 2020-04-23 08:48:32
+ * @LastEditTime: 2020-04-23 10:58:12
+ * @LastEditors: 翟海祥
+ * @Description:
+ * @FilePath: \maicai\src\store.js
+ */
 // https://vuex.vuejs.org/zh-cn/intro.html
 // make sure to call Vue.use(Vuex) if using a module system
 import Vue from 'vue'
@@ -13,7 +21,9 @@ const store = new Vuex.Store({
     market: '73753-55420',
     searchPaystatus: 0,
     searchDeliverstatus: 0,
-    searchOrder: ''
+    searchOrder: '',
+    userType: 3,
+    userTypeName: '消费者'
   },
   mutations: {
     increment: (state) => {
@@ -39,7 +49,7 @@ const store = new Vuex.Store({
       }
       if(has === false){
         obj.car.push(data)
-      } 
+      }
     },
     searchName: (state, data) => {
       const obj = state
@@ -60,7 +70,21 @@ const store = new Vuex.Store({
     searchOrder: (state, data) => {
       const obj = state
       obj.searchOrder = data
-    }
+    },
+    userType: (state, data) => {
+      const obj = state
+      obj.userType = data
+
+      if(obj.userType == 1){
+        obj.userTypeName = '市场代理'
+      }
+      if(obj.userType == 2){
+        obj.userTypeName = '商铺'
+      }
+      if(obj.userType == 3){
+        obj.userTypeName = '消费者'
+      }
+    },
   }
 })
 

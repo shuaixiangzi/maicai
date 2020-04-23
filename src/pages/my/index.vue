@@ -3,9 +3,12 @@
     <div class="myInfo">
       <div class="header"><img :src="userInfo.avatarUrl"/></div>
       <div class="infoBox">
-        <p>{{userInfo.nickName ? userInfo.nickName: '翟子'}}</p>
+        <p class="name">{{userInfo.nickName ? userInfo.nickName: '翟子'}}</p>
         <p class="phoneBox">{{phone}}</p>
+        <div class="sub" @click="shouquan">{{userTypeName}}消息授权</div>
       </div>
+
+
     </div>
 
     <div class="func">
@@ -92,9 +95,62 @@ export default {
     },
     phone (){
       return indexStore.state.phone
+    },
+    userType (){
+      return commonStore.state.userType
+    },
+    userTypeName (){
+      return commonStore.state.userTypeName
     }
   },
   methods: {
+    subUns() {
+      console.log(1111);
+      wx.requestSubscribeMessage({
+        tmplIds: ["1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo"],
+        success(res) {
+          console.log("授权", res);
+        }
+      });
+    },
+    subUns2() {
+      console.log(222);
+      wx.requestSubscribeMessage({
+        tmplIds: ["azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs"],
+        success(res) {
+          console.log("授权", res);
+        }
+      });
+    },
+    subUns3() {
+      console.log(333);
+      wx.requestSubscribeMessage({
+        tmplIds: ["qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs"],
+        success(res) {
+          console.log("授权", res);
+        }
+      });
+    },
+
+    shouquan(){
+      let arr = []
+      if(this.userType == 1){
+        arr = ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs']
+      }
+      if(this.userType == 2){
+        arr = ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs']
+      }
+      if(this.userType == 3){
+        arr = ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo']
+      }
+
+      wx.requestSubscribeMessage({
+        tmplIds: arr,
+        success(res) {
+          console.log("授权", res);
+        }
+      });
+    },
     toAddress(){
       mpvue.navigateTo({url: '../address/main'})
     },
@@ -179,6 +235,7 @@ export default {
   padding: 0 90rpx;
   overflow: hidden;
   color: #fff;
+  position: relative;
 }
 
 .header{
@@ -202,6 +259,11 @@ export default {
   margin-top: 25px;
   margin-left: 40rpx;
   font-size: 16px;
+}
+
+.infoBox .name{
+  font-weight: bold;
+  margin-top: 10rpx;
 }
 
 .phoneBox{
@@ -317,5 +379,11 @@ page{
 
 .infoBox .name{
   font-size: 14px;
+  margin-top: -10rpx;
+
+}
+
+.sub{
+  margin-top: 10rpx;
 }
 </style>

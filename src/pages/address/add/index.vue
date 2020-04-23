@@ -8,7 +8,7 @@
         <input class="weui-input" auto-focus placeholder="手机号" v-model="thisAddress.mobile"/>
       </li>
       <li>
-        <div @click="chooseLocation()">选择</div>
+        <div @click="chooseLocation()" class="selAddress">地图选址</div>
       </li>
       <li>
         <input class="weui-input" auto-focus placeholder="详细地址：如道路、小区、楼栋、单元、户等" v-model="thisAddress.address"/>
@@ -43,7 +43,9 @@ export default {
         name:'',
         mobile: '',
         address: '',
-        default: 0
+        default: 0,
+        lat:'',
+        lng: ''
       },
       index: 0,
       objectarray: [
@@ -66,7 +68,7 @@ export default {
   methods: {
     bindPickerChange(val){
       this.thisAddress.default = val.mp.detail.value;
-      console.log(1111, val)
+
     },
     save(){
       let _this = this;
@@ -98,12 +100,16 @@ export default {
             mpvue.navigateTo({url: '../main'})
           }
       })
-      
+
     },
     chooseLocation: function (e) {
+      let _this = this;
       wx.chooseLocation({
         success: function(res) {
           console.log('resresres', res);
+          _this.thisAddress.lat = res.latitude
+          _this.thisAddress.lng = res.longitude
+          _this.thisAddress.address = res.address
         },
       })
     },
@@ -145,5 +151,9 @@ export default {
   width: 60%;
   margin-left: 20%;
   color: #fff;
+}
+
+.selAddress{
+  font-size: 14px;
 }
 </style>

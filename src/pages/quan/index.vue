@@ -5,7 +5,7 @@
           <p class="value">{{item.money}}元优惠券</p>
           <p class="valid">满{{item.min_money}}元使用</p>
 
-          <div class="sel">选择</div>
+          <!-- <div class="sel">选择</div> -->
         </li>
       </ul>
   </div>
@@ -29,7 +29,7 @@ export default {
     }
   },
   computed: {
-   
+
   },
   methods: {
     buyNow(){

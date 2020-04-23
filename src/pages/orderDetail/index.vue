@@ -54,7 +54,7 @@ export default {
       jia: require('../../../static/images/jia.png'),
       polyline: [{
         points: [],
-        color:"#FF0000DD",
+        color:"#0ade7d",
         width: 2,
         dottedLine: true
       }]
@@ -98,7 +98,7 @@ export default {
               width: 50,
               height: 50
             }
-            
+
             let piont1 = {
               longitude: _this.detail.transporterLng,
               latitude: _this.detail.transporterLat
@@ -121,11 +121,11 @@ export default {
         });
     },
 
-    
+
   },
 
   mounted(){
-    
+
   },
   onLoad() {
     if(this.searchOrder){
@@ -136,17 +136,17 @@ export default {
     this.cancelOrder(); */
     this.getOrderDetail();
     this.inter = setInterval(() => {
-      this.getOrderDetail();     
+      this.getOrderDetail();
     }, 5000);
-    
+
   },
   onUnload(){
     console.log('销毁')
     clearInterval(this.inter);
   },
-  
+
   onReachBottom(){
-   
+
   }
 }
 </script>

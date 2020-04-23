@@ -9,7 +9,8 @@
             @change="bindPickerChange"
             :value="index"
             :range="objectarray"
-            :range-key="'name'">
+            :range-key="'name'"
+          >
             <view>{{ objectarray[index]?objectarray[index].name:'' }}</view>
           </picker>
         </div>
@@ -20,10 +21,9 @@
             confirm-type="search"
             placeholder-style="color:#FFF"
             @confirm="bindconfirm"
-          />
+          >
         </div>
       </div>
-
       <!--banner-->
       <swiper
         :indicator-dots="indicatorDots"
@@ -34,7 +34,7 @@
         :circular="circular"
       >
         <swiper-item class="item1" v-for="(item, index) in banner" :key="index">
-          <img :src="item.img_id.url" mode="widthFix"/>
+          <img :src="item.img_id.url" mode="widthFix">
         </swiper-item>
       </swiper>
     </div>
@@ -44,9 +44,10 @@
         v-for="(item, index) in category"
         :key="index"
         @click="tocategory(item.id)"
-        :class="{'three': category.length <= 6,'four': category.length>6}">
+        :class="{'three': category.length <= 6,'four': category.length>6}"
+      >
         <div class="classiImg">
-          <img :src="item.topic_img_id.url" mode="widthFix" />
+          <img :src="item.topic_img_id.url" mode="widthFix">
         </div>
         <p>{{ item.name }}</p>
       </li>
@@ -85,49 +86,44 @@
           <img src="../../../static/images/lianyou.png" mode="widthFix" />
         </div>
         <p>粮油调味品</p>
-      </li> -->
+      </li>-->
     </ul>
-
     <!--市场布局图和优惠券-->
     <div class="middle">
-      <p  class="title">市场布局图</p>
-
+      <p class="title">市场布局图</p>
       <swiper
         :indicator-dots="indicatorDots"
-        class="swiperBox"
+        class="swiperBox swiperBox2"
         :autoplay="autoplay"
         :interval="interval"
         :duration="duration"
         :circular="circular"
       >
         <swiper-item class="item1" v-for="(item, index) in banner2" :key="index">
-          <img :src="item.img_id.url" mode="widthFix"/>
+          <img :src="item.img_id.url" mode="widthFix">
         </swiper-item>
       </swiper>
-
       <ul class="indexQuanList">
         <li v-for="(item, index) in quan" :key="index">
           <div class="quanImg">
-            <img src="../../../static/images/quan.png" mode="widthFix" />
+            <img src="../../../static/images/quan.png" mode="widthFix">
           </div>
           <p>{{ item.money }}元优惠券</p>
         </li>
       </ul>
     </div>
-
     <!--商品推荐-->
     <div class="productCategory">
       <div class="top">
         <p class="title">人气热卖</p>
-        <div class="more">
-          全部<img src="../../../static/images/right.png" mode="widthFix" />
+        <div class="more">全部
+          <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
-
       <ul class="productList three">
-        <li v-for="(item, index) in renqiremai" :key="index"  @click="toDetail(item.id)">
+        <li v-for="(item, index) in renqiremai" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url.url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix">
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -135,19 +131,17 @@
         </li>
       </ul>
     </div>
-
     <div class="productCategory">
       <div class="top">
         <p class="title">店长优惠</p>
-        <div class="more">
-          全部<img src="../../../static/images/right.png" mode="widthFix" />
+        <div class="more">全部
+          <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
-
       <ul class="productList two">
         <li v-for="(item, index) in dianzhangyouhui" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url.url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix">
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -155,19 +149,17 @@
         </li>
       </ul>
     </div>
-
     <div class="productCategory">
       <div class="top">
         <p class="title">农户直供</p>
-        <div class="more">
-          全部<img src="../../../static/images/right.png" mode="widthFix" />
+        <div class="more">全部
+          <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
-
       <ul class="productList two">
         <li v-for="(item, index) in nonghuzhigong" :key="index" @click="toDetail(item.id)">
           <div class="proImg">
-            <img :src="item.main_img_url.url" mode="widthFix"/>
+            <img :src="item.main_img_url.url" mode="widthFix">
           </div>
           <p class="name">{{item.name}}</p>
           <p class="weight">约{{item.weight}}KG</p>
@@ -179,15 +171,8 @@
     <!--确认权限弹窗-->
     <div class="login" v-show="bool.login">
       <p class="title">请先登录团菜小程序</p>
-      <button
-        open-type="getUserInfo"
-        @getuserinfo="bindgetuserinfo"
-        class="loginBtn"
-      >
-        登录
-      </button>
+      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="loginBtn">登录</button>
     </div>
-
     <!-- <div class="login" v-show="bool.phone">
       <p class="title">请先登录团菜小程序</p>
       <button
@@ -197,26 +182,17 @@
       >
         获取微信手机号
       </button>
-    </div> -->
-
+    </div>-->
     <div class="login" v-show="bool.phone">
       <p class="title">手机号授权</p>
-      <button
-        open-type="getPhoneNumber"
-        @getphonenumber="getPhoneNumber"
-        class="loginBtn"
-      >
-        获取微信手机号
-      </button>
+      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="loginBtn">获取微信手机号</button>
     </div>
-
-    <button @click="payNow">微信支付</button>
-    <!-- <button @click="payNowPay">立即支付</button> -->
-    <!-- <button open-type="getPhoneNumber" @bindgetphonenumber="getPhoneNumber">同意</button> -->
-
-    <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
-    <text id='textId' data-userxxx='100' @tap='subUns2()'>22222</text><br/>
-    <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text>
+    <!-- <button @click="payNow">微信支付</button>
+    <text id="textId" data-userxxx="100" @tap="subUns()">111111</text>
+    <br>
+    <text id="textId" data-userxxx="100" @tap="subUns2()">22222</text>
+    <br>
+    <text id="textId" data-userxxx="100" @tap="subUns3()">33333</text> -->
   </div>
 </template>
 
@@ -241,7 +217,7 @@ export default {
       bool: {
         login: false,
         mask: true,
-        phone: true,
+        phone: true
       },
       sessionKey: "",
       saveToken: "",
@@ -262,47 +238,47 @@ export default {
       return store.state.userInfo;
     },
     market() {
-      return commonStore.state.market
+      return commonStore.state.market;
     }
   },
 
   components: {},
 
   methods: {
-    subUns(){
-      console.log(1111)
+    subUns() {
+      console.log(1111);
       wx.requestSubscribeMessage({
-        tmplIds: ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'],
-        success (res) {
-          console.log('授权', res)
+        tmplIds: ["1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo"],
+        success(res) {
+          console.log("授权", res);
         }
-      })
+      });
     },
-    subUns2(){
-      console.log(222)
+    subUns2() {
+      console.log(222);
       wx.requestSubscribeMessage({
-        tmplIds: ['azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs'],
-        success (res) {
-          console.log('授权', res)
+        tmplIds: ["azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs"],
+        success(res) {
+          console.log("授权", res);
         }
-      })
+      });
     },
-    subUns3(){
-      console.log(333)
+    subUns3() {
+      console.log(333);
       wx.requestSubscribeMessage({
-        tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
-        success (res) {
-          console.log('授权', res)
+        tmplIds: ["qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs"],
+        success(res) {
+          console.log("授权", res);
         }
-      })
+      });
     },
     // 输入
-    bindconfirm(e){
-      console.log(e)
+    bindconfirm(e) {
+      console.log(e);
       let _this = this;
-      let url = '../classification/main';
+      let url = "../classification/main";
       let name = e.mp.detail.value;
-      commonStore.commit('searchName', name);
+      commonStore.commit("searchName", name);
       wx.switchTab({
         url: url
       });
@@ -323,10 +299,9 @@ export default {
           console.log(res);
           if (res.status === 100) {
             console.log("成功了1111", res);
-           
+
           }
         }); */
-
     },
     // 跳转分类
     tocategory(id) {
@@ -334,11 +309,11 @@ export default {
       store.commit("saveClassificationId", id);
       wx.switchTab({
         url: url,
-        success: function (e) {
+        success: function(e) {
           let page = getCurrentPages().pop();
           if (page == undefined || page == null) return;
           page.onLoad();
-        },
+        }
       });
     },
 
@@ -352,10 +327,10 @@ export default {
           body: {
             type: 1,
             page: 1,
-            pagesize: 2,
-          },
+            pagesize: 2
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status === 100) {
             console.log("成功了1111", res);
@@ -365,7 +340,7 @@ export default {
     },
 
     // 获取banner
-    getBanner(type){
+    getBanner(type) {
       let _this = this;
       this.$fly
         .request({
@@ -373,16 +348,15 @@ export default {
           url: "banner",
           body: {
             type: type
-          },
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status === 100) {
             console.log("获取banner", res);
-            if(type === 1){
+            if (type === 1) {
               _this.banner = res.data.data;
-            }
-            else{
+            } else {
               _this.banner2 = res.data.data;
             }
           }
@@ -390,15 +364,15 @@ export default {
     },
 
     // 获取banner
-    getMarket(){
+    getMarket() {
       let _this = this;
       this.$fly
         .request({
           method: "get", //post/get 请求方式
           url: "adminmarkets/marketlist",
-          body: {},
+          body: {}
         })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status === 100) {
             console.log("获取市场", res);
@@ -423,10 +397,10 @@ export default {
           body: {
             sessionkey: _this.sessionKey,
             encrypteddata: e.mp.detail.encryptedData,
-            iv: e.mp.detail.iv,
-          },
+            iv: e.mp.detail.iv
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status === 100) {
             store.commit("savePhone", res.data.phonenumber);
@@ -437,8 +411,10 @@ export default {
             wx.showToast({
               title: "登录成功",
               icon: "success",
-              duration: 2000,
+              duration: 2000
             });
+
+            wx.setStorageSync("myPhone", res.data.phonenumber);
           }
         });
     },
@@ -461,10 +437,10 @@ export default {
           url: "token/user",
           body: {
             code: _this.code,
-            nickname: _this.userInfo.nickName,
-          },
+            nickname: _this.userInfo.nickName
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status === 100) {
             console.log("成功了1111", res, res.data.sessionkey, res.data.token);
@@ -473,16 +449,16 @@ export default {
             console.log(1111, _this.sessionKey, _this.saveToken);
             mpvue.setStorage({
               key: "token",
-              data: res.data.token,
+              data: res.data.token
             });
+            commonStore.commit('userType', res.data.type);
             _this.init();
           } else {
             wx.showToast({
               title: JSON.stringify(res.msg),
               icon: "none",
-              duration: 3000,
+              duration: 3000
             });
-
           }
         });
     },
@@ -492,12 +468,12 @@ export default {
       wx.request({
         url: "http://129.204.70.218:8080/api/v1/pay/pre_order", //仅为示例，并非真实的接口地址
         data: {
-          id: 539,
+          id: 539
         },
         method: "POST",
         header: {
           "content-type": "application/json", // 默认值
-          token: wx.getStorageSync("token"),
+          token: wx.getStorageSync("token")
         },
         success(res) {
           _this.res = JSON.stringify(res);
@@ -520,9 +496,9 @@ export default {
             fail(res2) {
               // alert(JSON.stringify(res2));
               console.log("失败", res2);
-            },
+            }
           });
-        },
+        }
       });
     },
 
@@ -571,7 +547,7 @@ export default {
             console.log(res.code);
             _this.code = res.code;
           }
-        },
+        }
       });
     },
 
@@ -583,8 +559,8 @@ export default {
     },
 
     toDetail(id) {
-      let url = '../product/main?id=' + id;
-      mpvue.navigateTo({url})
+      let url = "../product/main?id=" + id;
+      mpvue.navigateTo({ url });
     },
 
     // 获取所有类别
@@ -594,9 +570,9 @@ export default {
         .request({
           method: "get", //post/get 请求方式
           url: "category/all",
-          body: {},
+          body: {}
         })
-        .then((res) => {
+        .then(res => {
           console.log("类别", res);
           if (res.status === 100) {
             _this.category = res.data;
@@ -617,9 +593,9 @@ export default {
             size: size,
             type: type,
             paramid: _this.market
-          },
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log("类别", res);
           if (res.status === 100) {
             if (type === 1) {
@@ -636,14 +612,22 @@ export default {
     },
 
     // 计算距离
-    getDistance(lat1, lng1, lat2, lng2){
-      var radLat1 = lat1*Math.PI / 180.0;
-      var radLat2 = lat2*Math.PI / 180.0;
+    getDistance(lat1, lng1, lat2, lng2) {
+      var radLat1 = lat1 * Math.PI / 180.0;
+      var radLat2 = lat2 * Math.PI / 180.0;
       var a = radLat1 - radLat2;
-      var b = lng1*Math.PI / 180.0 - lng2*Math.PI / 180.0;
-      var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
-      Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
-      s = s *6378.137 ;// EARTH_RADIUS;
+      var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+      var s =
+        2 *
+        Math.asin(
+          Math.sqrt(
+            Math.pow(Math.sin(a / 2), 2) +
+              Math.cos(radLat1) *
+                Math.cos(radLat2) *
+                Math.pow(Math.sin(b / 2), 2)
+          )
+        );
+      s = s * 6378.137; // EARTH_RADIUS;
       s = Math.round(s * 10000) / 10000;
       return s;
     },
@@ -657,7 +641,7 @@ export default {
       this.getBanner(1);
       this.getBanner(2);
       this.getMarket();
-    },
+    }
   },
 
   created() {
@@ -667,8 +651,6 @@ export default {
 
   mounted() {
     let _this = this;
-
-
     wx.getSetting({
       success(res) {
         console.log("resresres", res);
@@ -677,7 +659,7 @@ export default {
           _this.bool.mask = true;
         } else {
           wx.getUserInfo({
-            success: function (res) {
+            success: function(res) {
               console.log(res);
               store.commit("saveUserInfo", res.userInfo);
 
@@ -689,89 +671,119 @@ export default {
                     _this.code = res.code;
                     _this.bindgetusertoken(); // 获取token
                   }
-                },
+                }
               });
             },
-            fail: function (res) {
+            fail: function(res) {
               console.log(res);
-            },
+            }
           });
         }
-      },
+      }
     });
+
+    wx.getStorage({
+      key: "myPhone",
+
+      success: function(res) {
+        // 异步接口在success回调才能拿到返回值
+
+        console.log('电话', res)
+        if(res.data != undefined){
+          store.commit("savePhone", res.data);
+          _this.bool.mask = false;
+          _this.bool.phone = false;
+        }
+        else{
+          _this.bool.mask = true;
+          _this.bool.phone = true;
+        }
+      },
+
+      fail: function() {
+        console.log("读取key1发生错误");
+      }
+    });
+
+    try {
+      // 同步接口立即返回值
+
+      var value2 = wx.getStorageSync("key2");
+    } catch (e) {
+      console.log("读取key2发生错误");
+    }
 
     // _this.wxToLogin();
   },
-  onPageScroll:function(e){
-    if(e.scrollTop<0){
+  onPageScroll: function(e) {
+    if (e.scrollTop < 0) {
       wx.pageScrollTo({
         scrollTop: 0
-      })
+      });
     }
   }
 };
 </script>
 <style scoped>
-.topBox{
+.topBox {
   background-color: #0ade7d;
   height: 280rpx;
 }
 
-.searchBox{
+.searchBox {
   display: flex;
   flex-direction: row;
-  justify-content:space-between;
+  justify-content: space-between;
   padding: 20rpx 40rpx;
 }
 
-.searchBox>div{
+.searchBox > div {
   flex: 1;
   width: 50%;
   min-width: 50%;
   max-width: 50%;
 }
 
-.searchBox .left{
+.searchBox .left {
   color: #fff;
   line-height: 100%;
   display: flex;
   margin-top: 10px;
 }
 
-.searchBox .left i{
+.searchBox .left i {
   margin-right: 10rpx;
   font-size: 24px;
 }
 
-.searchBox .right{
-  background-color: rgba(0,0,0,.1);
+.searchBox .right {
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 40rpx;
   box-sizing: border-box;
   font-size: 16px;
   padding: 5px 20px;
 }
 
-.searchBox .right input{
+.searchBox .right input {
   color: #fff;
 }
 
-.item1{
-  background-color: rgb(229,229,229);
+.item1 {
+  background-color: rgb(229, 229, 229);
   text-align: center;
   /* line-height: 180px; */
   /* border-radius: 20rpx; */
 }
 
-.item2{
-
+.item2 {
 }
 
-.item1 img{
+.item1 img {
   width: 100%;
 }
 
-.swiperBox{
-  margin:0 40rpx;
+.swiperBox {
+  margin: 0 40rpx;
   height: 300rpx;
   box-sizing: border-box;
   border-radius: 10px;
@@ -782,7 +794,11 @@ export default {
   overflow: hidden;
 }
 
-.classification{
+.swiperBox.swiperBox2 {
+  height: 400rpx;
+}
+
+.classification {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -792,66 +808,66 @@ export default {
   text-align: center;
 }
 
-.classification .classiImg{
+.classification .classiImg {
   width: 60rpx;
   height: 60rpx;
   /* background-color: #0ade7d; */
-  margin: 0 auto
+  margin: 0 auto;
 }
 
-.classification .classiImg img{
+.classification .classiImg img {
   width: 100%;
 }
 
-.classification li{
+.classification li {
   flex: 1;
-  
+
   box-sizing: border-box;
   padding: 20rpx 0;
 }
 
-.classification li.three{
+.classification li.three {
   width: 33.33%;
   min-width: 33.33%;
   max-width: 33.33%;
 }
 
-.classification li.four{
+.classification li.four {
   width: 25%;
   min-width: 25%;
   max-width: 25%;
 }
 
-.classification li p{
+.classification li p {
   font-size: 14px;
   color: #666;
 }
 
-.middle{
+.middle {
   margin-top: 20px;
 }
 
-.middle .title{
+.middle .title {
   font-weight: bold;
 }
 
-.middle p{
+.middle p {
   padding: 0 40rpx;
   margin-bottom: 10px;
 }
 
-.classiImg{
+.classiImg {
   background-size: cover !important;
 }
 
-.indexQuanList{
+.indexQuanList {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin:40rpx;
+  margin: 40rpx;
 }
 
-.indexQuanList li{
+.indexQuanList li {
   flex: 1;
   width: 48%;
   min-width: 48%;
@@ -865,12 +881,12 @@ export default {
   border-radius: 10rpx;
 }
 
-.indexQuanList li p{
+.indexQuanList li p {
   color: #fff;
   line-height: 50rpx;
 }
 
-.indexQuanList li .quanImg{
+.indexQuanList li .quanImg {
   width: 60rpx;
   height: 60rpx;
   border-radius: 100%;
@@ -878,32 +894,32 @@ export default {
   margin-right: 20rpx;
 }
 
-.indexQuanList li .quanImg img{
+.indexQuanList li .quanImg img {
   width: 100%;
 }
 
-.indexQuanList li p{
+.indexQuanList li p {
   margin: 0;
   padding: 0;
   margin-top: 6rpx;
 }
 
-.productCategory{
-  padding:20rpx 40rpx;
+.productCategory {
+  padding: 20rpx 40rpx;
 }
 
-.productCategory .title{
+.productCategory .title {
   font-weight: bold;
   font-size: 14px;
 }
 
-.productList{
+.productList {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
-.productList li{
+.productList li {
   padding: 10rpx;
   box-sizing: border-box;
   font-size: 14px;
@@ -911,61 +927,61 @@ export default {
   margin-bottom: 40rpx;
 }
 
-.three li{
+.three li {
   width: 30%;
   margin-bottom: 0;
 }
 
-.two li{
+.two li {
   width: 48%;
 }
 
-.two li:nth-child(3),.two li:nth-child(4){
+.two li:nth-child(3),
+.two li:nth-child(4) {
   margin-bottom: 0;
 }
 
-.productList .proImg{
+.productList .proImg {
   width: 100%;
   /* height: 250rpx; */
   /* background-color: #0ade7d; */
   margin-bottom: 10rpx;
 }
 
-.productList.three .proImg{
+.productList.three .proImg {
   height: 150rpx;
 }
 
-.productList .proImg img{
+.productList .proImg img {
   width: 100%;
 }
 
-.productList .weight{
+.productList .weight {
   margin: 8rpx 0;
   color: #999;
 }
 
-.top{
+.top {
   display: flex;
   width: 100%;
   justify-content: space-between;
   margin-bottom: 10rpx;
 }
 
-.top .more img{
+.top .more img {
   width: 20rpx;
 }
 
-.top .more{
+.top .more {
   font-size: 14px;
 }
 
-.name{
+.name {
   font-size: 12px;
 }
 
-.price{
+.price {
   font-size: 14px;
   font-weight: bold;
 }
-
 </style>

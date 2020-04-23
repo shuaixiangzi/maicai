@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="title">
+    <div class="title" v-if="detail.shopinfo.title">
       <i class="iconfont icongouwulan"></i>
-      <span class="titles">钢蛋的肉店  我们只卖放心肉、健康肉</span>
+      <span class="titles">{{detail.shopinfo.title}}</span>
     </div>
 
     <!--banner-->
@@ -123,6 +123,7 @@ export default {
     },
     addCar(){
       this.detail.count = this.num
+      this.detail.sel = false
       commonStore.commit('pushCarProduct', this.detail);
       this.bool.showSuccess = true;
       setTimeout(()=>{

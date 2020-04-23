@@ -32,7 +32,7 @@
         <div class="funcBox clearfix" v-if="item.status === 1 || (item.status === 2 && item.dadaorderstatus === 3)">
           <ul class="btnList clearfix" v-if="item.status === 1">
             <li @click="cancelOrder(item.id)">取消订单</li>
-            <li class="active">付款</li>
+            <li class="active" @click="buyNow(item.id)">付款</li>
           </ul>
 
           <ul class="btnList clearfix" v-if="item.status === 2 && item.dadaorderstatus === 3">
@@ -112,6 +112,40 @@ export default {
                 _this.page = _this.page - 1
               }
             } */
+          }
+        });
+    },
+    buyNow(id){
+      let _this = this;
+      this.$fly
+        .request({
+          method: "post", //post/get 请求方式
+          url: "pay/pre_order",
+          body: {
+            id: id,
+            type: 0,
+            paramid: 0
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 100) {
+            wx.requestPayment({
+              timeStamp: res.data.timeStamp,
+              nonceStr: res.data.nonceStr,
+              package: res.data.package,
+              signType: res.data.signType,
+              paySign: res.data.paySign,
+              success(res2) {
+                _this.res = JSON.stringify(res2);
+                console.log("成功", res2);
+                mpvue.switchTab({url: '../orderList/main'})
+              },
+              fail(res2) {
+                // alert(JSON.stringify(res2));
+                console.log("失败", res2);
+              },
+            });
           }
         });
     },
@@ -224,7 +258,7 @@ export default {
   },
 
   mounted(){
-    
+
   },
   onLoad() {
     console.log(this.searchPaystatus,this.searchDeliverstatus)
@@ -484,6 +518,8 @@ page{
 .tabs{
   display: flex;
   justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 3rpx 3rpx 10rpx 3rpx rgba(0,0,0,.1);
 }
 
 .tabs li{

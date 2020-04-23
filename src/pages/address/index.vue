@@ -10,7 +10,7 @@
         </p>
 
         <p class="address">{{item.address}}</p>
-        
+
       </li>
     </ul>
 
@@ -39,7 +39,7 @@ export default {
     }
   },
   computed: {
-   
+
   },
   methods: {
     buyNow(){
@@ -60,7 +60,7 @@ export default {
       })
       mpvue.redirectTo({url: './add/main'})
     },
-    
+
     getAllAddress(){
       let _this = this;
       this.$fly.request({
@@ -90,6 +90,7 @@ export default {
 ul li{
   border-bottom: 1px solid #f6f6f6;
   padding: 20rpx 40rpx;
+  background-color: #fff;
 }
 
 ul p .fr{
