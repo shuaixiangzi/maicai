@@ -182,7 +182,7 @@ export default {
     subUns(){
       console.log(1111)
       wx.requestSubscribeMessage({
-        tmplIds: ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'],
+        tmplIds: ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'],
         success (res) {
           console.log('授权', res)
         }

@@ -394,12 +394,14 @@ export default {
               key: "token",
               data: res.data.token,
             });
+            _this.init();
           } else {
             wx.showToast({
               title: JSON.stringify(res.msg),
               icon: "none",
               duration: 3000,
             });
+
           }
         });
     },
@@ -569,7 +571,7 @@ export default {
 
   mounted() {
     let _this = this;
-    this.init();
+
 
     wx.getSetting({
       success(res) {
@@ -658,7 +660,7 @@ export default {
 }
 
 .item2{
-  
+
 }
 
 .item1 img{
@@ -846,7 +848,7 @@ export default {
 }
 
 .name{
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .price{
