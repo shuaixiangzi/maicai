@@ -95,7 +95,10 @@ export default {
         salecount: 0,
         stock: 0,
         summary: null,
-        weight: "0"
+        weight: "0",
+        shopinfo: {
+          title: ''
+        }
       },
       shopDetail: {}
     }

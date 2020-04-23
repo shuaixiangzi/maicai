@@ -150,6 +150,7 @@ page{
   margin-top: 65rpx;
   width: 90rpx;
   height: 90rpx;
+  overflow: hidden;
 }
 
 .proBox .imgBox{
