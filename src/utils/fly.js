@@ -1,7 +1,7 @@
 /*
  * @Author: 翟海祥
  * @Date: 2020-04-16 20:28:53
- * @LastEditTime: 2020-04-16 20:31:08
+ * @LastEditTime: 2020-04-24 13:16:32
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\utils\fly.js
@@ -11,18 +11,19 @@
  */
 import Fly from 'flyio/dist/npm/wx'
 const fly = new Fly()
-const host = "http://129.204.70.218/api/v1/"
+const host = "https://www.89baba.com/api/v1/"
+import commonStore from "../store";
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
-  /* wx.showLoading({
+  wx.showLoading({
     title: "加载中",
     mask:true
-  }); */
+  });
   console.log(request);
   // request.headers["X-Tag"] = "flyio";
   // request.headers['content-type']= 'application/json';
   request.headers = {
-    "token": wx.getStorageSync('token'),
+    "token": commonStore.state.token,
     'content-type': 'application/json'
   };
 
@@ -51,7 +52,7 @@ fly.interceptors.request.use((request) => {
 //添加响应拦截器
 fly.interceptors.response.use(
   (response) => {
-    // wx.hideLoading();
+    wx.hideLoading();
     if(response.data.status !== 100){
       wx.showToast({
         title: JSON.stringify(response.data.msg),
@@ -66,7 +67,7 @@ fly.interceptors.response.use(
     console.log(err);
     console.log('111111', err.engine.response)
     let data = err.engine.response;
-    // wx.hideLoading();
+    wx.hideLoading();
     /* if(err){
       return "请求失败";
     }; */
@@ -77,7 +78,7 @@ fly.interceptors.response.use(
         duration: 3000
       })
     }
-    
+
     return data;//请求成功之后将返回值返回
   }
 );

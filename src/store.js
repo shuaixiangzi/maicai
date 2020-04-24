@@ -1,7 +1,7 @@
 /*
  * @Author: 翟海祥
  * @Date: 2020-04-23 08:48:32
- * @LastEditTime: 2020-04-23 10:58:12
+ * @LastEditTime: 2020-04-24 16:31:35
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\store.js
@@ -23,7 +23,10 @@ const store = new Vuex.Store({
     searchDeliverstatus: 0,
     searchOrder: '',
     userType: 3,
-    userTypeName: '消费者'
+    userTypeName: '消费者',
+    token: '',
+    phone: '',
+    sessionKey: ''
   },
   mutations: {
     increment: (state) => {
@@ -85,6 +88,20 @@ const store = new Vuex.Store({
         obj.userTypeName = '消费者'
       }
     },
+    saveToken: (state, data) => {
+      const obj = state
+      obj.token = data
+    },
+    savePhone: (state, data) =>{
+      const obj = state
+      obj.phone = data
+    },
+    saveSessionKey: (state, data) =>{
+      const obj = state
+
+      console.log('我保存保存了', data)
+      obj.sessionKey = data
+    }
   }
 })
 

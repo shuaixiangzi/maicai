@@ -187,6 +187,8 @@
       <p class="title">手机号授权</p>
       <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="loginBtn">获取微信手机号</button>
     </div>
+
+
     <!-- <button @click="payNow">微信支付</button>
     <text id="textId" data-userxxx="100" @tap="subUns()">111111</text>
     <br>
@@ -219,7 +221,6 @@ export default {
         mask: true,
         phone: true
       },
-      sessionKey: "",
       saveToken: "",
       category: [],
       quan: [],
@@ -239,6 +240,9 @@ export default {
     },
     market() {
       return commonStore.state.market;
+    },
+    sessionKey() {
+      return commonStore.state.sessionKey;
     }
   },
 
@@ -424,8 +428,8 @@ export default {
       console.log(e.mp.detail.userInfo);
       store.commit("saveUserInfo", e.mp.detail.userInfo);
 
-      this.bool.mask = true;
-      this.bool.phone = true;
+      /* this.bool.mask = true;
+      this.bool.phone = true; */
     },
 
     bindgetusertoken() {
@@ -443,14 +447,16 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === 100) {
-            console.log("成功了1111", res, res.data.sessionkey, res.data.token);
-            _this.sessionKey = res.data.sessionkey;
+            console.log("成功了ssss", res, res.data.sessionkey, res.data.token);
+            // _this.sessionKey = res.data.sessionkey;
+            commonStore.commit('saveSessionKey', res.data.sessionkey);
             _this.saveToken = res.data.token;
             console.log(1111, _this.sessionKey, _this.saveToken);
-            mpvue.setStorage({
+            commonStore.commit('saveToken', res.data.token);
+            /* mpvue.setStorage({
               key: "token",
               data: res.data.token
-            });
+            }); */
             commonStore.commit('userType', res.data.type);
             _this.init();
           } else {
@@ -650,6 +656,19 @@ export default {
   },
 
   mounted() {
+
+
+    // _this.wxToLogin();
+  },
+  onPageScroll: function(e) {
+    if (e.scrollTop < 0) {
+      wx.pageScrollTo({
+        scrollTop: 0
+      });
+    }
+  },
+
+  onLoad(){
     let _this = this;
     wx.getSetting({
       success(res) {
@@ -679,29 +698,9 @@ export default {
             }
           });
         }
-      }
-    });
-
-    wx.getStorage({
-      key: "myPhone",
-
-      success: function(res) {
-        // 异步接口在success回调才能拿到返回值
-
-        console.log('电话', res)
-        if(res.data != undefined){
-          store.commit("savePhone", res.data);
-          _this.bool.mask = false;
-          _this.bool.phone = false;
-        }
-        else{
-          _this.bool.mask = true;
-          _this.bool.phone = true;
-        }
       },
-
-      fail: function() {
-        console.log("读取key1发生错误");
+      fail(err){
+        console.log("resresres", err);
       }
     });
 
@@ -711,15 +710,6 @@ export default {
       var value2 = wx.getStorageSync("key2");
     } catch (e) {
       console.log("读取key2发生错误");
-    }
-
-    // _this.wxToLogin();
-  },
-  onPageScroll: function(e) {
-    if (e.scrollTop < 0) {
-      wx.pageScrollTo({
-        scrollTop: 0
-      });
     }
   }
 };

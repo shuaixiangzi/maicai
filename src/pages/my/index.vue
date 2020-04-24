@@ -68,6 +68,7 @@
         </ul>
       </div>
     </div>
+     <get-myphone></get-myphone>
   </div>
 </template>
 
@@ -76,6 +77,7 @@
 import store from './store'
 import indexStore from '../index/store'
 import commonStore from '../../store'
+import getMyphone from '@/components/getPhone.vue'
 
 export default {
   data(){
@@ -86,6 +88,9 @@ export default {
       }
     }
   },
+  components: {
+    getMyphone
+  },
   computed: {
     count () {
       return store.state.count
@@ -94,7 +99,7 @@ export default {
       return indexStore.state.userInfo
     },
     phone (){
-      return indexStore.state.phone
+      return commonStore.state.phone
     },
     userType (){
       return commonStore.state.userType
@@ -144,10 +149,23 @@ export default {
         arr = ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo']
       }
 
+
       wx.requestSubscribeMessage({
         tmplIds: arr,
         success(res) {
           console.log("授权", res);
+          wx.getSetting({
+            withSubscriptions: true,
+            success (res) {
+
+
+              console.log('resresres', res)
+              // res.authSetting = {
+              //   "scope.userInfo": true,
+              //   "scope.userLocation": true
+              // }
+            }
+          })
         }
       });
     },
