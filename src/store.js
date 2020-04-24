@@ -1,7 +1,7 @@
 /*
  * @Author: 翟海祥
  * @Date: 2020-04-23 08:48:32
- * @LastEditTime: 2020-04-24 16:31:35
+ * @LastEditTime: 2020-04-24 18:53:04
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\store.js
@@ -53,6 +53,10 @@ const store = new Vuex.Store({
       if(has === false){
         obj.car.push(data)
       }
+    },
+    clearCar: (state, data) => {
+      const obj = state
+      obj.car = []
     },
     searchName: (state, data) => {
       const obj = state

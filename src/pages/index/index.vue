@@ -171,7 +171,7 @@
     <!--确认权限弹窗-->
     <div class="login" v-show="bool.login">
       <p class="title">请先登录团菜小程序</p>
-      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="loginBtn">登录</button>
+      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="loginBtn getphoneBtn">登录</button>
     </div>
     <!-- <div class="login" v-show="bool.phone">
       <p class="title">请先登录团菜小程序</p>
@@ -183,10 +183,10 @@
         获取微信手机号
       </button>
     </div>-->
-    <div class="login" v-show="bool.phone">
+    <!-- <div class="login" v-show="bool.phone">
       <p class="title">手机号授权</p>
       <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="loginBtn">获取微信手机号</button>
-    </div>
+    </div> -->
 
 
     <!-- <button @click="payNow">微信支付</button>
@@ -218,8 +218,8 @@ export default {
       nickname: "",
       bool: {
         login: false,
-        mask: true,
-        phone: true
+        mask: false,
+        phone: false
       },
       saveToken: "",
       category: [],
@@ -230,7 +230,8 @@ export default {
       banner: [],
       banner2: [],
       circular: true,
-      disabled: true
+      disabled: true,
+      isInit: true
     };
   },
 
@@ -428,8 +429,10 @@ export default {
       console.log(e.mp.detail.userInfo);
       store.commit("saveUserInfo", e.mp.detail.userInfo);
 
-      /* this.bool.mask = true;
-      this.bool.phone = true; */
+      this.bool.mask = false;
+      this.bool.phone = false;
+
+      this.init();
     },
 
     bindgetusertoken() {
@@ -561,7 +564,12 @@ export default {
     bindPickerChange(e) {
       console.log("picker发送选择改变，携带值为", e.mp.detail.value);
       this.index = e.mp.detail.value;
-      store.commit("saveMarket", e.mp.detail.value);
+      if(this.objectarray[this.index] !== this.market){
+        commonStore.commit("clearCar", true);
+        commonStore.commit("market", this.objectarray[e.mp.detail.value].dada);
+        this.init();
+      }
+
     },
 
     toDetail(id) {
@@ -998,5 +1006,15 @@ export default {
   font-size: 12px;
   padding: 0;
   margin-top: 20rpx;
+}
+
+.mask{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
 }
 </style>

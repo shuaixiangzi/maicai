@@ -139,33 +139,25 @@ export default {
 
     shouquan(){
       let arr = []
+      let txt = ''
       if(this.userType == 1){
-        arr = ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs']
+        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        arr.push(txt);
       }
       if(this.userType == 2){
-        arr = ['qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs']
+        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        arr.push(txt);
       }
       if(this.userType == 3){
-        arr = ['1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo']
+        txt = '1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'
+        arr.push(txt);
       }
-
 
       wx.requestSubscribeMessage({
         tmplIds: arr,
         success(res) {
           console.log("授权", res);
-          wx.getSetting({
-            withSubscriptions: true,
-            success (res) {
 
-
-              console.log('resresres', res)
-              // res.authSetting = {
-              //   "scope.userInfo": true,
-              //   "scope.userLocation": true
-              // }
-            }
-          })
         }
       });
     },
@@ -228,6 +220,32 @@ export default {
     console.log('用户信息', this.userInfo);
     this.getAllQuan();
     this.getAllAddress();
+  },
+  onLoad(){
+    let _this = this;
+    let arr = []
+    let txt = ''
+    if(this.userType == 1){
+      txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+      arr.push(txt);
+    }
+    if(this.userType == 2){
+      txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+      arr.push(txt);
+    }
+    if(this.userType == 3){
+      txt = '1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'
+      arr.push(txt);
+    }
+    wx.getSetting({
+      withSubscriptions: true,
+      success (res) {
+        let bool = res.subscriptionsSetting.itemSettings[txt];
+        if(bool !== 'accept'){
+          _this.shouquan();
+        }
+      }
+    })
   }
 }
 </script>

@@ -2,7 +2,7 @@ import commonStore from '@/store';
 <!--
  * @Author: 翟海祥
  * @Date: 2020-04-24 13:19:07
- * @LastEditTime: 2020-04-24 16:55:14
+ * @LastEditTime: 2020-04-24 19:25:44
  * @LastEditors: 翟海祥
  * @Description:
  * @FilePath: \maicai\src\components\getPhone.vue
@@ -66,7 +66,7 @@ export default {
             _this.bool.phone = false;
 
             wx.showToast({
-              title: "登录成功",
+              title: "授权成功，感谢您的信任",
               icon: "success",
               duration: 2000
             });
