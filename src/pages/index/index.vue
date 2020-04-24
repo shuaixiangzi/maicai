@@ -974,4 +974,29 @@ export default {
   font-size: 14px;
   font-weight: bold;
 }
+
+.login{
+  position: fixed;
+  max-width: 80%;
+  left: 50%;
+  top: 50%;
+  background-color:#fff;
+  z-index: 110;
+  transform: translate(-50%,-50%);
+  padding: 40rpx;
+}
+
+.login .title{
+  padding: 20rpx 40rpx;
+  border-bottom: 1px solid #dcdcdc;
+  text-align: center;
+}
+
+.login .getphoneBtn{
+  background-color: #0ade7d;
+  color: #fff;
+  font-size: 12px;
+  padding: 0;
+  margin-top: 20rpx;
+}
 </style>
