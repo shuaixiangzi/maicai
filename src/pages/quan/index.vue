@@ -1,13 +1,16 @@
 <template>
   <div class="orderBox">
-    <ul class="quanBox">
-        <li v-for="(item, index) in quan" :key="index">
-          <p class="value">{{item.money}}元优惠券</p>
-          <p class="valid">满{{item.min_money}}元使用</p>
+    <ul class="quanBox" v-if="quan.length > 0">
+      <li v-for="(item, index) in quan" :key="index">
+        <p class="value">{{item.coupon.money}}元优惠券</p>
+        <p class="valid">满{{item.coupon.min_money}}元使用</p>
 
-          <!-- <div class="sel">选择</div> -->
-        </li>
-      </ul>
+        <!-- <div class="sel">选择</div> -->
+      </li>
+    </ul>
+    <div v-else style="text-align: center;">
+      暂无数据
+    </div>
   </div>
 </template>
 
@@ -45,7 +48,7 @@ export default {
       let _this = this;
       this.$fly.request({
           method:"get", //post/get 请求方式
-          url:"admincoupon/couponlist",
+          url:"coupon/couponlist",
           body:{
             type: 1,
             page: 1,
@@ -54,8 +57,8 @@ export default {
         }).then(res =>{
           console.log(res)
           if (res.status === 100) {
-            console.log("成功了1111", res);
-            _this.quan = res.data.data;
+            console.log("我的优惠券", res);
+            _this.quan = res.data;
           }
       })
     }

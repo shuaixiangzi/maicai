@@ -54,6 +54,7 @@
       <p class="title">选择地址</p>
 
       <ul class="addressBox">
+        
         <li v-for="(item, index) in addressList" :key="index" :class="{'active': item.id === address.id}" @click="selAddrSet(item)">
           <div class="selBox">
             <img src="../../../static/images/sel.png" mode="widthFix" v-if="item.id === address.id" class="sel"/>
@@ -65,13 +66,21 @@
           </div>
           <div class="addr">{{item.address}}</div>
         </li>
+        
       </ul>
+      <div class="noData">
+        <i @click="toAddress()">前往添加</i>
+      </div>
     </div>
 
     <div class="selAddress" v-show="bool.selQuan">
       <p class="title">选择优惠券</p>
 
+      
       <ul class="quanBox">
+        <li  style="background-color: #ddd;text-align: center;">
+          <div @click="selQuanSet({})">不选择</div>
+        </li>
         <li v-for="(item, index) in quanList" :key="index" @click="selQuanSet(item)">
           <p class="value">{{item.money}}元优惠券</p>
           <p class="valid">满{{item.min_money}}元使用</p>
@@ -83,7 +92,7 @@
     <!-- <text id='textId' data-userxxx='100' @tap='subUns()'>111111</text><br/>
     <text id='textId' data-userxxx='100' @tap='subUns2()'>22222</text><br/>
     <text id='textId' data-userxxx='100' @tap='subUns3()'>33333</text> -->
-
+    <!-- <get-myphone></get-myphone> -->
   </div>
 </template>
 
@@ -92,6 +101,8 @@
 import store from './store'
 import indexStore from '../index/store'
 import commonStore from '@/store'
+import getMyphone from '@/components/getPhone.vue'
+import addressStore from '../address/store'
 
 export default {
   data(){
@@ -116,9 +127,31 @@ export default {
       return commonStore.state.orderProduct;
     }
   },
+  components: {
+    getMyphone
+  },
   watch: {
   },
   methods: {
+    toAddress(){
+      addressStore.commit('saveAddress', {
+        name:'',
+        mobile: '',
+        address: '',
+        default: 0,
+        lat:'',
+        lng: ''
+      })
+      commonStore.commit('saveFromOrder', true);
+      mpvue.navigateTo({
+        url: '../address/add/main',
+        success: function(e) {
+          let page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        }
+      })
+    },
     buyNow(){
       let _this = this;
       this.$fly
@@ -127,14 +160,13 @@ export default {
           url: "pay/pre_order",
           body: {
             id: _this.order_id,
-            type: _this.quan.id?_this.quan.id:0,
-            paramid: 0
+            paramid: _this.quan.id?_this.quan.id:0
           },
         })
         .then((res) => {
           console.log(res);
           if (res.status === 100) {
-            wx.requestPayment({
+              wx.requestPayment({
               timeStamp: res.data.timeStamp,
               nonceStr: res.data.nonceStr,
               package: res.data.package,
@@ -155,6 +187,7 @@ export default {
     },
     selAddr(){
       this.bool.selAddr = !this.bool.selAddr;
+      this.bool.selQuan = false;
     },
     selAddrSet(data){
       this.address = data;
@@ -242,8 +275,15 @@ export default {
           console.log(res);
           if (res.status === 100) {
             console.log("下单", res);
-            _this.order_id = res.data.order_id
-            _this.getFreight();
+            if(res.data.order_id == -1){
+              let url = '../product/main'
+              mpvue.navigateTo({url})
+            }
+            else{
+              _this.order_id = res.data.order_id
+              _this.getFreight();
+            }
+            
           }
         });
     },
@@ -304,7 +344,9 @@ export default {
         weight = weight + this.orderProduct[i].weight * this.orderProduct[i].count
       }
 
-
+      if(!_this.address.name){
+        return
+      }
       this.$fly.request({
           method:"post", //post/get 请求方式
           url:"deliver/deliverfee",
@@ -330,10 +372,14 @@ export default {
   mounted(){
     console.log(111)
   },
-
-  onLoad() {
+  onShow(){
+    this.address = {};
     this.getAllAddress();
     this.getAllQuan();
+  },
+
+  onLoad() {
+    this.quan = {};
     this.setCoutPrice();
   }
 }
@@ -360,10 +406,13 @@ export default {
 
 .proBox{
   display: flex;
+  margin-bottom: 20rpx;
 }
 
 .proBox .imgBox{
   width: 200rpx;
+  height: 150rpx;
+  overflow: hidden;
   margin-right: 20rpx;
 }
 
@@ -571,5 +620,26 @@ export default {
 
 .selBox img{
   width: 100%;
+}
+
+.noData{
+  text-align: center;
+  line-height: 40rpx;
+  background-color: #0ade7d;
+  color: #fff;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
+}
+
+.notSel{
+  position: absolute;
+  top: 45rpx;
+  right: 37rpx;
+}
+
+.namePhoneBox .name{
+  margin-right: 10rpx;
+  font-weight: bold;
+  font-size: 14px;
 }
 </style>

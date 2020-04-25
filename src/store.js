@@ -18,7 +18,7 @@ const store = new Vuex.Store({
     orderProduct: [],
     car: [],
     searchName: '',
-    market: '73753-55420',
+    market: '',
     searchPaystatus: 0,
     searchDeliverstatus: 0,
     searchOrder: '',
@@ -26,7 +26,8 @@ const store = new Vuex.Store({
     userTypeName: '消费者',
     token: '',
     phone: '',
-    sessionKey: ''
+    sessionKey: '',
+    fromOrder: false
   },
   mutations: {
     increment: (state) => {
@@ -105,6 +106,10 @@ const store = new Vuex.Store({
 
       console.log('我保存保存了', data)
       obj.sessionKey = data
+    },
+    saveFromOrder: (state, data) =>{
+      const obj = state
+      obj.fromOrder = data
     }
   }
 })

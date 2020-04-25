@@ -3,7 +3,7 @@
     <div class="myInfo">
       <div class="header"><img :src="userInfo.avatarUrl"/></div>
       <div class="infoBox">
-        <p class="name">{{userInfo.nickName ? userInfo.nickName: '翟子'}}</p>
+        <p class="name">{{userInfo.nickName ? userInfo.nickName: '登录'}}</p>
         <p class="phoneBox">{{phone}}</p>
         <div class="sub" @click="shouquan">{{userTypeName}}消息授权</div>
       </div>
@@ -49,9 +49,12 @@
         <div class="fl">地址管理</div>
         <div class="fr more"  @click="toAddress()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
-      <div class="addressBottom">
+      <div class="addressBottom" v-if="address.name">
         <p class="namePhoneBox"><span class="name">{{address.name}}</span> <span>{{address.mobile}}</span></p>
         <p>{{address.address}}</p>
+      </div>
+      <div v-else class="noData">
+        <i @click="toAddress()">前往添加</i>
       </div>
     </div>
     <div class="func">
@@ -60,15 +63,20 @@
         <div class="fr more" @click="toQuan()">全部<img src="../../../static/images/right.png" mode="widthFix"/></div>
       </div>
       <div class="quanBottom">
-        <ul class="quanList">
+        <ul class="quanList"  v-if="quan.length > 0">
           <li v-for="(item, i) in quan" :key="i">
-            <p class="quanName">{{item.money}} 元优惠券</p>
-            <p class="detail">满{{item.min_money}}元可用</p>
+            <p class="quanName">{{item.coupon.money}} 元优惠券</p>
+            <p class="detail">满{{item.coupon.min_money}}元可用</p>
           </li>
         </ul>
+        <div v-else class="noData">
+          暂无优惠券
+        </div>
       </div>
     </div>
-     <get-myphone></get-myphone>
+    <!-- <div @click="toUserOrder">去看看详情</div> -->
+     <!-- <get-myphone></get-myphone> -->
+     <get-token @tokenOk="tokenOk"></get-token>
   </div>
 </template>
 
@@ -78,6 +86,7 @@ import store from './store'
 import indexStore from '../index/store'
 import commonStore from '../../store'
 import getMyphone from '@/components/getPhone.vue'
+import getToken from '@/components/getToken.vue'
 
 export default {
   data(){
@@ -89,7 +98,8 @@ export default {
     }
   },
   components: {
-    getMyphone
+    getMyphone,
+    getToken
   },
   computed: {
     count () {
@@ -106,9 +116,20 @@ export default {
     },
     userTypeName (){
       return commonStore.state.userTypeName
+    },
+    token() {
+      return commonStore.state.token
     }
   },
   methods: {
+    tokenOk(){
+      this.init()
+    },
+    toUserOrder(){
+      let url = '../userPushOrder/main?orderId=' + 607
+
+      mpvue.navigateTo({url})
+    },
     subUns() {
       console.log(1111);
       wx.requestSubscribeMessage({
@@ -141,11 +162,11 @@ export default {
       let arr = []
       let txt = ''
       if(this.userType == 1){
-        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        txt = 'azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs'
         arr.push(txt);
       }
       if(this.userType == 2){
-        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        txt = 'azM-nmqRIOUZSroWAGvjWKgXgiqIKlkXD2Oo-2MVNOs'
         arr.push(txt);
       }
       if(this.userType == 3){
@@ -157,11 +178,16 @@ export default {
         tmplIds: arr,
         success(res) {
           console.log("授权", res);
-
+          wx.showToast({
+            title: "操作完成",
+            icon: "success",
+            duration: 2000
+          });
         }
       });
     },
     toAddress(){
+      
       mpvue.navigateTo({url: '../address/main'})
     },
     toQuan(){
@@ -174,17 +200,17 @@ export default {
       let _this = this;
       this.$fly.request({
           method:"get", //post/get 请求方式
-          url:"admincoupon/couponlist",
+          url:"coupon/couponlist",
           body:{
             type: 1,
             page: 1,
-            pagesize: 2
+            pagesize: 10
           }
         }).then(res =>{
           console.log(res)
           if (res.status === 100) {
-            console.log("成功了1111", res);
-            _this.quan = res.data.data;
+            console.log("我的优惠券", res.data);
+            _this.quan = res.data;
           }
       })
     },
@@ -213,39 +239,50 @@ export default {
 
       let url = "../orderList/main";
       mpvue.navigateTo({url});
+    },
+
+    init(){
+      let _this = this;
+      let arr = []
+      let txt = ''
+      this.getAllQuan();
+      this.getAllAddress();
+      if(this.userType == 1){
+        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        arr.push(txt);
+      }
+      if(this.userType == 2){
+        txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
+        arr.push(txt);
+      }
+      if(this.userType == 3){
+        txt = '1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'
+        arr.push(txt);
+      }
+      wx.getSetting({
+        withSubscriptions: true,
+        success (res) {
+          let bool = res.subscriptionsSetting.itemSettings[txt];
+          if(bool !== 'accept'){
+            _this.shouquan();
+          }
+        }
+      })
     }
   },
 
   mounted(){
     console.log('用户信息', this.userInfo);
-    this.getAllQuan();
-    this.getAllAddress();
+    /* this.getAllQuan();
+    this.getAllAddress(); */
   },
-  onLoad(){
-    let _this = this;
-    let arr = []
-    let txt = ''
-    if(this.userType == 1){
-      txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
-      arr.push(txt);
+  onShow(){
+    
+    if(this.token){
+      this.init();
     }
-    if(this.userType == 2){
-      txt = 'qnSX9tyjsszMYTZ8HfRrzq4-1VGLghdN8oJs4eIuGMs'
-      arr.push(txt);
-    }
-    if(this.userType == 3){
-      txt = '1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo'
-      arr.push(txt);
-    }
-    wx.getSetting({
-      withSubscriptions: true,
-      success (res) {
-        let bool = res.subscriptionsSetting.itemSettings[txt];
-        if(bool !== 'accept'){
-          _this.shouquan();
-        }
-      }
-    })
+
+    
   }
 }
 </script>
@@ -415,11 +452,13 @@ page{
 
 .infoBox .name{
   font-size: 14px;
-  margin-top: -10rpx;
-
 }
 
 .sub{
   margin-top: 10rpx;
+}
+
+.noData{
+  padding-bottom: 20px;
 }
 </style>

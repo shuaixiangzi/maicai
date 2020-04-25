@@ -3,7 +3,8 @@
     <ul class="tabs">
       <li :class="{'active': (deliverstatus == 0 && paystatus == 0) || (deliverstatus == undefined && paystatus == undefined)}" @click="getOrderList(0,0,1,10)">全部</li>
       <li :class="{'active': paystatus === 1}" @click="getOrderList(1,0,1,10)">待付款</li>
-      <li :class="{'active': deliverstatus === 2}" @click="getOrderList(0,2,1,10)">待发货</li>
+      <li :class="{'active': deliverstatus === 1}" @click="getOrderList(2,1,1,10)">待接单</li>
+      <li :class="{'active': deliverstatus === 2 }" @click="getOrderList(2,2,1,10)">待发货</li>
       <li :class="{'active': deliverstatus === 3}" @click="getOrderList(0,3,1,10)">派送中</li>
       <li :class="{'active': deliverstatus === 4}" @click="getOrderList(0,4,1,10)">已完成</li>
     </ul>
@@ -11,14 +12,15 @@
     <ul class="orderList">
       <li v-for="(item, index) in orderList" :key="index" class="orderItem">
         <div class="orderStatus">
-          <p v-if="item.status === 1">等待付款</p>
-          <p v-if="item.status === 2 && item.dadaorderstatus === 2">等待发货</p>
+          <p v-if="item.status === 1">等待付款</p>{{item.status }}{{item.dadaorderstatus}}
+          <p v-if="item.status === 2 && (item.dadaorderstatus === 1)">等待接单</p>
+          <p v-if="item.status === 2 && (item.dadaorderstatus === 2)">等待发货</p>
           <p v-if="item.status === 2 && item.dadaorderstatus === 3">派送中</p>
           <p v-if="item.status === 2 && item.dadaorderstatus === 4">已完成</p>
         </div>
         <div class="proBox" v-for="(item2, index2) in item.snap_items" :key="index2">
           <div class="imgBox">
-            <img :src="item.snap_img.url"  mode='widthFix'/>
+            <img :src="item2.imgurl.url"  mode='widthFix'/>
           </div>
 
           <div class="infoBox">
@@ -75,6 +77,10 @@ export default {
     }
   },
   methods: {
+    getWei(){
+      this.getOrderList(0,2,1,10)
+      this.getOrderList(0,1,1,10)
+    },
     // 获取订单
     getOrderList(paystatus,deliverstatus,page,pageSize){
       let _this = this;
@@ -101,7 +107,7 @@ export default {
           if (res.status === 100) {
             console.log("获取", res.data.data);
             let data = res.data.data;
-            _this.orderList = res.data.data
+            _this.orderList = res.data.data;
             /* if(_this.orderList.length > 0){
               for(let i = 0; i < data.length; i++){
                 _this.orderList.push(data[i]);
@@ -280,9 +286,6 @@ export default {
 
 <style scoped>
 @import url('./order.css');
-page{
-  background-color: rgb(249, 249, 249);
-}
 .orderBox{
   padding: 30rpx 0;
 }
@@ -520,6 +523,10 @@ page{
   justify-content: space-between;
   background-color: #fff;
   box-shadow: 3rpx 3rpx 10rpx 3rpx rgba(0,0,0,.1);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
 }
 
 .tabs li{
@@ -537,6 +544,7 @@ page{
 .orderItem{
   background-color: #fff;
   margin: 40rpx;
+  border-radius: 10rpx;
 }
 
 .btnList{
@@ -574,5 +582,9 @@ page{
 .funcBox{
   padding: 20rpx;
   border-top: 1px solid #f0f0f0;
+}
+
+.orderList{
+  margin-top: 150rpx;
 }
 </style>

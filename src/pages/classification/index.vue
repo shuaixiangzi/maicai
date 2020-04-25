@@ -37,6 +37,7 @@
         </li>
       </ul>
     </div>
+    <get-token @tokenOk="tokenOk"></get-token>
   </div>
 </template>
 
@@ -45,6 +46,7 @@ import card from '@/components/card'
 import store from './store'
 import indexStore from '../index/store'
 import commonStore from '../../store'
+import getToken from '@/components/getToken.vue'
 
 export default {
   data () {
@@ -60,7 +62,8 @@ export default {
   },
 
   components: {
-    card
+    card,
+    getToken
   },
 
   computed: {
@@ -78,6 +81,9 @@ export default {
     },
     market() {
       return commonStore.state.market
+    },
+    tag() {
+      return indexStore.state.tag;
     }
   },
 
@@ -117,6 +123,7 @@ export default {
             id: id?id:0,
             paramid: _this.market
           },
+          needLoading: true
         })
         .then((res) => {
 
@@ -142,6 +149,7 @@ export default {
             type: 0,
             paramid: _this.market
           },
+          needLoading: true
         })
         .then((res) => {
           console.log(res);
@@ -198,7 +206,7 @@ export default {
 
   },
   onLoad() {
-    console.log(this.classificationId)
+    console.log('load',this.classificationId)
     if(this.classificationId){
       this.leftIndex = this.classificationId;
     }
@@ -214,6 +222,9 @@ export default {
       return
     }
 
+    if(this.tag){
+      this.index = this.tag;
+    }
     // this.index = this.classificationId;
     this.getProduct(this.leftIndex, this.index, this.page, this.size);
     
@@ -226,6 +237,7 @@ export default {
   },
   onHide(){
     commonStore.commit('searchName', '');
+    commonStore.commit('saveTag', '');
   },
   // 下拉刷新方法，与methods方法同级
   async onPullDownRefresh() {

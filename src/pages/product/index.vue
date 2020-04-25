@@ -23,17 +23,18 @@
       <!-- <i class="iconfont iconfenxiang"></i> -->
     </div>
 
-    <p class="proTitle">当日新鲜先切猪肉纯瘦肉，纯抢购价，抓紧下手，卖完没了</p>
+    <p class="proTitle">{{detail.summary}}</p>
 
     <div class="specifications">
       <div class="name">选择规格</div>
       <div class="count">
         <div @click="decrement">-</div>
-        <div>{{num}}</div>
+        <div><input class="weui-input" placeholder="数量" v-model="num"/></div>
         <div @click="increment">+</div>
       </div>
 
       <div class="unit">份</div>
+      <div style="position: relative;top: 12px;float: right;left: 20px;">库存{{detail.stock}}</div>
     </div>
 
     <div class="detail">
@@ -64,6 +65,7 @@
         </div>
       </div>
     </div>
+    <get-token @tokenOk="tokenOk"></get-token>
   </div>
 </template>
 
@@ -71,6 +73,7 @@
 // Use Vuex
 import store from './store'
 import commonStore from '@/store'
+import getToken from '@/components/getToken.vue'
 
 export default {
   data(){
@@ -106,7 +109,56 @@ export default {
   computed: {
 
   },
+  components: {
+    getToken
+  },
+
+  watch: {
+    num (val){
+      if(val >= this.detail.stock){
+        this.value = this.detail.stock
+      }
+      else{
+        this.value = this.val
+      }
+
+    }
+  },
   methods: {
+    subUns() {
+      console.log(1111);
+      let _this = this;
+      wx.requestSubscribeMessage({
+        tmplIds: ["1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo"],
+        success(res) {
+          console.log("授权", res);
+          let productList = [
+            _this.detail
+          ]
+          commonStore.commit('orderProduct', productList)
+          mpvue.navigateTo({url: '../order/main'})
+        },
+        fail(err){
+          wx.showToast({
+            title: "您将不会接收消息",
+            icon: "success",
+            duration: 2000
+          });
+          let productList = [
+            _this.detail
+          ]
+          commonStore.commit('orderProduct', productList)
+          mpvue.navigateTo({
+            url: '../order/main',
+            success: function(e) {
+              let page = getCurrentPages().pop();
+              if (page == undefined || page == null) return;
+              page.onLoad();
+            }
+          })
+        }
+      });
+    },
     decrement(){
       if(this.num>1){
         this.num --
@@ -114,17 +166,47 @@ export default {
     },
 
     increment(){
-      this.num ++
+      if(this.num < this.detail.stock){
+        this.num ++
+      }
     },
     buyNow(){
+      if(this.num == 0){
+        wx.showToast({
+          title: "请选择数量",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
+      if(this.num>this.detail.stock){
+        wx.showToast({
+          title: "超出库存",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
       this.detail.count = this.num
-      let productList = [
-        this.detail
-      ]
-      commonStore.commit('orderProduct', productList)
-      mpvue.navigateTo({url: '../order/main'})
+      this.subUns();
     },
     addCar(){
+      if(this.num == 0){
+        wx.showToast({
+          title: "请选择数量",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
+      if(this.num>this.detail.stock){
+        wx.showToast({
+          title: "超出库存",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
       this.detail.count = this.num
       this.detail.sel = false
       commonStore.commit('pushCarProduct', this.detail);
@@ -386,5 +468,11 @@ export default {
 
 .title .titles{
   line-height: 45rpx;
+}
+
+.weui-input{
+  width: 100rpx;
+  margin-top: 8rpx;
+  text-align: center;
 }
 </style>

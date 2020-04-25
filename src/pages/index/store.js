@@ -20,7 +20,8 @@ const store = new Vuex.Store({
     market: '',
     phone: '',
     classificationId: '',
-    classifiList: []
+    classifiList: [],
+    tag: 0
   },
   mutations: {
     increment: (state) => {
@@ -50,6 +51,10 @@ const store = new Vuex.Store({
     saveClassifiList: (state, data) => {
       const obj = state
       obj.classifiList = data
+    },
+    saveTag: (state, data) => {
+      const obj = state
+      obj.tag = data
     }
   }
 })

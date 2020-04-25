@@ -7,7 +7,7 @@
       </div>
       <p class="fl" style="margin-right:20rpx">全选</p>
 
-      <p class="fr">删除</p>
+      <p class="fr" @click="delCar()">删除</p>
     </div>
     <div class="cardBox">
       <div class="proBox" v-for="(carItem, carIndex) in thisCar" :key="carIndex">
@@ -38,6 +38,7 @@
         <div class="buyn" @click="buyNow()">立即下单</div>
       </div>
     </div>
+    <get-token @tokenOk="tokenOk"></get-token>
   </div>
 </template>
 
@@ -46,6 +47,7 @@
 import store from './store'
 import indexStore from '../index/store'
 import commonStore from '@/store'
+import getToken from '@/components/getToken.vue'
 
 export default {
   data(){
@@ -64,10 +66,19 @@ export default {
       return commonStore.state.car;
     }
   },
+  components: {
+    getToken
+  },
   methods: {
-    buyNow(){
+    delCar(){
+      for(let i = 0; i < this.thisCar.length; i++){
+        if(this.thisCar[i].sel == true){
+          this.thisCar.splice(i , 1);
+        }
+      }
+    },
+    addtoCar() {
       let buy = []
-      console.log('this.thisCar', this.thisCar)
       for(let i = 0; i< this.thisCar.length; i++){
 
         if(this.thisCar[i].sel === true){
@@ -77,6 +88,27 @@ export default {
       let productList = buy
       commonStore.commit('orderProduct', productList)
       mpvue.navigateTo({url: '../order/main'})
+      
+    },
+    buyNow(){
+      let _this = this;
+      let buy = []
+      wx.requestSubscribeMessage({
+        tmplIds: ["1cOgMwa9YvMAv2IdhouINuiKWFBhyZATMh0fXtanKvo"],
+        success(res) {
+          console.log("授权", res);
+          _this.addtoCar();
+        },
+        fail(err){
+          wx.showToast({
+            title: "如果拒绝订阅消息提醒，您将不会收到下单消息",
+            icon: "success",
+            duration: 2000
+          });
+          _this.addtoCar();
+        }
+      });
+      
     },
     bindchange: function (e) {
       console.log('checkbox发生change事件，携带value值为：', e)
@@ -148,8 +180,8 @@ page{
 
 .selBox{
   margin-top: 65rpx;
-  width: 90rpx;
-  height: 90rpx;
+  width: 40rpx;
+  height: 40rpx;
   overflow: hidden;
 }
 

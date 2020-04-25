@@ -11,7 +11,7 @@
             :range="objectarray"
             :range-key="'name'"
           >
-            <view>{{ objectarray[index]?objectarray[index].name:'' }}</view>
+            <view class="marketName">{{ objectarray[index]?objectarray[index].name:'' }}</view>
           </picker>
         </div>
         <div class="right">
@@ -104,7 +104,7 @@
         </swiper-item>
       </swiper>
       <ul class="indexQuanList">
-        <li v-for="(item, index) in quan" :key="index">
+        <li v-for="(item, index) in quan" :key="index" @click="addQuan(item.id)" :class="{'one': quan.length <= 1,'two': quan.length >= 1}">
           <div class="quanImg">
             <img src="../../../static/images/quan.png" mode="widthFix">
           </div>
@@ -116,7 +116,7 @@
     <div class="productCategory">
       <div class="top">
         <p class="title">人气热卖</p>
-        <div class="more">全部
+        <div class="more" @click="toProList(1)">全部
           <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
@@ -134,7 +134,7 @@
     <div class="productCategory">
       <div class="top">
         <p class="title">店长优惠</p>
-        <div class="more">全部
+        <div class="more" @click="toProList(2)">全部
           <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
@@ -152,7 +152,7 @@
     <div class="productCategory">
       <div class="top">
         <p class="title">农户直供</p>
-        <div class="more">全部
+        <div class="more" @click="toProList(3)">全部
           <img src="../../../static/images/right.png" mode="widthFix">
         </div>
       </div>
@@ -166,12 +166,6 @@
           <p class="price">{{item.price}}</p>
         </li>
       </ul>
-    </div>
-    <div class="mask" v-show="bool.mask"></div>
-    <!--确认权限弹窗-->
-    <div class="login" v-show="bool.login">
-      <p class="title">请先登录团菜小程序</p>
-      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="loginBtn getphoneBtn">登录</button>
     </div>
     <!-- <div class="login" v-show="bool.phone">
       <p class="title">请先登录团菜小程序</p>
@@ -195,6 +189,7 @@
     <text id="textId" data-userxxx="100" @tap="subUns2()">22222</text>
     <br>
     <text id="textId" data-userxxx="100" @tap="subUns3()">33333</text> -->
+    <get-token @tokenOk="tokenOk"></get-token>
   </div>
 </template>
 
@@ -203,6 +198,7 @@ import store from "./store";
 import commonStore from "../../store";
 import { mapState } from "vuex";
 import { fail } from "assert";
+import getToken from '@/components/getToken.vue'
 
 export default {
   data() {
@@ -219,7 +215,8 @@ export default {
       bool: {
         login: false,
         mask: false,
-        phone: false
+        phone: false,
+        gujia: true
       },
       saveToken: "",
       category: [],
@@ -231,7 +228,10 @@ export default {
       banner2: [],
       circular: true,
       disabled: true,
-      isInit: true
+      isInit: true,
+      latitude: '',
+      longitude: '',
+      myQuan: []
     };
   },
 
@@ -247,9 +247,27 @@ export default {
     }
   },
 
-  components: {},
+  components: {
+    getToken
+  },
 
   methods: {
+    // 获取到了token
+    tokenOk(){
+      this.getAllQuan();
+    },
+    toProList(type){
+      let url = "../classification/main";
+      store.commit("saveTag", type);
+      wx.switchTab({
+        url: url,
+        success: function(e) {
+          let page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        }
+      });
+    },
     subUns() {
       console.log(1111);
       wx.requestSubscribeMessage({
@@ -285,7 +303,12 @@ export default {
       let name = e.mp.detail.value;
       commonStore.commit("searchName", name);
       wx.switchTab({
-        url: url
+        url: url,
+        success: function(e) {
+          let page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        }
       });
 
       /* this.$fly
@@ -332,16 +355,71 @@ export default {
           body: {
             type: 1,
             page: 1,
-            pagesize: 2
+            pagesize: 100
           }
         })
         .then(res => {
           console.log(res);
           if (res.status === 100) {
-            console.log("成功了1111", res);
+            console.log("成功了1111", res, _this.myQuan);
+            
             _this.quan = res.data.data;
+            console.log("全部优惠券", _this.quan);
+            // 获取我的优惠券
+            _this.$fly.request({
+                method:"get", //post/get 请求方式
+                url:"coupon/couponlist",
+                body:{
+                  type: 1,
+                  page: 1,
+                  pagesize: 2
+                }
+              }).then(res =>{
+                console.log(res)
+                if (res.status === 100) {
+                  let now = Date.parse(new Date());
+                  _this.myQuan = res.data[0].coupon;
+
+                  console.log("我的优惠券", _this.myQuan);
+                  for(let i = 0; i < _this.myQuan.length; i++){
+                    for(let j = 0; j < _this.quan.length; j++){
+                      if(now>=Date.parse(_this.quan[j].enddate)){
+                        _this.quan.splice(j, 1);
+                      }
+                    }
+                  }
+
+                  console.log('剩余优惠券', _this.quan)
+                }
+            })
+            
           }
         });
+      
+      
+    },
+
+    // 添加优惠券
+    addQuan(id){
+      let _this = this;
+      this.$fly.request({
+          method:"post", //post/get 请求方式
+          url:"coupon/addcoupon",
+          body:{
+            id:id
+          }
+        }).then(res =>{
+          console.log(res)
+          if (res.status === 100) {
+            console.log("成功了1111", res);
+            wx.showToast({
+              title: "领取成功",
+              icon: "success",
+              duration: 2000
+            });
+            _this.getAllQuan();
+          }
+      })
     },
 
     // 获取banner
@@ -368,10 +446,10 @@ export default {
         });
     },
 
-    // 获取banner
+    // 获取市场
     getMarket() {
       let _this = this;
-      this.$fly
+      return this.$fly
         .request({
           method: "get", //post/get 请求方式
           url: "adminmarkets/marketlist",
@@ -382,184 +460,44 @@ export default {
           if (res.status === 100) {
             console.log("获取市场", res);
             _this.objectarray = res.data;
-          }
-        });
-    },
-
-    // 获取手机号
-    getPhoneNumber(e) {
-      let _this = this;
-      console.log(111, e);
-      console.log(e.mp.detail.errMsg);
-      console.log(e.mp.detail.iv);
-      console.log(e.mp.detail.encryptedData);
-      console.log("token", _this.saveToken);
-
-      this.$fly
-        .request({
-          method: "post", //post/get 请求方式
-          url: "token/phone",
-          body: {
-            sessionkey: _this.sessionKey,
-            encrypteddata: e.mp.detail.encryptedData,
-            iv: e.mp.detail.iv
-          }
-        })
-        .then(res => {
-          console.log(res);
-          if (res.status === 100) {
-            store.commit("savePhone", res.data.phonenumber);
-
-            _this.bool.mask = false;
-            _this.bool.phone = false;
-
-            wx.showToast({
-              title: "登录成功",
-              icon: "success",
-              duration: 2000
-            });
-
-            wx.setStorageSync("myPhone", res.data.phonenumber);
-          }
-        });
-    },
-    // 绑定用户信息
-    bindgetuserinfo(e) {
-      let _this = this;
-      console.log(e.mp.detail.userInfo);
-      store.commit("saveUserInfo", e.mp.detail.userInfo);
-
-      this.bool.mask = false;
-      this.bool.phone = false;
-
-      this.init();
-    },
-
-    bindgetusertoken() {
-      console.log("走我了111", this.userInfo);
-      let _this = this;
-      this.$fly
-        .request({
-          method: "post", //post/get 请求方式
-          url: "token/user",
-          body: {
-            code: _this.code,
-            nickname: _this.userInfo.nickName
-          }
-        })
-        .then(res => {
-          console.log(res);
-          if (res.status === 100) {
-            console.log("成功了ssss", res, res.data.sessionkey, res.data.token);
-            // _this.sessionKey = res.data.sessionkey;
-            commonStore.commit('saveSessionKey', res.data.sessionkey);
-            _this.saveToken = res.data.token;
-            console.log(1111, _this.sessionKey, _this.saveToken);
-            commonStore.commit('saveToken', res.data.token);
-            /* mpvue.setStorage({
-              key: "token",
-              data: res.data.token
-            }); */
-            commonStore.commit('userType', res.data.type);
-            _this.init();
-          } else {
-            wx.showToast({
-              title: JSON.stringify(res.msg),
-              icon: "none",
-              duration: 3000
-            });
-          }
-        });
-    },
-    payNow() {
-      let _this = this;
-      console.log(wx.getStorageSync("token"));
-      wx.request({
-        url: "http://129.204.70.218:8080/api/v1/pay/pre_order", //仅为示例，并非真实的接口地址
-        data: {
-          id: 539
-        },
-        method: "POST",
-        header: {
-          "content-type": "application/json", // 默认值
-          token: wx.getStorageSync("token")
-        },
-        success(res) {
-          _this.res = JSON.stringify(res);
-          console.log(res.data);
-          // _this.payParam = res.data.data;
-          console.log(res.data.data.timeStamp);
-          console.log(res.data.data.nonceStr);
-          console.log(res.data.data.package);
-          console.log(res.data.data.paySign);
-          wx.requestPayment({
-            timeStamp: res.data.data.timeStamp,
-            nonceStr: res.data.data.nonceStr,
-            package: res.data.data.package,
-            signType: res.data.data.signType,
-            paySign: res.data.data.paySign,
-            success(res2) {
-              _this.res = JSON.stringify(res2);
-              console.log("成功", res2);
-            },
-            fail(res2) {
-              // alert(JSON.stringify(res2));
-              console.log("失败", res2);
+            if(_this.objectarray.length == 1 ){
+              commonStore.commit('market', _this.objectarray[0].dada)
             }
-          });
-        }
-      });
+            else{
+              let obj = {
+                min: 0
+              };
+              if(_this.latitude){
+                for(let i = 0; i<_this.objectarray.length;i++){
+                  let val = _this.getDistance(_this.latitude, _this.longitude, _this.objectarray[i].lat, _this.objectarray[i].lng);
+                  if(obj.dis === undefined){
+                    obj.min = i;
+                    obj.dis = val;
+                  }
+                  else{
+                    if(obj.dis > val){
+                      obj.min = i;
+                      obj.dis = val;
+                    }
+                  }
+                } 
+                commonStore.commit('market', _this.objectarray[obj.min].dada)
+              }
+              else{
+                commonStore.commit('market', _this.objectarray[0].dada)
+              }
+              
+            }
+            // _this.getDistance(_this.latitude, _this.longitude, );
+            _this.init()
+          }
+        });
     },
-
+    
     getAddress() {
       console.log("走我了");
       let _this = this;
     },
-
-    payNowPay() {
-      let _this = this;
-      console.log(_this.payParam);
-
-      /* wx.requestPayment(
-        {
-        'timeStamp': _this.payParam.timeStamp,
-        'nonceStr': _this.payParam.nonceStr,
-        'package': _this.payParam.package,
-        'signType': 'MD5',
-        'paySign': _this.payParam.paySign,
-        'success':function(res){
-          _this.res = JSON.stringify(res)
-          console.log('成功', res)
-        },
-        'fail':function(res){
-          console.log('失败', res)
-        },
-        'complete':function(res){
-          console.log('完成', res)
-        }
-        }) */
-    },
-
-    // 微信登录
-    wxToLogin() {
-      let _this = this;
-      /* Dialog.alert({
-        title: '标题',
-        message: '弹窗内容',
-      }).then(() => {
-        // on close
-      }); */
-      wx.login({
-        success(res) {
-          if (res.code) {
-            // 这里可以把code传给后台，后台用此获取openid及session_key
-            console.log(res.code);
-            _this.code = res.code;
-          }
-        }
-      });
-    },
-
     // 菜市场切换
     bindPickerChange(e) {
       console.log("picker发送选择改变，携带值为", e.mp.detail.value);
@@ -584,7 +522,7 @@ export default {
         .request({
           method: "get", //post/get 请求方式
           url: "category/all",
-          body: {}
+          body: {},
         })
         .then(res => {
           console.log("类别", res);
@@ -647,14 +585,13 @@ export default {
     },
 
     init() {
+      // this.getMarket();
       this.getAllCategory();
-      this.getAllQuan();
+      this.getBanner(1);
+      this.getBanner(2);
       this.getProduct(1, 1, 3);
       this.getProduct(2, 1, 4);
       this.getProduct(3, 1, 4);
-      this.getBanner(1);
-      this.getBanner(2);
-      this.getMarket();
     }
   },
 
@@ -665,53 +602,39 @@ export default {
 
   mounted() {
 
-
-    // _this.wxToLogin();
   },
   onPageScroll: function(e) {
-    if (e.scrollTop < 0) {
+    /* if (e.scrollTop < 0) {
       wx.pageScrollTo({
         scrollTop: 0
       });
-    }
+    } */
   },
 
   onLoad(){
     let _this = this;
+    this.getMarket()
+    wx.setBackgroundColor({
+      backgroundColor: '#0ade7d', // 窗口的背景色为白色
+    })
     wx.getSetting({
       success(res) {
         console.log("resresres", res);
-        if (!res.authSetting["scope.userInfo"]) {
-          _this.bool.login = true;
-          _this.bool.mask = true;
-        } else {
-          wx.getUserInfo({
-            success: function(res) {
-              console.log(res);
-              store.commit("saveUserInfo", res.userInfo);
-
-              wx.login({
-                success(res) {
-                  if (res.code) {
-                    // 这里可以把code传给后台，后台用此获取openid及session_key
-                    console.log(res.code);
-                    _this.code = res.code;
-                    _this.bindgetusertoken(); // 获取token
-                  }
-                }
-              });
-            },
-            fail: function(res) {
-              console.log(res);
+        if(!res.authSetting["userLocation"]){
+          wx.getLocation({
+            type: 'wgs84',
+            success (res) {
+              _this.latitude = res.latitude
+              _this.longitude = res.longitude
+              _this.info = ''
             }
-          });
+          })
         }
       },
       fail(err){
         console.log("resresres", err);
       }
     });
-
     try {
       // 同步接口立即返回值
 
@@ -866,17 +789,27 @@ export default {
 }
 
 .indexQuanList li {
+  box-sizing: border-box;
+  padding: 15rpx 0;
+  display: flex;
+  background-color: rgb(74, 223, 159);
+  color: #fff;
+  font-size: 16px;
+  border-radius: 10rpx;
+  margin-bottom: 15rpx;
+}
+
+.indexQuanList li.two{
   flex: 1;
   width: 48%;
   min-width: 48%;
   max-width: 48%;
-  box-sizing: border-box;
-  padding: 15rpx 0;
-  display: flex;
-  background-color: rgba(74, 223, 159);
-  color: #fff;
-  font-size: 16px;
-  border-radius: 10rpx;
+}
+
+.indexQuanList li.one{
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .indexQuanList li p {
@@ -922,7 +855,7 @@ export default {
   box-sizing: border-box;
   font-size: 14px;
   border: 1px solid #ececec;
-  margin-bottom: 40rpx;
+  margin-bottom: 25rpx;
 }
 
 .three li {
@@ -1016,5 +949,18 @@ export default {
   top: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 100;
+}
+
+.indexQuanList .one{
+
+}
+
+.item1{
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.marketName{
+  font-size: 16px;
 }
 </style>

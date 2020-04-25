@@ -12,13 +12,15 @@
     "pages/address/add/main",
     "pages/quan/main",
     "pages/orderList/main",
-    "pages/orderDetail/main"
+    "pages/orderDetail/main",
+    "pages/userPushOrder/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#0ade7d",
     "navigationBarTitleText": "团菜",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false
   },
   "tabBar": {
     "color": "#686868",
@@ -48,5 +50,10 @@
       "selectedIconPath": "static/tabs/wode-active.png"
     }],
     "position": "bottom"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示" 
+    }
   }
 }
