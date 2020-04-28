@@ -98,9 +98,12 @@
         :interval="interval"
         :duration="duration"
         :circular="circular"
-      >
-        <swiper-item class="item1" v-for="(item, index) in banner2" :key="index">
+        v-if="banner2.length > 0">
+        <!-- <swiper-item class="item1" v-for="(item, index) in banner2" :key="index">
           <img :src="item.img_id.url" mode="widthFix">
+        </swiper-item> -->
+        <swiper-item class="item1">
+          <img :src="banner2[index].img_id.url" mode="widthFix">
         </swiper-item>
       </swiper>
       <ul class="indexQuanList">
@@ -362,7 +365,7 @@ export default {
           console.log(res);
           if (res.status === 100) {
             console.log("成功了1111", res, _this.myQuan);
-            
+
             _this.quan = res.data.data;
             console.log("全部优惠券", _this.quan);
             // 获取我的优惠券
@@ -392,11 +395,11 @@ export default {
                   console.log('剩余优惠券', _this.quan)
                 }
             })
-            
+
           }
         });
-      
-      
+
+
     },
 
     // 添加优惠券
@@ -480,20 +483,20 @@ export default {
                       obj.dis = val;
                     }
                   }
-                } 
+                }
                 commonStore.commit('market', _this.objectarray[obj.min].dada)
               }
               else{
                 commonStore.commit('market', _this.objectarray[0].dada)
               }
-              
+
             }
             // _this.getDistance(_this.latitude, _this.longitude, );
             _this.init()
           }
         });
     },
-    
+
     getAddress() {
       console.log("走我了");
       let _this = this;

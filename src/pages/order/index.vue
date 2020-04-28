@@ -54,7 +54,7 @@
       <p class="title">选择地址</p>
 
       <ul class="addressBox">
-        
+
         <li v-for="(item, index) in addressList" :key="index" :class="{'active': item.id === address.id}" @click="selAddrSet(item)">
           <div class="selBox">
             <img src="../../../static/images/sel.png" mode="widthFix" v-if="item.id === address.id" class="sel"/>
@@ -66,7 +66,7 @@
           </div>
           <div class="addr">{{item.address}}</div>
         </li>
-        
+
       </ul>
       <div class="noData">
         <i @click="toAddress()">前往添加</i>
@@ -76,7 +76,7 @@
     <div class="selAddress" v-show="bool.selQuan">
       <p class="title">选择优惠券</p>
 
-      
+
       <ul class="quanBox">
         <li  style="background-color: #ddd;text-align: center;">
           <div @click="selQuanSet({})">不选择</div>
@@ -154,6 +154,22 @@ export default {
     },
     buyNow(){
       let _this = this;
+      if(!this.address.address){
+        wx.showToast({
+          title: "请选择地址",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
+      if(!this.freight || this.freight<=-1){
+        wx.showToast({
+          title: "运费获取失败，请联系商家",
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
       this.$fly
         .request({
           method: "post", //post/get 请求方式
@@ -283,7 +299,7 @@ export default {
               _this.order_id = res.data.order_id
               _this.getFreight();
             }
-            
+
           }
         });
     },

@@ -54,7 +54,6 @@ export default {
       index: 0,
       leftIndex: 1,
       productList: [],
-      market: '73753-55420',
       searchTxt: '',
       page: 1,
       size: 10
@@ -90,10 +89,12 @@ export default {
   methods: {
     selClass(i){
       this.index = i;
+      this.page = 1;
       this.getProduct(this.leftIndex, this.index, 1, 10);
     },
     selLeftClass(i){
       this.leftIndex = i;
+      this.page = 1;
       this.getProduct(this.leftIndex, this.index, 1, 10);
     },
     toDetail(id){
@@ -180,7 +181,7 @@ export default {
             let data = res.data.data;
             if(data.length>0){
               console.log('res.data.data', res.data.data)
-              
+
               for(let i = 0; i < data.length; i++){
                 _this.productList.push(data[i]);
               }
@@ -206,6 +207,14 @@ export default {
 
   },
   onLoad() {
+
+
+  },
+  onReady () {
+    // console.log(3333)
+  },
+  onShow() {
+    console.log(444)
     console.log('load',this.classificationId)
     if(this.classificationId){
       this.leftIndex = this.classificationId;
@@ -227,13 +236,6 @@ export default {
     }
     // this.index = this.classificationId;
     this.getProduct(this.leftIndex, this.index, this.page, this.size);
-    
-  },
-  onReady () {
-    // console.log(3333)
-  },
-  onShow() {
-    // console.log(444)
   },
   onHide(){
     commonStore.commit('searchName', '');
